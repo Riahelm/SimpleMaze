@@ -18,7 +18,7 @@ public class GameLoop{
         GameController gc;
     public GameLoop(GameController gc){
         try {
-            myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/FirstMap"));
+            myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/SecondMap"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -26,7 +26,6 @@ public class GameLoop{
         this.gc = gc;
 
         gc.updateState(keyPressed -> {
-            System.out.println(keyPressed);
             myWorld.move(keyPressed, myChar);
         });
 

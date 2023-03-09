@@ -26,7 +26,7 @@ public class MainFrame extends JFrame{
             this.repaint();
         });
 
-        this.setBounds(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
+        this.setBounds(new Rectangle(800, 800));
         this.setTitle("Testing Swing for Java");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

@@ -18,17 +18,18 @@ public class GameController {
     }
     public void useUpdatedState(OnNewStateListener l){
         gamePListener = l;
-        l.useUpdatedState(gScrnToShow);
+        gamePListener.useUpdatedState(gScrnToShow);
+    }
+    public void updateState(OnKeyPressedListener l){
+        gameLListener = l;
     }
 
     public void onKeyPressed(String key){
         gameLListener.useKeyPressed(key);
         gScrnToShow = gameSListener.getNewState();
+        gamePListener.useUpdatedState(gScrnToShow);
     }
 
-    public void updateState(OnKeyPressedListener l){
-        gameLListener = l;
-    }
     public void getNewState(GameStateListener l){
         gameSListener = l;
         gScrnToShow = gameSListener.getNewState();

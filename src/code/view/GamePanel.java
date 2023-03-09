@@ -29,15 +29,14 @@ public class GamePanel extends JPanel{
                 this.add(screenPixels[i][j]);
                 screenPixels[i][j].setBounds(new Rectangle(16, 16));
             }
-        }
             this.revalidate();
             this.repaint();
+        }
         // Updates the screen
         gc.useUpdatedState(e -> {
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     screenPixels[i][j].setIcon(e[i][j]);
-                    System.out.print(e[i][j]);
                 }
                 System.out.println("");
             }
@@ -51,10 +50,12 @@ public class GamePanel extends JPanel{
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
         InputMap inputMap = getInputMap(condition );
 
-        String vkUp = "VK_W";
-        String vkLeft = "VK_A";
-        String vkDown = "VK_S";
-        String vkRight = "VK_D";
+        //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
+        //This is the quickest fix without having to change the model
+        String vkUp = "VK_A";
+        String vkLeft = "VK_S";
+        String vkDown = "VK_D";
+        String vkRight = "VK_W";
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkLeft);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkDown);
