@@ -41,7 +41,15 @@ public abstract class EntityAb implements Entity {
     public Tile getTile(){
         return this.currentTile;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EntityAb entityAb = (EntityAb) o;
+        return cName.equals(entityAb.cName) && currentTile.equals(entityAb.currentTile);
+    }
+
     //Logic of each subType of entity here
     public abstract boolean canMove();
    

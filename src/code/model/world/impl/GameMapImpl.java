@@ -70,6 +70,8 @@ public class GameMapImpl implements GameMap {
     private void moveUp(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX()][entity.getTile().getCoords().getPosY() + 1];
         if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
+            //TODO Finish this
+            //if(destinationTile.getEntity().get().
             entity.getTile().resetTile();
             entity.setTile(destinationTile);
             destinationTile.setEntity(entity);

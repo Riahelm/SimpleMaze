@@ -13,6 +13,9 @@ public interface Entity {
     Tile getTile();
 
     Icon getSprite();
+
+    @Override
+    boolean equals(Object anObj);
     
     boolean canMove();
    
