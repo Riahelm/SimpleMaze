@@ -42,7 +42,7 @@ public abstract class EntityAb implements Entity {
         return this.currentTile;
     }
     
-    //Logic of each sub-type of entity here
+    //Logic of each subType of entity here
     public abstract boolean canMove();
    
     public abstract boolean canDie();

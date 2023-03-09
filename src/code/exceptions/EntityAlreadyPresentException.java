@@ -4,7 +4,7 @@ public class EntityAlreadyPresentException extends IllegalArgumentException{
     
     String message;
 
-    public EntityAlreadyPresentException(){};
+    public EntityAlreadyPresentException(){}
 
     public EntityAlreadyPresentException(String message) {
         super(message);

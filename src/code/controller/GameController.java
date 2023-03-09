@@ -8,17 +8,17 @@ import javax.swing.*;
 
 public class GameController {
 
-    private Icon[][] gScrnToShow;
+    private Icon[][] screenToShow;
     private OnNewStateListener gamePListener;
     private OnKeyPressedListener gameLListener;
     private GameStateListener gameSListener;
 
     public GameController(){
-        gScrnToShow = new Icon[16][16];
+        screenToShow = new Icon[16][16];
     }
     public void refresh(OnNewStateListener l){
         gamePListener = l;
-        gamePListener.useUpdatedState(gScrnToShow);
+        gamePListener.useUpdatedState(screenToShow);
     }
     public void updateState(OnKeyPressedListener l){
         gameLListener = l;
@@ -26,13 +26,13 @@ public class GameController {
 
     public void onKeyPressed(String key){
         gameLListener.useKeyPressed(key);
-        gScrnToShow = gameSListener.getNewState();
-        gamePListener.useUpdatedState(gScrnToShow);
+        screenToShow = gameSListener.getNewState();
+        gamePListener.useUpdatedState(screenToShow);
     }
 
     public void getNewState(GameStateListener l){
         gameSListener = l;
-        gScrnToShow = gameSListener.getNewState();
+        screenToShow = gameSListener.getNewState();
     }
     // public
 }

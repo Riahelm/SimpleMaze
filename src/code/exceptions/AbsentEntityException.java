@@ -4,15 +4,7 @@ public class AbsentEntityException extends IllegalArgumentException {
 
     String message;
 
-    public AbsentEntityException() {
-    }
-
-    ;
-
-    public AbsentEntityException(String message) {
-        super(message);
-        this.message = message;
-    }
+    public AbsentEntityException(){}
 
     public String getMessage() {
         return message;

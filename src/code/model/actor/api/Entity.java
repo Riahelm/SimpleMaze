@@ -6,17 +6,17 @@ import javax.swing.*;
 
 public interface Entity {
 
-    public void setTile(Tile tile);
+    void setTile(Tile tile);
     
-    public String getName();
+    String getName();
 
-    public Tile getTile();
+    Tile getTile();
 
-    public Icon getSprite();
+    Icon getSprite();
     
-    public boolean canMove();
+    boolean canMove();
    
-    public boolean canDie();
+    boolean canDie();
 
 
 }

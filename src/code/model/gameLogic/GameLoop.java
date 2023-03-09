@@ -22,7 +22,7 @@ public class GameLoop{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        myChar = new Character("Enemy", myWorld.getSpecificTile(new Position2DImpl(1,1)));
+        myChar = new Character("Character", myWorld.getSpecificTile(1, 1));
         this.gc = gc;
 
         gc.updateState(keyPressed -> {
