@@ -1,6 +1,6 @@
 package code.controller;
 
-import code.view.OnNewPageListener;
+import code.view.listener.OnNewPageListener;
 
 public class Controller {
     private PageToShow mPageToShow;

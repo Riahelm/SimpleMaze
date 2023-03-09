@@ -1,8 +1,8 @@
 package code.controller;
 
-import code.view.GameStateListener;
-import code.view.OnKeyPressedListener;
-import code.view.OnNewStateListener;
+import code.view.listener.GameStateListener;
+import code.view.listener.OnKeyPressedListener;
+import code.view.listener.OnNewStateListener;
 
 import javax.swing.*;
 
@@ -16,7 +16,7 @@ public class GameController {
     public GameController(){
         gScrnToShow = new Icon[16][16];
     }
-    public void useUpdatedState(OnNewStateListener l){
+    public void refresh(OnNewStateListener l){
         gamePListener = l;
         gamePListener.useUpdatedState(gScrnToShow);
     }

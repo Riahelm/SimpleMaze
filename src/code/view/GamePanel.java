@@ -32,13 +32,12 @@ public class GamePanel extends JPanel{
             this.revalidate();
             this.repaint();
         }
-        // Updates the screen
-        gc.useUpdatedState(e -> {
+        // Tells the screen how to refresh
+        gc.refresh(e -> {
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     screenPixels[i][j].setIcon(e[i][j]);
                 }
-                System.out.println("");
             }
             this.revalidate();
             this.repaint();

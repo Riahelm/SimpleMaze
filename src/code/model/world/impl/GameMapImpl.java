@@ -42,6 +42,12 @@ public class GameMapImpl implements GameMap {
         }
     }
 
+    @Override
+    //TODO actually put checks here
+    public Tile getSpecificTile(int x, int y) throws AbsentEntityException {
+        return myGrid[x][y];
+    }
+
     public Entity getEntityOnTile(Position2D position) throws AbsentEntityException {
         return this.myGrid[position.getPosX()][position.getPosY()].getEntity().get();
     }
@@ -50,6 +56,7 @@ public class GameMapImpl implements GameMap {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
     }
 
+    //TODO Change this to be more flexible
     public void move(String direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         switch (direction) {
             case ("VK_W") -> moveUp(entity);
@@ -59,11 +66,11 @@ public class GameMapImpl implements GameMap {
         }
     }
 
-    // NOTA LA RIPETIZIONE DI CODICE, POSSIBILE USO DELLE LAMBDA QUI
+    //TODO NOTA LA RIPETIZIONE DI CODICE, POSSIBILE USO DELLE LAMBDA QUI
     private void moveUp(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getCurrentTile().getCoords().getPosX()][entity.getCurrentTile().getCoords().getPosY() + 1];
+        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX()][entity.getTile().getCoords().getPosY() + 1];
         if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getCurrentTile().resetTile();
+            entity.getTile().resetTile();
             entity.setTile(destinationTile);
             destinationTile.setEntity(entity);
         }
@@ -71,35 +78,34 @@ public class GameMapImpl implements GameMap {
     }
 
     private void moveDown(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getCurrentTile().getCoords().getPosX()][entity.getCurrentTile().getCoords().getPosY() - 1];
+        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX()][entity.getTile().getCoords().getPosY() - 1];
         if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getCurrentTile().resetTile();
+            entity.getTile().resetTile();
             entity.setTile(destinationTile);
             destinationTile.setEntity(entity);
         }
     }
 
     private void moveLeft(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getCurrentTile().getCoords().getPosX() - 1][entity.getCurrentTile().getCoords().getPosY()];
+        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX() - 1][entity.getTile().getCoords().getPosY()];
         if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getCurrentTile().resetTile();
+            entity.getTile().resetTile();
             entity.setTile(destinationTile);
             destinationTile.setEntity(entity);
         }
     }
 
     private void moveRight(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getCurrentTile().getCoords().getPosX() + 1][entity.getCurrentTile().getCoords().getPosY()];
+        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX() + 1][entity.getTile().getCoords().getPosY()];
         if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getCurrentTile().resetTile();
+            entity.getTile().resetTile();
             entity.setTile(destinationTile);
             destinationTile.setEntity(entity);
         }
     }
 
     private boolean canMoveTo(Entity entity, Tile tile) {
-        return (tile.getTileType().equals(TileType.PASSABLE) && entity.getCurrentTile().isAdjacentTo(tile));
-        //Yes if(pos is adjacent AND tile != TileType.IMPASSABLE)
+        return (!(tile.getTileType().equals(TileType.IMPASSABLE)) && entity.getTile().isAdjacentTo(tile));
     }
 
 }

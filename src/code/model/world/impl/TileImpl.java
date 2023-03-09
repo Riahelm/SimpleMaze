@@ -20,11 +20,7 @@ public class TileImpl implements Tile {
     public TileImpl(Position2D coords, TileType type){
         this.myCoords = coords;
         this.myTileType = type;
-        if(myTileType.equals(TileType.PASSABLE)){
-            this.myIcon = new ImageIcon(this.getClass().getResource("../../../../resources/tiles/unknown.jpg")).getImage();
-        }else{
-            this.myIcon = new ImageIcon(this.getClass().getResource("../../../../resources/tiles/index.png")).getImage();
-        }
+        myIcon = new ImageIcon(this.getClass().getResource("../../../../resources/tiles/" + myTileType + ".JPG")).getImage();
         this.entityOnTile = Optional.empty();
     }
 

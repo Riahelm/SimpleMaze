@@ -14,19 +14,19 @@ public class MainFrame extends JFrame{
 
         mainPanel = new MainPanel(c);
         gamePanel = new GamePanel(gc);
-        settingsPanel = new SettingsPanel();
+        //settingsPanel = new SettingsPanel();
 
         c.setOnNewPage(s -> {
             switch (s) {
                 case MENU     -> this.setContentPane(mainPanel);
                 case GAME     -> this.setContentPane(gamePanel);
-                case SETTINGS -> this.setContentPane(settingsPanel);
+                //case SETTINGS -> this.setContentPane(settingsPanel);
             }
             this.revalidate();
             this.repaint();
         });
 
-        this.setBounds(new Rectangle(800, 800));
+        this.setBounds(new Rectangle(1000, 1000));
         this.setTitle("Testing Swing for Java");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

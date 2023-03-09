@@ -22,7 +22,7 @@ public class GameLoop{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        myChar = new Character("Boy", myWorld.getSpecificTile(new Position2DImpl(1,1)), 0);
+        myChar = new Character("Enemy", myWorld.getSpecificTile(new Position2DImpl(1,1)));
         this.gc = gc;
 
         gc.updateState(keyPressed -> {
@@ -34,7 +34,7 @@ public class GameLoop{
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     if(myWorld.getSpecificTile(new Position2DImpl(i,j)).getEntity().isPresent()){
-                        myRes[i][j] = new ImageIcon(this.getClass().getResource("../../../resources/entities/solid blue.png"));
+                        myRes[i][j] = myWorld.getSpecificTile(i, j).getEntity().get().getSprite();
                     }else{
                         myRes[i][j] = new ImageIcon(myWorld.getGrid()[i][j].getImage());
                     }

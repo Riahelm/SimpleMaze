@@ -3,6 +3,8 @@ package code.model.actor.impl;
 import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
+import javax.swing.*;
+
 /**
  *
  * @author Nicolas
@@ -10,17 +12,18 @@ import code.model.actor.api.Entity;
 public abstract class EntityAb implements Entity {
 
     final private String cName;
-    final private Integer cId;
+    final private Icon cSprite;
     private Tile currentTile;
     protected boolean canMove;
     protected boolean canDie;
     
-    public EntityAb(String name, Tile startingTile, Integer id){
+    public EntityAb(String name, Tile startingTile){
         this.cName = name;
-        this.cId = id;
         this.currentTile = startingTile;
         this.canMove = true;
         this.canDie = true;
+        //TODO fix this.
+        this.cSprite = new ImageIcon(this.getClass().getResource("../../../../resources/entities/" + name + ".JPG"));
     }
     
     public void setTile(Tile tile){
@@ -31,8 +34,8 @@ public abstract class EntityAb implements Entity {
         return this.cName;
     }
 
-    public Integer getId() {
-        return this.cId;
+    public Icon getSprite(){
+        return this.cSprite;
     }
 
     public Tile getTile(){
@@ -43,9 +46,6 @@ public abstract class EntityAb implements Entity {
     public abstract boolean canMove();
    
     public abstract boolean canDie();
-    
-    public Tile getCurrentTile(){
-        return this.currentTile;
-    }
+
     
 }

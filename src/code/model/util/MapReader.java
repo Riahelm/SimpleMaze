@@ -1,5 +1,6 @@
 package code.model.util;
 
+
 import code.model.world.impl.TileType;
 
 import java.io.IOException;
@@ -12,7 +13,11 @@ public class MapReader {
         Scanner myMapScanner = new Scanner(mapFile.openStream());
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                tiles[i][j] = (myMapScanner.next().equals("0"))? TileType.IMPASSABLE: TileType.PASSABLE;
+                switch(myMapScanner.next()){
+                    case("0") -> tiles[i][j] = TileType.IMPASSABLE;
+                    case("1") -> tiles[i][j] = TileType.PASSABLE;
+                    case("2") -> tiles[i][j] = TileType.EXIT;
+                }
             }
         }
         myMapScanner.close();

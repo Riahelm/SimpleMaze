@@ -1,4 +1,4 @@
-package code.view;
+package code.view.listener;
 
 import javax.swing.*;
 
