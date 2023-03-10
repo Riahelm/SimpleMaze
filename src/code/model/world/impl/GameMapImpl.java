@@ -1,5 +1,6 @@
 package code.model.world.impl;
 
+import code.model.actor.impl.Enemy;
 import code.model.util.MapReader;
 import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
@@ -13,6 +14,9 @@ import code.view.Directions;
 
 import java.io.IOException;
 import java.net.URL;
+
+import static code.model.actor.impl.EntityType.CHARACTER;
+import static code.model.actor.impl.EntityType.ENEMY;
 
 public class GameMapImpl implements GameMap {
 
@@ -74,6 +78,11 @@ public class GameMapImpl implements GameMap {
         }
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
+        //TODO finish this.
+        /*switch (destinationTile.getEntity().get().getType()){
+            case ENEMY ->{} //kill();
+        }*/
+
         switch(destinationTile.getTileType()){
             case EXIT ->{
                 moveTo(entity, destinationTile);

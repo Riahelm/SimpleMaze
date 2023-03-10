@@ -2,6 +2,7 @@ package code.model.actor.impl;
 
 import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
+import code.view.Directions;
 
 import javax.swing.*;
 
@@ -13,17 +14,19 @@ public abstract class EntityAb implements Entity {
 
     final private String cName;
     final private Icon cSprite;
+
+    private EntityType cType;
     private Tile currentTile;
     protected boolean canMove;
     protected boolean canDie;
     
     public EntityAb(String name, Tile startingTile){
         this.cName = name;
+        this.cSprite = new ImageIcon(this.getClass().getResource("../../../../resources/entities/" + name + ".JPG"));
+        this.cType = EntityType.valueOf(name);
         this.currentTile = startingTile;
         this.canMove = true;
         this.canDie = true;
-        //TODO fix this.
-        this.cSprite = new ImageIcon(this.getClass().getResource("../../../../resources/entities/" + name + ".JPG"));
     }
     
     public void setTile(Tile tile){
@@ -36,6 +39,10 @@ public abstract class EntityAb implements Entity {
 
     public Icon getSprite(){
         return this.cSprite;
+    }
+
+    public EntityType getType(){
+        return this.cType;
     }
 
     public Tile getTile(){

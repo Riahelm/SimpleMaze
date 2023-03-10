@@ -28,20 +28,22 @@ public class GamePanel extends JPanel{
                 screenPixels[i][j] = new JLabel();
                 this.add(screenPixels[i][j]);
                 screenPixels[i][j].setBounds(new Rectangle(16, 16));
+                this.revalidate();
+                this.repaint();
             }
-            this.revalidate();
-            this.repaint();
         }
         // Tells the screen how to refresh
         gc.refresh(e -> {
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     screenPixels[i][j].setIcon(e[i][j]);
+                    this.revalidate();
+                    this.repaint();
                 }
             }
-            this.revalidate();
-            this.repaint();
+
         });
+
     }
 
     private void setKeyBindings(){

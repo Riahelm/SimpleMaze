@@ -28,11 +28,6 @@ public class GameLoop{
         myEnemy = new Character("Enemy", myWorld.getSpecificTile(4, 4));
         this.gc = gc;
 
-        gc.updateState(keyPressed -> {
-            myWorld.move(keyPressed, myChar);
-            myWorld.move(keyPressed, myEnemy);
-        });
-
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];
             for (int i = 0; i < 16; i++) {
@@ -45,6 +40,11 @@ public class GameLoop{
                 }
             }
             return myRes;
+        });
+
+        gc.updateState(keyPressed -> {
+            myWorld.move(keyPressed, myChar);
+            myWorld.move(keyPressed, myEnemy);
         });
     }
 }
