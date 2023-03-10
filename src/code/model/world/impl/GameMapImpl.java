@@ -5,6 +5,7 @@ import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
+import code.model.util.Pair;
 import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
@@ -58,11 +59,27 @@ public class GameMapImpl implements GameMap {
 
     //TODO Change this to be more flexible
     public void move(String direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
+        Tile destinationTile;
+        Pair<Integer, Integer> dir;
         switch (direction) {
-            case ("VK_W") -> moveUp(entity);
-            case ("VK_A") -> moveLeft(entity);
-            case ("VK_S") -> moveDown(entity);
-            case ("VK_D") -> moveRight(entity);
+            case ("VK_W") -> dir = new Pair<>(0, 1);
+
+            case ("VK_S") -> dir = new Pair<>(0, -1);
+
+            case ("VK_A") -> dir = new Pair<>(-1, 0);
+
+            case ("VK_D") -> dir = new Pair<>(1, 0);
+            default -> dir = new Pair<>(0, 0);
+        }
+        moveTo(entity, myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
+                             [entity.getTile().getCoords().getPosY() + dir.getY()]);
+    }
+
+    private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
+        if(entity.canMove() && canMoveTo(entity, destination)){
+            entity.getTile().resetTile();
+            entity.setTile(destination);
+            destination.setEntity(entity);
         }
     }
 
