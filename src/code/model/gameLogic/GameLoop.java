@@ -7,6 +7,7 @@ import code.model.world.impl.Position2DImpl;
 import code.controller.GameController;
 import code.model.actor.api.Entity;
 import code.model.actor.impl.Character;
+import code.view.Directions;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 public class GameLoop{
         GameMap myWorld;
         Entity myChar;
+        Entity myEnemy;
         GameController gc;
     public GameLoop(GameController gc){
         try {
@@ -23,11 +25,8 @@ public class GameLoop{
             throw new RuntimeException(e);
         }
         myChar = new Character("Character", myWorld.getSpecificTile(1, 1));
+        myEnemy = new Character("Enemy", myWorld.getSpecificTile(4, 4));
         this.gc = gc;
-
-        gc.updateState(keyPressed -> {
-            myWorld.move(keyPressed, myChar);
-        });
 
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];
@@ -41,6 +40,11 @@ public class GameLoop{
                 }
             }
             return myRes;
+        });
+
+        gc.updateState(keyPressed -> {
+            myWorld.move(keyPressed, myChar);
+            myWorld.move(keyPressed, myEnemy);
         });
     }
 }

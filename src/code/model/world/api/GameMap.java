@@ -4,6 +4,7 @@ import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
+import code.view.Directions;
 
 public interface GameMap {
     public static final int MAX_MAP_SIZE = 16;
@@ -15,6 +16,6 @@ public interface GameMap {
 
     public void setEntityOnTile(Position2D position, Entity entity) throws EntityAlreadyPresentException;
     
-    public void move(String direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
+    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
 }

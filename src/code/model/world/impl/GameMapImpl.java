@@ -1,5 +1,6 @@
 package code.model.world.impl;
 
+import code.model.actor.impl.Enemy;
 import code.model.util.MapReader;
 import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
@@ -9,9 +10,13 @@ import code.model.util.Pair;
 import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
+import code.view.Directions;
 
 import java.io.IOException;
 import java.net.URL;
+
+import static code.model.actor.impl.EntityType.CHARACTER;
+import static code.model.actor.impl.EntityType.ENEMY;
 
 public class GameMapImpl implements GameMap {
 
@@ -57,74 +62,45 @@ public class GameMapImpl implements GameMap {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
     }
 
-    //TODO Change this to be more flexible
-    public void move(String direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
+    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
         Pair<Integer, Integer> dir;
-        switch (direction) {
-            case ("VK_W") -> dir = new Pair<>(0, 1);
+        switch (direction.ordinal()) {
+            case (0) -> dir = new Pair<>(0, 1);
 
-            case ("VK_S") -> dir = new Pair<>(0, -1);
+            case (1) -> dir = new Pair<>(0, -1);
 
-            case ("VK_A") -> dir = new Pair<>(-1, 0);
+            case (2) -> dir = new Pair<>(-1, 0);
 
-            case ("VK_D") -> dir = new Pair<>(1, 0);
+            case (3) -> dir = new Pair<>(1, 0);
+
             default -> dir = new Pair<>(0, 0);
         }
-        moveTo(entity, myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
-                             [entity.getTile().getCoords().getPosY() + dir.getY()]);
+        destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
+                [entity.getTile().getCoords().getPosY() + dir.getY()];
+        //TODO finish this.
+        /*switch (destinationTile.getEntity().get().getType()){
+            case ENEMY ->{} //kill();
+        }*/
+
+        switch(destinationTile.getTileType()){
+            case EXIT ->{
+                moveTo(entity, destinationTile);
+            }
+            case PASSABLE -> moveTo(entity, destinationTile);
+            case IMPASSABLE ->{} //Effectively does nothing, may play the sound of hitting the wall though.
+        }
     }
 
     private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
-        if(entity.canMove() && canMoveTo(entity, destination)){
+        if(entity.canMove() && entity.getTile().isAdjacentTo(destination)){
+            //TODO change the grid to show the surrounding area, so you may call the mapreader onto a 8x8 instead of the full map
+            //helpful tip: give mapreader a fixed radius around which you want to show your stuff
+            //mind you, this is all optional!
             entity.getTile().resetTile();
             entity.setTile(destination);
             destination.setEntity(entity);
         }
-    }
-
-    //TODO NOTA LA RIPETIZIONE DI CODICE, POSSIBILE USO DELLE LAMBDA QUI
-    private void moveUp(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX()][entity.getTile().getCoords().getPosY() + 1];
-        if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            //TODO Finish this
-            //if(destinationTile.getEntity().get().
-            entity.getTile().resetTile();
-            entity.setTile(destinationTile);
-            destinationTile.setEntity(entity);
-        }
-
-    }
-
-    private void moveDown(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX()][entity.getTile().getCoords().getPosY() - 1];
-        if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getTile().resetTile();
-            entity.setTile(destinationTile);
-            destinationTile.setEntity(entity);
-        }
-    }
-
-    private void moveLeft(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX() - 1][entity.getTile().getCoords().getPosY()];
-        if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getTile().resetTile();
-            entity.setTile(destinationTile);
-            destinationTile.setEntity(entity);
-        }
-    }
-
-    private void moveRight(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        Tile destinationTile = myGrid[entity.getTile().getCoords().getPosX() + 1][entity.getTile().getCoords().getPosY()];
-        if (entity.canMove() && this.canMoveTo(entity, destinationTile)) {
-            entity.getTile().resetTile();
-            entity.setTile(destinationTile);
-            destinationTile.setEntity(entity);
-        }
-    }
-
-    private boolean canMoveTo(Entity entity, Tile tile) {
-        return (!(tile.getTileType().equals(TileType.IMPASSABLE)) && entity.getTile().isAdjacentTo(tile));
     }
 
 }

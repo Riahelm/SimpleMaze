@@ -28,20 +28,22 @@ public class GamePanel extends JPanel{
                 screenPixels[i][j] = new JLabel();
                 this.add(screenPixels[i][j]);
                 screenPixels[i][j].setBounds(new Rectangle(16, 16));
+                this.revalidate();
+                this.repaint();
             }
-            this.revalidate();
-            this.repaint();
         }
         // Tells the screen how to refresh
         gc.refresh(e -> {
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
                     screenPixels[i][j].setIcon(e[i][j]);
+                    this.revalidate();
+                    this.repaint();
                 }
             }
-            this.revalidate();
-            this.repaint();
+
         });
+
     }
 
     private void setKeyBindings(){
@@ -51,10 +53,10 @@ public class GamePanel extends JPanel{
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
         //This is the quickest fix without having to change the model
-        String vkUp = "VK_A";
-        String vkLeft = "VK_S";
-        String vkDown = "VK_D";
-        String vkRight = "VK_W";
+        String vkUp = "LEFT";
+        String vkLeft = "DOWN";
+        String vkDown = "RIGHT";
+        String vkRight = "UP";
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkLeft);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkDown);
@@ -77,7 +79,7 @@ public class GamePanel extends JPanel{
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            gc.onKeyPressed(actionEvt.getActionCommand());
+            gc.onKeyPressed(Directions.valueOf(actionEvt.getActionCommand()));
         }
     }
 }
