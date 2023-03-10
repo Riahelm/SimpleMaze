@@ -56,7 +56,8 @@ public class TileImpl implements Tile {
 
     @Override
     public boolean isAdjacentTo(Tile otherTile) {
-        if(Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) - Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1){
+        if(Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) -
+           Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1){
             return true;
         }
         return false;

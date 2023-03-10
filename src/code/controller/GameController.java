@@ -1,5 +1,6 @@
 package code.controller;
 
+import code.view.Directions;
 import code.view.listener.GameStateListener;
 import code.view.listener.OnKeyPressedListener;
 import code.view.listener.OnNewStateListener;
@@ -24,7 +25,7 @@ public class GameController {
         gameLListener = l;
     }
 
-    public void onKeyPressed(String key){
+    public void onKeyPressed(Directions key){
         gameLListener.useKeyPressed(key);
         screenToShow = gameSListener.getNewState();
         gamePListener.useUpdatedState(screenToShow);
