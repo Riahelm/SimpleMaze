@@ -1,7 +1,6 @@
 package code.model.world.impl;
 
 import code.model.util.MapReader;
-import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
@@ -21,8 +20,11 @@ public class GameMapImpl implements GameMap {
     Tile[][] myGrid;
 
 
+
+
     public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
         this.size = size;
+
         myGrid = new Tile[size][size];
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
@@ -43,11 +45,12 @@ public class GameMapImpl implements GameMap {
             throw new IllegalPositionException();
         }
     }
-
-    @Override
-    //TODO actually put checks here
-    public Tile getSpecificTile(int x, int y) throws AbsentEntityException {
-        return myGrid[x][y];
+    public Tile getSpecificTile(int x, int y) throws IllegalPositionException {
+        if(x < this.size && y < this.size){
+            return myGrid[x][y];
+        } else{
+            throw new IllegalPositionException();
+        }
     }
 
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
@@ -72,9 +75,13 @@ public class GameMapImpl implements GameMap {
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
         //TODO finish this.
-        /*switch (destinationTile.getEntity().get().getType()){
-            case ENEMY ->{} //kill();
-        }*/
+        if(destinationTile.getEntity().isPresent()){
+            Entity destinationEntity = destinationTile.getEntity().get();
+            switch (destinationEntity.getType()){
+                case ENEMY -> kill(destinationEntity);
+                case NPC -> talk(destinationEntity);
+            }
+        }
 
         switch(destinationTile.getTileType()){
             case EXIT ->{
@@ -83,6 +90,15 @@ public class GameMapImpl implements GameMap {
             case PASSABLE -> moveTo(entity, destinationTile);
             case IMPASSABLE ->{} //Effectively does nothing, may play the sound of hitting the wall though.
         }
+    }
+
+    private void talk(Entity npc) {
+        //TODO add dialogue here
+    }
+
+    private void kill(Entity entityToKill) {
+        entityToKill.getTile().resetTile();
+        entityToKill.setTile(null);
     }
 
     private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {

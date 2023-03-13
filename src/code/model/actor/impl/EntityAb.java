@@ -4,7 +4,6 @@ import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
 import javax.swing.*;
-import java.util.Optional;
 
 /**
  *
