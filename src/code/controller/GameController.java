@@ -29,4 +29,5 @@ public class GameController {
     public void getNewState(GameStateListener l){
         gameSListener = l;
     }
+
 }
