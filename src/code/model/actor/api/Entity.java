@@ -16,8 +16,6 @@ public interface Entity {
 
     Icon getSprite();
 
-    EntityType getType();
-
     @Override
     boolean equals(Object anObj);
     

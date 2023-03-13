@@ -1,6 +1,5 @@
 package code.model.world.impl;
 
-import code.model.actor.impl.Enemy;
 import code.model.util.MapReader;
 import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
@@ -14,9 +13,6 @@ import code.view.Directions;
 
 import java.io.IOException;
 import java.net.URL;
-
-import static code.model.actor.impl.EntityType.CHARACTER;
-import static code.model.actor.impl.EntityType.ENEMY;
 
 public class GameMapImpl implements GameMap {
 
@@ -54,12 +50,9 @@ public class GameMapImpl implements GameMap {
         return myGrid[x][y];
     }
 
-    public Entity getEntityOnTile(Position2D position) throws AbsentEntityException {
-        return this.myGrid[position.getPosX()][position.getPosY()].getEntity().get();
-    }
-
-    public void setEntityOnTile(Position2D position, Entity entity) throws EntityAlreadyPresentException {
+    public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
+        entity.setTile(this.getSpecificTile(position.getPosX(), position.getPosY()));
     }
 
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {

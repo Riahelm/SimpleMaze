@@ -22,14 +22,12 @@ public class GamePanel extends JPanel{
         this.setLayout(new GridLayout(16, 16));
 
 
-                // Initializes the screen
+        // Initializes the screen
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
                 screenPixels[i][j] = new JLabel();
                 this.add(screenPixels[i][j]);
                 screenPixels[i][j].setBounds(new Rectangle(16, 16));
-                this.revalidate();
-                this.repaint();
             }
         }
         // Tells the screen how to refresh
@@ -43,6 +41,9 @@ public class GamePanel extends JPanel{
             }
 
         });
+
+        this.revalidate();
+        this.repaint();
 
     }
 

@@ -2,8 +2,12 @@ package code.model.actor.impl;
 
 import code.model.world.api.Tile;
 
-public class Enemy extends EntityAb{
-    public Enemy(String name, Tile startingTile) {
+public class EntityImpl extends EntityAb{
+    public EntityImpl(String name) {
+        super(name);
+    }
+
+    public EntityImpl(String name, Tile startingTile) {
         super(name, startingTile);
     }
 
