@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class GameLoop{
+public class GameLogic {
         GameMap myWorld;
         Entity myChar;
         Entity myEnemy;
         List<Entity> myEntities;
         GameController gc;
-    public GameLoop(GameController gc){
+    public GameLogic(GameController gc){
         myEntities = new LinkedList<>();
         try {
             myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/SecondMap"));
@@ -41,7 +41,7 @@ public class GameLoop{
             Icon[][] myRes = new Icon[16][16];
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 16; j++) {
-                    if(myWorld.getSpecificTile(new Position2DImpl(i,j)).getEntity().isPresent()){
+                    if(myWorld.getSpecificTile(i, j).getEntity().isPresent()){
                         myRes[i][j] = myWorld.getSpecificTile(i, j).getEntity().get().getSprite();
                     }else{
                         myRes[i][j] = new ImageIcon(myWorld.getGrid()[i][j].getImage());
@@ -57,6 +57,7 @@ public class GameLoop{
         });
 
         gc.updateState(keyPressed -> {
+            //TODO put the movement and entity logic here, in case you can remove entities from the map here
             myWorld.move(keyPressed, myChar);
             //myEntities.forEach(e -> myWorld.move(keyPressed, e));
 

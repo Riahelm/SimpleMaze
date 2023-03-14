@@ -23,6 +23,7 @@ public class GameMapImpl implements GameMap {
 
 
     public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
+        this.name = name;
         this.size = size;
 
         myGrid = new Tile[size][size];
@@ -61,34 +62,27 @@ public class GameMapImpl implements GameMap {
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
         Pair<Integer, Integer> dir;
-        switch (direction.ordinal()) {
-            case (0) -> dir = new Pair<>(0, 1);
+        switch (direction) {
+            case UP -> dir = new Pair<>(0, 1);
 
-            case (1) -> dir = new Pair<>(0, -1);
+            case DOWN -> dir = new Pair<>(0, -1);
 
-            case (2) -> dir = new Pair<>(-1, 0);
+            case LEFT -> dir = new Pair<>(-1, 0);
 
-            case (3) -> dir = new Pair<>(1, 0);
+            case RIGHT -> dir = new Pair<>(1, 0);
 
             default -> dir = new Pair<>(0, 0);
         }
+
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
-        //TODO finish this.
+
         if(destinationTile.getEntity().isPresent()){
             Entity destinationEntity = destinationTile.getEntity().get();
             switch (destinationEntity.getType()){
-                case ENEMY -> kill(destinationEntity);
+                case ENEMY, CHARACTER -> kill(destinationEntity);
                 case NPC -> talk(destinationEntity);
             }
-        }
-
-        switch(destinationTile.getTileType()){
-            case EXIT ->{
-                moveTo(entity, destinationTile);
-            }
-            case PASSABLE -> moveTo(entity, destinationTile);
-            case IMPASSABLE ->{} //Effectively does nothing, may play the sound of hitting the wall though.
         }
     }
 
@@ -103,7 +97,7 @@ public class GameMapImpl implements GameMap {
 
     private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
         if(entity.canMove() && entity.getTile().isAdjacentTo(destination)){
-            //TODO change the grid to show the surrounding area, so you may call the mapreader onto a 8x8 instead of the full map
+            //TODO change the grid to show the surrounding area, so you may call the mapReader onto a 8x8 instead of the full map
             //helpful tip: give mapreader a fixed radius around which you want to show your stuff
             //mind you, this is all optional!
             entity.getTile().resetTile();
