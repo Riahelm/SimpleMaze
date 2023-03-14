@@ -12,20 +12,23 @@ import code.view.Directions;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class GameMapImpl implements GameMap {
 
     String name;
     Integer size;
+    List<Entity> myEntities;
     Tile[][] myGrid;
-
 
 
 
     public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
         this.name = name;
         this.size = size;
-
+        myEntities = new LinkedList<>();
         myGrid = new Tile[size][size];
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
@@ -47,11 +50,7 @@ public class GameMapImpl implements GameMap {
         }
     }
     public Tile getSpecificTile(int x, int y) throws IllegalPositionException {
-        if(x < this.size && y < this.size){
-            return myGrid[x][y];
-        } else{
-            throw new IllegalPositionException();
-        }
+        return this.getSpecificTile(new Position2DImpl(x,y));
     }
 
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
@@ -84,6 +83,30 @@ public class GameMapImpl implements GameMap {
                 case NPC -> talk(destinationEntity);
             }
         }
+
+        switch (destinationTile.getTileType()){
+            case EXIT -> {
+                System.out.println("You win!");//win condition here
+                System.exit(0);
+            }
+            case PASSABLE -> moveTo(entity, destinationTile);
+            case IMPASSABLE -> System.out.println("Bonk!");
+        }
+    }
+
+    @Override
+    public void addEntity(Entity entity) {
+        this.myEntities.add(entity);
+    }
+
+    @Override
+    public void removeEntity(Entity entity) {
+        this.myEntities.remove(entity);
+    }
+
+    @Override
+    public List<Entity> getEntities() {
+        return List.copyOf(myEntities);
     }
 
     private void talk(Entity npc) {
@@ -91,8 +114,10 @@ public class GameMapImpl implements GameMap {
     }
 
     private void kill(Entity entityToKill) {
-        entityToKill.getTile().resetTile();
-        entityToKill.setTile(null);
+        if(entityToKill.canDie()){
+            entityToKill.getTile().resetTile();
+            this.removeEntity(entityToKill);
+        }
     }
 
     private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {

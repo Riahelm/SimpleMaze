@@ -4,6 +4,8 @@ import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
 import javax.swing.*;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  *
@@ -15,7 +17,7 @@ public abstract class EntityAb implements Entity {
     final private Icon eSprite;
 
     private EntityType eType;
-    private Tile eTile;
+    private Optional<Tile> eTile;
     protected boolean canMove;
     protected boolean canDie;
     
@@ -28,12 +30,12 @@ public abstract class EntityAb implements Entity {
     }
     public EntityAb(String name, Tile startingTile){
         this(name);
-        this.eTile = startingTile;
+        this.eTile = Optional.of(startingTile);
     }
 
 
     public void setTile(Tile tile){
-        this.eTile = tile;
+        this.eTile = Optional.of(tile);
     }
     
     public String getName() {
@@ -48,8 +50,8 @@ public abstract class EntityAb implements Entity {
         return this.eType;
     }
 
-    public Tile getTile(){
-        return eTile;
+    public Tile getTile() throws NoSuchElementException{
+        return eTile.get();
     }
 
     @Override

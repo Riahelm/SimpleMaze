@@ -4,6 +4,7 @@ import code.model.actor.impl.EntityType;
 import code.model.world.api.Tile;
 
 import javax.swing.*;
+import java.util.NoSuchElementException;
 
 public interface Entity {
 
@@ -11,7 +12,7 @@ public interface Entity {
     
     String getName();
 
-    Tile getTile();
+    Tile getTile() throws NoSuchElementException;
 
     Icon getSprite();
 
