@@ -3,6 +3,7 @@ package code.model.gameLogic;
 
 import code.controller.GameController;
 import code.model.actor.api.Entity;
+import code.model.actor.impl.Character;
 import code.model.actor.impl.EntityImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;

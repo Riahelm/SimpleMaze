@@ -25,8 +25,6 @@ public abstract class EntityAb implements Entity {
         this.eName = name;
         this.eSprite = new ImageIcon(this.getClass().getResource("../../../../resources/entities/" + name + ".JPG"));
         this.eType = EntityType.valueOf(name);
-        this.canMove = true;
-        this.canDie = true;
     }
     public EntityAb(String name, Tile startingTile){
         this(name);

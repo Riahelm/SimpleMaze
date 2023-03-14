@@ -61,6 +61,7 @@ public class GameMapImpl implements GameMap {
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
         Pair<Integer, Integer> dir;
+
         switch (direction) {
             case UP -> dir = new Pair<>(0, 1);
 
@@ -94,6 +95,30 @@ public class GameMapImpl implements GameMap {
         }
     }
 
+   /* public void move(Entity entity){
+        Tile destinationTile;
+        Pair<Integer, Integer> dir;
+
+        destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
+                [entity.getTile().getCoords().getPosY() + dir.getY()];
+
+        if(destinationTile.getEntity().isPresent()){
+            Entity destinationEntity = destinationTile.getEntity().get();
+            switch (destinationEntity.getType()){
+                case ENEMY, CHARACTER -> kill(destinationEntity);
+                case NPC -> talk(destinationEntity);
+            }
+        }
+
+        switch (destinationTile.getTileType()){
+            case EXIT -> {
+                System.out.println("You win!");//win condition here
+                System.exit(0);
+            }
+            case PASSABLE -> moveTo(entity, destinationTile);
+            case IMPASSABLE -> System.out.println("Bonk!");
+        }
+    }*/
     @Override
     public void addEntity(Entity entity) {
         this.myEntities.add(entity);
