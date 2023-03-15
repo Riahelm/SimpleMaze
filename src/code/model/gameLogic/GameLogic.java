@@ -4,7 +4,8 @@ package code.model.gameLogic;
 import code.controller.GameController;
 import code.model.actor.api.Entity;
 import code.model.actor.impl.Character;
-import code.model.actor.impl.EntityImpl;
+import code.model.actor.impl.Enemy;
+import code.model.actor.impl.NPC;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 import code.model.world.impl.Position2DImpl;
@@ -17,6 +18,7 @@ public class GameLogic {
         GameMap myWorld;
         Entity myChar;
         Entity myEnemy;
+        Entity myNPC;
         GameController gc;
     public GameLogic(GameController gc){
         try {
@@ -26,13 +28,16 @@ public class GameLogic {
         }
         this.gc = gc;
 
-        myChar = new EntityImpl("CHARACTER");
+        myChar = new Character("CHARACTER");
         myWorld.addEntity(myChar);
-        myEnemy = new EntityImpl("ENEMY");
+        myEnemy = new Enemy("ENEMY");
         myWorld.addEntity(myEnemy);
+        myNPC = new NPC("NPC");
+        myWorld.addEntity(myNPC);
 
         myWorld.setEntityOnPosition(new Position2DImpl(2,2), myChar);
         myWorld.setEntityOnPosition(new Position2DImpl(4,4), myEnemy);
+        myWorld.setEntityOnPosition(new Position2DImpl(1,1), myNPC);
 
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];
@@ -49,9 +54,13 @@ public class GameLogic {
         });
 
         gc.updateState(keyPressed -> {
-            myWorld.getEntities().forEach(e -> myWorld.move(keyPressed, e));
-            //myEntities.forEach(e -> myWorld.move(keyPressed, e));
-
+            for (Entity myEnt : myWorld.getEntities()) {
+                if(myEnt instanceof Character){
+                    myWorld.move(keyPressed, myEnt);
+                }else{
+                    myWorld.move(myEnt);
+                }
+            }
         });
     }
 }

@@ -1,5 +1,6 @@
 package code.model.world.impl;
 
+import code.model.actor.impl.NPC;
 import code.model.util.MapReader;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Random;
 
 public class GameMapImpl implements GameMap {
 
@@ -83,42 +84,48 @@ public class GameMapImpl implements GameMap {
                 case ENEMY, CHARACTER -> kill(destinationEntity);
                 case NPC -> talk(destinationEntity);
             }
+        }else{
+            switch (destinationTile.getTileType()){
+                case EXIT -> {
+                    System.out.println("You win!");//win condition here
+                    System.exit(0);
+                }
+                case PASSABLE -> moveTo(entity, destinationTile);
+                case IMPASSABLE -> System.out.println("Bonk!");
+            }
         }
 
-        switch (destinationTile.getTileType()){
-            case EXIT -> {
-                System.out.println("You win!");//win condition here
-                System.exit(0);
-            }
-            case PASSABLE -> moveTo(entity, destinationTile);
-            case IMPASSABLE -> System.out.println("Bonk!");
-        }
+
     }
 
-   /* public void move(Entity entity){
+   public void move(Entity entity){
         Tile destinationTile;
         Pair<Integer, Integer> dir;
 
-        destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
-                [entity.getTile().getCoords().getPosY() + dir.getY()];
+       switch (new Random().nextInt(0,4)) {
+           case 0 -> dir = new Pair<>(0, 1);
+
+           case 1 -> dir = new Pair<>(0, -1);
+
+           case 2 -> dir = new Pair<>(-1, 0);
+
+           case 3 -> dir = new Pair<>(1, 0);
+
+           default -> dir = new Pair<>(0, 0);
+       }
+
+       destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
+               [entity.getTile().getCoords().getPosY() + dir.getY()];
 
         if(destinationTile.getEntity().isPresent()){
             Entity destinationEntity = destinationTile.getEntity().get();
             switch (destinationEntity.getType()){
                 case ENEMY, CHARACTER -> kill(destinationEntity);
-                case NPC -> talk(destinationEntity);
             }
+        }else if(destinationTile.getTileType().equals(TileType.PASSABLE)){
+            moveTo(entity, destinationTile);
         }
-
-        switch (destinationTile.getTileType()){
-            case EXIT -> {
-                System.out.println("You win!");//win condition here
-                System.exit(0);
-            }
-            case PASSABLE -> moveTo(entity, destinationTile);
-            case IMPASSABLE -> System.out.println("Bonk!");
-        }
-    }*/
+    }
     @Override
     public void addEntity(Entity entity) {
         this.myEntities.add(entity);
@@ -135,7 +142,8 @@ public class GameMapImpl implements GameMap {
     }
 
     private void talk(Entity npc) {
-        //TODO add dialogue here
+        NPC myNPC = (NPC)npc;
+        System.out.println(myNPC.getDialogue());
     }
 
     private void kill(Entity entityToKill) {
