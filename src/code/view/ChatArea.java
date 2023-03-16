@@ -13,13 +13,14 @@ public class ChatArea extends JPanel {
 
     public ChatArea(GameChatController gCC){
         this.gameCController = gCC;
+        this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setPreferredSize(new Dimension(200,1000));
-        chatLog = new JLabel[10];
+        this.setPreferredSize(new Dimension(200,700));
+        chatLog = new JLabel[7];
 
         for (int i = 0; i < chatLog.length; i++) {
             chatLog[i] = new JLabel("Text!");
-            //chatLog[i].setPreferredSize(new Dimension(200, 100));
+            chatLog[i].setPreferredSize(new Dimension(200, 100));
             this.add(chatLog[i]);
         }
 

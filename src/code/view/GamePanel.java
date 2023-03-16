@@ -19,15 +19,15 @@ public class GamePanel extends JPanel{
     private GameController gc;
     public GamePanel(GameController gc, GameChatController gCC){
         this.gc = gc;
-
+        this.setBackground(Color.BLACK);
         this.setLayout(new FlowLayout());
         setKeyBindings();
 
         gameArea = new GameArea(gc);
-        gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         chatArea = new ChatArea(gCC);
-        chatArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        chatArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         this.add(gameArea);
         this.add(chatArea);

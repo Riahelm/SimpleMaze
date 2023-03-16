@@ -11,6 +11,7 @@ public class MainPanel extends JPanel {
     private JButton mQuitBtn;
 
     public MainPanel(Controller c) {
+        this.setBackground(Color.BLACK);
         mStartBtn = new JButton("Start");
         //mSettingsBtn = new JButton("Settings");
         mQuitBtn = new JButton("Quit");
