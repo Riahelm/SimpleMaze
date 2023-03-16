@@ -1,4 +1,5 @@
 import code.controller.Controller;
+import code.controller.GameChatController;
 import code.controller.GameController;
 import code.exceptions.EntityAlreadyPresentException;
 import code.model.gameLogic.GameLogic;
@@ -20,9 +21,10 @@ public class Main {
     private static void StartGame() throws IOException, EntityAlreadyPresentException {
         Controller mainController = new Controller();
         GameController gameController = new GameController();
-        GameLogic gameLogic = new GameLogic(gameController);
+        GameChatController gameChatController = new GameChatController();
+        GameLogic gameLogic = new GameLogic(gameController, gameChatController);
         MainFrame myMainFrame = new MainFrame(mainController,
-                gameController);
+                gameController, gameChatController);
         myMainFrame.setVisible(true);
     }
 }

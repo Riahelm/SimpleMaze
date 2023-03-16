@@ -1,5 +1,7 @@
 package code.model.world.impl;
 
+import code.controller.GameChatController;
+import code.model.actor.impl.EntityType;
 import code.model.actor.impl.NPC;
 import code.model.util.MapReader;
 import code.exceptions.EntityAlreadyPresentException;
@@ -10,6 +12,7 @@ import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
 import code.view.Directions;
+import code.view.listener.MessageSenderListener;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,10 +26,10 @@ public class GameMapImpl implements GameMap {
     Integer size;
     List<Entity> myEntities;
     Tile[][] myGrid;
+    GameChatController chatController;
 
-
-
-    public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
+    public GameMapImpl(String name, Integer size, URL mapPath, GameChatController gc) throws IOException {
+        this.chatController = gc;
         this.name = name;
         this.size = size;
         myEntities = new LinkedList<>();
@@ -59,18 +62,18 @@ public class GameMapImpl implements GameMap {
         entity.setTile(this.getSpecificTile(position.getPosX(), position.getPosY()));
     }
 
-    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
+    public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException{
         Tile destinationTile;
         Pair<Integer, Integer> dir;
 
         switch (direction) {
-            case UP -> dir = new Pair<>(0, 1);
+            case 0 -> dir = new Pair<>(0, 1);
 
-            case DOWN -> dir = new Pair<>(0, -1);
+            case 1 -> dir = new Pair<>(0, -1);
 
-            case LEFT -> dir = new Pair<>(-1, 0);
+            case 2 -> dir = new Pair<>(-1, 0);
 
-            case RIGHT -> dir = new Pair<>(1, 0);
+            case 3 -> dir = new Pair<>(1, 0);
 
             default -> dir = new Pair<>(0, 0);
         }
@@ -80,51 +83,44 @@ public class GameMapImpl implements GameMap {
 
         if(destinationTile.getEntity().isPresent()){
             Entity destinationEntity = destinationTile.getEntity().get();
-            switch (destinationEntity.getType()){
-                case ENEMY, CHARACTER -> kill(destinationEntity);
-                case NPC -> talk(destinationEntity);
-            }
-        }else{
-            switch (destinationTile.getTileType()){
-                case EXIT -> {
-                    System.out.println("You win!");//win condition here
-                    System.exit(0);
+            switch (entity.getType()){
+                case CHARACTER -> {
+                    if ((destinationEntity.getType().equals(EntityType.NPC))) {
+                        talk(destinationEntity);
+                    } else {
+                        kill(destinationEntity);
+                    }
                 }
-                case PASSABLE -> moveTo(entity, destinationTile);
-                case IMPASSABLE -> System.out.println("Bonk!");
+                case ENEMY -> kill(destinationEntity);
+            }
+        }else {
+            switch (entity.getType()){
+                case CHARACTER -> {
+                    switch (destinationTile.getTileType()){
+                        case EXIT -> {
+                            chatController.sendMessage(() -> "You won!");
+                            System.exit(0);
+                        }
+                        case PASSABLE -> moveTo(entity, destinationTile);
+                        case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
+                    }
+                }
+                case ENEMY, NPC -> {
+                    switch (destinationTile.getTileType()){
+                        case PASSABLE -> moveTo(entity, destinationTile);
+                    }
+                }
             }
         }
-
 
     }
 
+    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
+        this.move(direction.ordinal(), entity);
+    }
+
    public void move(Entity entity){
-        Tile destinationTile;
-        Pair<Integer, Integer> dir;
-
-       switch (new Random().nextInt(0,4)) {
-           case 0 -> dir = new Pair<>(0, 1);
-
-           case 1 -> dir = new Pair<>(0, -1);
-
-           case 2 -> dir = new Pair<>(-1, 0);
-
-           case 3 -> dir = new Pair<>(1, 0);
-
-           default -> dir = new Pair<>(0, 0);
-       }
-
-       destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
-               [entity.getTile().getCoords().getPosY() + dir.getY()];
-
-        if(destinationTile.getEntity().isPresent()){
-            Entity destinationEntity = destinationTile.getEntity().get();
-            switch (destinationEntity.getType()){
-                case ENEMY, CHARACTER -> kill(destinationEntity);
-            }
-        }else if(destinationTile.getTileType().equals(TileType.PASSABLE)){
-            moveTo(entity, destinationTile);
-        }
+        this.move(new Random().nextInt(0, 4), entity);
     }
     @Override
     public void addEntity(Entity entity) {
@@ -138,12 +134,12 @@ public class GameMapImpl implements GameMap {
 
     @Override
     public List<Entity> getEntities() {
-        return List.copyOf(myEntities);
+        return myEntities;
     }
 
     private void talk(Entity npc) {
         NPC myNPC = (NPC)npc;
-        System.out.println(myNPC.getDialogue());
+        chatController.sendMessage(() -> myNPC.getDialogue());
     }
 
     private void kill(Entity entityToKill) {

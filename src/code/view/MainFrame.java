@@ -1,6 +1,7 @@
 package code.view;
 
 import code.controller.Controller;
+import code.controller.GameChatController;
 import code.controller.GameController;
 
 import javax.swing.*;
@@ -10,10 +11,10 @@ public class MainFrame extends JFrame{
     private MainPanel mainPanel;
     private GamePanel gamePanel;
     private SettingsPanel settingsPanel;
-    public MainFrame(Controller c, GameController gc){
+    public MainFrame(Controller c, GameController gc, GameChatController gCC){
 
         mainPanel = new MainPanel(c);
-        gamePanel = new GamePanel(gc);
+        gamePanel = new GamePanel(gc, gCC);
         //settingsPanel = new SettingsPanel();
 
         c.setOnNewPage(s -> {
@@ -26,7 +27,9 @@ public class MainFrame extends JFrame{
             this.repaint();
         });
 
-        this.setBounds(new Rectangle(1000, 1000));
+        this.getContentPane().setBackground(Color.BLACK);
+        this.setBounds(new Rectangle(1366,768));
+        this.setResizable(false);
         this.setTitle("Testing Swing for Java");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);

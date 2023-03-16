@@ -1,5 +1,6 @@
 package code.view;
 
+import code.controller.GameChatController;
 import code.controller.GameController;
 
 import javax.swing.*;
@@ -13,37 +14,27 @@ public class GamePanel extends JPanel{
     // GameController aspetta un evento da GameLogic,
     // quando riceve un evento allora fa il set del nuovo stato
     // su GameLogic e poi riceve lo stato nuovo e lo da al code.view
-    GameController gc;
-    private JLabel[][] screenPixels;
-    public GamePanel(GameController gc){
+    private GameArea gameArea;
+    private ChatArea chatArea;
+    private GameController gc;
+    public GamePanel(GameController gc, GameChatController gCC){
         this.gc = gc;
+        this.setBackground(Color.BLACK);
+        this.setLayout(new FlowLayout());
         setKeyBindings();
-        screenPixels = new JLabel[16][16];
-        this.setLayout(new GridLayout(16, 16));
 
+        gameArea = new GameArea(gc);
+        gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        // Initializes the screen
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                screenPixels[i][j] = new JLabel();
-                this.add(screenPixels[i][j]);
-                screenPixels[i][j].setBounds(new Rectangle(16, 16));
-            }
-        }
-        // Tells the screen how to refresh
-        gc.refresh(e -> {
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
-                    screenPixels[i][j].setIcon(e[i][j]);
-                    this.revalidate();
-                    this.repaint();
-                }
-            }
+        chatArea = new ChatArea(gCC);
+        chatArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        });
+        this.add(gameArea);
+        this.add(chatArea);
 
-        this.revalidate();
-        this.repaint();
+        //TODO there should be another column of space to fit text here!!
+        //TODO create a new chatArea class that extends JPanel and has all the components when it's built!
+        //TODO create a new gameArea class that extends JPanel and has all the components when it's built!
 
     }
 
