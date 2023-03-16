@@ -13,20 +13,17 @@ public class ChatArea extends JPanel {
 
     public ChatArea(GameChatController gCC){
         this.gameCController = gCC;
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         this.setPreferredSize(new Dimension(200,1000));
-        GridBagConstraints c = new GridBagConstraints();
         chatLog = new JLabel[10];
 
         for (int i = 0; i < chatLog.length; i++) {
             chatLog[i] = new JLabel("Text!");
-            chatLog[i].setSize(new Dimension(200, 100));
-            c.gridy = i;
-            this.add(chatLog[i], c);
+            //chatLog[i].setPreferredSize(new Dimension(200, 100));
+            this.add(chatLog[i]);
         }
 
         gameCController.receiveMessage(message -> {
-            System.out.println(message);
             for (int i = 1; i < chatLog.length; i++) {
                 chatLog[i - 1].setText(chatLog[i].getText());
             }

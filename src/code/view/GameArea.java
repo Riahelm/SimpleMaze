@@ -13,7 +13,6 @@ public class GameArea extends JPanel {
         this.gc = gc;
         this.setLayout(new GridLayout(16,16));
         this.setPreferredSize(new Dimension(1000,1000));
-        this.setBounds(new Rectangle(0,0,1000,1000));
         screenPixels = new JLabel[16][16];
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
