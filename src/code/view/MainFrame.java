@@ -1,6 +1,7 @@
 package code.view;
 
 import code.controller.Controller;
+import code.controller.GameChatController;
 import code.controller.GameController;
 
 import javax.swing.*;
@@ -10,10 +11,10 @@ public class MainFrame extends JFrame{
     private MainPanel mainPanel;
     private GamePanel gamePanel;
     private SettingsPanel settingsPanel;
-    public MainFrame(Controller c, GameController gc){
+    public MainFrame(Controller c, GameController gc, GameChatController gCC){
 
         mainPanel = new MainPanel(c);
-        gamePanel = new GamePanel(gc);
+        gamePanel = new GamePanel(gc, gCC);
         //settingsPanel = new SettingsPanel();
 
         c.setOnNewPage(s -> {

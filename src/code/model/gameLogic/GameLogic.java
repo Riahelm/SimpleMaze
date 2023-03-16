@@ -1,6 +1,7 @@
 package code.model.gameLogic;
 
 
+import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.api.Entity;
 import code.model.actor.impl.Character;
@@ -20,9 +21,9 @@ public class GameLogic {
         Entity myEnemy;
         Entity myNPC;
         GameController gc;
-    public GameLogic(GameController gc){
+    public GameLogic(GameController gc, GameChatController gcc){
         try {
-            myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/SecondMap"));
+            myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/SecondMap"), gcc);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

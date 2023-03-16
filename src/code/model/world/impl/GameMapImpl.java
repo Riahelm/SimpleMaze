@@ -1,5 +1,6 @@
 package code.model.world.impl;
 
+import code.controller.GameChatController;
 import code.model.actor.impl.EntityType;
 import code.model.actor.impl.NPC;
 import code.model.util.MapReader;
@@ -11,6 +12,7 @@ import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
 import code.view.Directions;
+import code.view.listener.MessageSenderListener;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,10 +26,10 @@ public class GameMapImpl implements GameMap {
     Integer size;
     List<Entity> myEntities;
     Tile[][] myGrid;
+    GameChatController chatController;
 
-
-
-    public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
+    public GameMapImpl(String name, Integer size, URL mapPath, GameChatController gc) throws IOException {
+        this.chatController = gc;
         this.name = name;
         this.size = size;
         myEntities = new LinkedList<>();
@@ -96,11 +98,11 @@ public class GameMapImpl implements GameMap {
                 case CHARACTER -> {
                     switch (destinationTile.getTileType()){
                         case EXIT -> {
-                            System.out.println("You win!");//win condition here
+                            chatController.sendMessage(() -> "You won!");
                             System.exit(0);
                         }
                         case PASSABLE -> moveTo(entity, destinationTile);
-                        case IMPASSABLE -> System.out.println("Bonk!");
+                        case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
                     }
                 }
                 case ENEMY, NPC -> {
@@ -137,7 +139,7 @@ public class GameMapImpl implements GameMap {
 
     private void talk(Entity npc) {
         NPC myNPC = (NPC)npc;
-        System.out.println(myNPC.getDialogue());
+        chatController.sendMessage(() -> myNPC.getDialogue());
     }
 
     private void kill(Entity entityToKill) {

@@ -1,5 +1,6 @@
 package code.view;
 
+import code.controller.GameChatController;
 import code.controller.GameController;
 
 import javax.swing.*;
@@ -13,39 +14,29 @@ public class GamePanel extends JPanel{
     // GameController aspetta un evento da GameLogic,
     // quando riceve un evento allora fa il set del nuovo stato
     // su GameLogic e poi riceve lo stato nuovo e lo da al code.view
-    GameController gc;
-    private JLabel[][] screenPixels;
-    public GamePanel(GameController gc){
+    private GameArea gameArea;
+    private ChatArea chatArea;
+    private GameController gc;
+    public GamePanel(GameController gc, GameChatController gCC){
         this.gc = gc;
+
+        this.setLayout(new GridLayout(1,2));
         setKeyBindings();
-        screenPixels = new JLabel[16][16];
-        this.setLayout(new GridLayout(16, 16));
+
+        gameArea = new GameArea(gc);
+        chatArea = new ChatArea(gCC);
+        gameArea.setPreferredSize(new Dimension(1000,1000));
+        gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        chatArea.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+
+        gameArea.setBounds(0,0,1000,1000);
+        chatArea.setBounds(1000,0,200,1000);
+        this.add(gameArea);
+        this.add(chatArea);
+
         //TODO there should be another column of space to fit text here!!
-
-
-
-        // Initializes the screen
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                screenPixels[i][j] = new JLabel();
-                this.add(screenPixels[i][j]);
-                screenPixels[i][j].setBounds(new Rectangle(16, 16));
-            }
-        }
-        // Tells the screen how to refresh
-        gc.refresh(e -> {
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
-                    screenPixels[i][j].setIcon(e[i][j]);
-                    this.revalidate();
-                    this.repaint();
-                }
-            }
-
-        });
-
-        this.revalidate();
-        this.repaint();
+        //TODO create a new chatArea class that extends JPanel and has all the components when it's built!
+        //TODO create a new gameArea class that extends JPanel and has all the components when it's built!
 
     }
 
