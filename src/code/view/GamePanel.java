@@ -20,6 +20,8 @@ public class GamePanel extends JPanel{
         setKeyBindings();
         screenPixels = new JLabel[16][16];
         this.setLayout(new GridLayout(16, 16));
+        //TODO there should be another column of space to fit text here!!
+
 
 
         // Initializes the screen
