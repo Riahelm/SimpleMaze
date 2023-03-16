@@ -32,7 +32,7 @@ public class GameLogic {
         myWorld.addEntity(myChar);
         myEnemy = new Enemy("ENEMY");
         myWorld.addEntity(myEnemy);
-        myNPC = new NPC("NPC");
+        myNPC = new NPC("NPC", "Ciao!");
         myWorld.addEntity(myNPC);
 
         myWorld.setEntityOnPosition(new Position2DImpl(2,2), myChar);

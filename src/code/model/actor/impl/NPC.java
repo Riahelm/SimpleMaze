@@ -9,6 +9,11 @@ public class NPC extends EntityAb{
         super(name);
     }
 
+    public NPC(String name, String dialogue){
+        super (name);
+        this.personalDialogue = dialogue;
+    }
+
     public NPC(String name, Tile startingTile) {
         super(name, startingTile);
     }

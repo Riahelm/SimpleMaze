@@ -17,7 +17,8 @@ public interface GameMap {
     public Tile getSpecificTile(int x, int y) throws AbsentEntityException;
 
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException;
-    
+
+    public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
     public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
