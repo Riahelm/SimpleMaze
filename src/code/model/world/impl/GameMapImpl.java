@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class GameMapImpl implements GameMap {
@@ -63,20 +64,13 @@ public class GameMapImpl implements GameMap {
     }
 
     public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException{
+
+
+    }
+
+    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
-        Pair<Integer, Integer> dir;
-
-        switch (direction) {
-            case 0 -> dir = new Pair<>(0, 1);
-
-            case 1 -> dir = new Pair<>(0, -1);
-
-            case 2 -> dir = new Pair<>(-1, 0);
-
-            case 3 -> dir = new Pair<>(1, 0);
-
-            default -> dir = new Pair<>(0, 0);
-        }
+        Pair<Integer, Integer> dir = direction.toPair();
 
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
@@ -93,7 +87,7 @@ public class GameMapImpl implements GameMap {
                 }
                 case ENEMY -> kill(destinationEntity);
             }
-        }else {
+        } else {
             switch (entity.getType()){
                 case CHARACTER -> {
                     switch (destinationTile.getTileType()){
@@ -106,17 +100,12 @@ public class GameMapImpl implements GameMap {
                     }
                 }
                 case ENEMY, NPC -> {
-                    switch (destinationTile.getTileType()){
-                        case PASSABLE -> moveTo(entity, destinationTile);
+                    if (Objects.requireNonNull(destinationTile.getTileType()) == TileType.PASSABLE) {
+                        moveTo(entity, destinationTile);
                     }
                 }
             }
         }
-
-    }
-
-    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
-        this.move(direction.ordinal(), entity);
     }
 
    public void move(Entity entity){
