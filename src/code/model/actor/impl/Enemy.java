@@ -2,13 +2,17 @@ package code.model.actor.impl;
 
 import code.model.world.api.Tile;
 
+import java.util.Optional;
+
 public class Enemy extends EntityAb{
-    public Enemy(String name) {
-        super(name);
+
+    public Enemy() {
+        super(EntityType.ENEMY);
     }
 
-    public Enemy(String name, Tile startingTile) {
-        super(name, startingTile);
+    public Enemy(Tile startingTile) {
+        this();
+        this.setTile(Optional.of(startingTile));
     }
 
     @Override
@@ -16,8 +20,4 @@ public class Enemy extends EntityAb{
         return true;
     }
 
-    @Override
-    public boolean canDie() {
-        return true;
-    }
 }

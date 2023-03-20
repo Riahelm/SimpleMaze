@@ -16,9 +16,6 @@ import java.io.IOException;
 
 public class GameLogic {
         GameMap myWorld;
-        Entity myChar;
-        Entity myEnemy;
-        Entity myNPC;
         GameController gc;
     public GameLogic(GameController gc, GameChatController gcc){
         try {
@@ -28,13 +25,9 @@ public class GameLogic {
         }
         this.gc = gc;
 
-        myChar = new Character("CHARACTER");
-        myEnemy = new Enemy("ENEMY");
-        myNPC = new NPC("NPC", "Ciao!");
-
-        myWorld.setEntityOnPosition(2,2, myChar);
-        myWorld.setEntityOnPosition(4,4, myEnemy);
-        myWorld.setEntityOnPosition(1,1, myNPC);
+        myWorld.addEntityToWorld(2,2, new Character());
+        myWorld.addEntityToWorld(4,4, new Enemy());
+        myWorld.addEntityToWorld(1,1, new NPC("Dialogue here!"));
 
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];
@@ -52,11 +45,16 @@ public class GameLogic {
 
         gc.updateState(keyPressed -> {
             for (Entity myEnt : myWorld.getEntities()) {
-                if(myEnt instanceof Character){
-                    myWorld.move(keyPressed, myEnt);
-                }else{
-                    myWorld.move(myEnt);
+                if (myEnt.isAlive()) {
+                    if (myEnt instanceof Character) {
+                        myWorld.move(keyPressed, myEnt);
+                    } else {
+                        myWorld.move(myEnt);
+                    }
                 }
+            }
+            for (Entity entityToDelete: myWorld.getDeadEntities()) {
+                myWorld.getEntities().remove(entityToDelete);
             }
         });
     }

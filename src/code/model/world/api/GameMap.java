@@ -6,6 +6,7 @@ import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
 import code.view.Directions;
 
+import java.util.List;
 import java.util.TreeSet;
 
 public interface GameMap {
@@ -16,15 +17,15 @@ public interface GameMap {
 
     public Tile getSpecificTile(int x, int y) throws AbsentEntityException;
 
-    public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException;
+    public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException;
 
-    public void setEntityOnPosition(int x, int y, Entity entity);
+    public void addEntityToWorld(int x, int y, Entity entity);
 
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
     public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
-    public void removeEntity(Entity entity);
 
     public TreeSet<Entity> getEntities();
+    public List<Entity> getDeadEntities();
 
 }

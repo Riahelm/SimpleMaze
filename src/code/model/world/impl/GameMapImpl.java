@@ -22,6 +22,8 @@ public class GameMapImpl implements GameMap {
     String name;
     Integer size;
     TreeSet<Entity> myEntities;
+
+    List<Entity> deadEntities;
     Tile[][] myGrid;
     GameChatController chatController;
 
@@ -29,8 +31,9 @@ public class GameMapImpl implements GameMap {
         this.chatController = gc;
         this.name = name;
         this.size = size;
-        myEntities = new TreeSet<>(Comparator.comparingInt(o -> o.getType().ordinal()));
-        myGrid = new Tile[size][size];
+        this.myEntities = new TreeSet<>(Comparator.comparingInt(o -> o.getType().ordinal()));
+        this.deadEntities = new LinkedList<>();
+        this.myGrid = new Tile[size][size];
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -54,14 +57,14 @@ public class GameMapImpl implements GameMap {
         return this.getSpecificTile(new Position2DImpl(x,y));
     }
 
-    public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
+    public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
         entity.setTile(Optional.of(this.getSpecificTile(position.getPosX(), position.getPosY())));
         this.myEntities.add(entity);
     }
 
-    public void setEntityOnPosition(int x, int y, Entity entity){
-        this.setEntityOnPosition(new Position2DImpl(x,y), entity);
+    public void addEntityToWorld(int x, int y, Entity entity){
+        this.addEntityToWorld(new Position2DImpl(x,y), entity);
     }
 
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
@@ -71,24 +74,25 @@ public class GameMapImpl implements GameMap {
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
 
-        if(destinationTile.getEntity().isPresent()){
+        if (destinationTile.getEntity().isPresent()) {
             this.interact(entity, destinationTile.getEntity().get());
         }
-
-        switch (entity.getType()){
-            case CHARACTER -> {
-                switch (destinationTile.getTileType()){
-                    case EXIT -> {
-                        chatController.sendMessage(() -> "You won!");
-                        System.exit(0);
+        if (!destinationTile.getEntity().isPresent()) {
+            switch (entity.getType()) {
+                case CHARACTER -> {
+                    switch (destinationTile.getTileType()) {
+                        case EXIT -> {
+                            chatController.sendMessage(() -> "You won!");
+                            System.exit(0);
+                        }
+                        case PASSABLE -> moveTo(entity, destinationTile);
+                        case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
                     }
-                    case PASSABLE -> moveTo(entity, destinationTile);
-                    case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
                 }
-            }
-            case ENEMY, NPC -> {
-                if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
-                    moveTo(entity, destinationTile);
+                case ENEMY, NPC -> {
+                    if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
+                        moveTo(entity, destinationTile);
+                    }
                 }
             }
         }
@@ -101,13 +105,13 @@ public class GameMapImpl implements GameMap {
     }
 
     @Override
-    public void removeEntity(Entity entity) {
-        this.myEntities.remove(entity);
+    public TreeSet<Entity> getEntities() {
+        return myEntities;
     }
 
     @Override
-    public TreeSet<Entity> getEntities() {
-        return myEntities;
+    public List<Entity> getDeadEntities() {
+        return deadEntities;
     }
 
     private void interact(Entity currentEntity, Entity targetEntity) {
@@ -129,10 +133,11 @@ public class GameMapImpl implements GameMap {
     }
 
     private void kill(Entity entityToKill) {
-        if(entityToKill.canDie()){
+        if(entityToKill.isAlive()){
             entityToKill.getTile().resetTile();
             entityToKill.setTile(Optional.empty());
-            this.removeEntity(entityToKill);
+            entityToKill.setLifeTo(false);
+            this.deadEntities.add(entityToKill);
         }
     }
 

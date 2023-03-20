@@ -2,26 +2,21 @@ package code.model.actor.impl;
 
 import code.model.world.api.Tile;
 
+import java.util.Optional;
+
 public class NPC extends EntityAb{
 
+    public NPC(String dialogue) {
+        super(EntityType.NPC);
+        this.personalDialogue = dialogue;
+    }
+
+    public NPC(String dialogue, Tile startingTile) {
+        this(dialogue);
+        this.setTile(Optional.of(startingTile));
+    }
     private String personalDialogue;
-    public NPC(String name) {
-        super(name);
-    }
 
-    public NPC(String name, String dialogue){
-        super (name);
-        this.personalDialogue = dialogue;
-    }
-
-    public NPC(String name, Tile startingTile) {
-        super(name, startingTile);
-    }
-
-    public NPC(String name, Tile startingTile, String dialogue){
-        super(name, startingTile);
-        this.personalDialogue = dialogue;
-    }
 
     @Override
     public boolean canMove() {
@@ -29,8 +24,8 @@ public class NPC extends EntityAb{
     }
 
     @Override
-    public boolean canDie() {
-        return false;
+    public boolean isAlive() {
+        return true;
     }
 
     public String getDialogue(){
