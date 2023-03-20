@@ -22,7 +22,6 @@ public class GameMapImpl implements GameMap {
     String name;
     Integer size;
     TreeSet<Entity> myEntities;
-
     List<Entity> deadEntities;
     Tile[][] myGrid;
     GameChatController chatController;

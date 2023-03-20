@@ -6,12 +6,15 @@ import code.controller.GameController;
 import code.model.actor.api.Entity;
 import code.model.actor.impl.Character;
 import code.model.actor.impl.Enemy;
+import code.model.actor.impl.EntityFactory;
 import code.model.actor.impl.NPC;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
+import code.model.world.impl.TileType;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Random;
 
 
 public class GameLogic {
@@ -25,9 +28,14 @@ public class GameLogic {
         }
         this.gc = gc;
 
-        myWorld.addEntityToWorld(2,2, new Character());
-        myWorld.addEntityToWorld(4,4, new Enemy());
-        myWorld.addEntityToWorld(1,1, new NPC("Dialogue here!"));
+        myWorld.addEntityToWorld(1,1, EntityFactory.createEntity("CHARACTER"));
+        myWorld.addEntityToWorld(2,2,EntityFactory.createNPC("I heard there was an exit around here..."));
+        for (int i = 0; i < 20; i++) {
+            int x = new Random().nextInt(1, 16);
+            int y = new Random().nextInt(1,16);
+            if (!(myWorld.getSpecificTile(x,y).getTileType().equals(TileType.IMPASSABLE) ||
+                myWorld.getSpecificTile(x,y).getEntity().isPresent())) myWorld.addEntityToWorld(x,y, new Enemy());
+        }
 
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];

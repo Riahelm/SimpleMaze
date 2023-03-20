@@ -5,12 +5,17 @@ import code.model.world.api.Tile;
 import java.util.Optional;
 
 public class NPC extends EntityAb{
+    private String personalDialogue;
 
-    public NPC(String dialogue) {
+    public NPC() {
         super(EntityType.NPC);
+        this.personalDialogue = "My creator didn't give me any dialogue!!";
+    }
+    public NPC(String dialogue) {
+        this();
         this.personalDialogue = dialogue;
     }
-    private String personalDialogue;
+
 
 
     @Override
