@@ -9,7 +9,6 @@ import code.model.actor.impl.Enemy;
 import code.model.actor.impl.NPC;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
-import code.model.world.impl.Position2DImpl;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -30,15 +29,12 @@ public class GameLogic {
         this.gc = gc;
 
         myChar = new Character("CHARACTER");
-        myWorld.addEntity(myChar);
         myEnemy = new Enemy("ENEMY");
-        myWorld.addEntity(myEnemy);
         myNPC = new NPC("NPC", "Ciao!");
-        myWorld.addEntity(myNPC);
 
-        myWorld.setEntityOnPosition(new Position2DImpl(2,2), myChar);
-        myWorld.setEntityOnPosition(new Position2DImpl(4,4), myEnemy);
-        myWorld.setEntityOnPosition(new Position2DImpl(1,1), myNPC);
+        myWorld.setEntityOnPosition(2,2, myChar);
+        myWorld.setEntityOnPosition(4,4, myEnemy);
+        myWorld.setEntityOnPosition(1,1, myNPC);
 
         gc.getNewState(() -> {
             Icon[][] myRes = new Icon[16][16];

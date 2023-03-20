@@ -18,11 +18,10 @@ public interface GameMap {
 
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException;
 
-    public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
+    public void setEntityOnPosition(int x, int y, Entity entity);
+
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
     public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
-
-    public void addEntity(Entity entity);
 
     public void removeEntity(Entity entity);
 

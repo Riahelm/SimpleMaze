@@ -61,11 +61,11 @@ public class GameMapImpl implements GameMap {
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
         entity.setTile(this.getSpecificTile(position.getPosX(), position.getPosY()));
+        this.myEntities.add(entity);
     }
 
-    public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException{
-
-
+    public void setEntityOnPosition(int x, int y, Entity entity){
+        this.setEntityOnPosition(new Position2DImpl(x,y), entity);
     }
 
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
@@ -109,11 +109,7 @@ public class GameMapImpl implements GameMap {
     }
 
    public void move(Entity entity){
-        this.move(new Random().nextInt(0, 4), entity);
-    }
-    @Override
-    public void addEntity(Entity entity) {
-        this.myEntities.add(entity);
+        this.move(Directions.fromInt(new Random().nextInt(0, 4)), entity);
     }
 
     @Override
