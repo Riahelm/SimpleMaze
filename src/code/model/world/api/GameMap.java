@@ -25,7 +25,7 @@ public interface GameMap {
     public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
 
-    public TreeSet<Entity> getEntities();
+    public List<Entity> getEntities();
     public List<Entity> getDeadEntities();
 
 }

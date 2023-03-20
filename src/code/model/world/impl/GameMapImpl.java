@@ -21,7 +21,7 @@ public class GameMapImpl implements GameMap {
 
     String name;
     Integer size;
-    TreeSet<Entity> myEntities;
+    List<Entity> aliveEntities;
     List<Entity> deadEntities;
     Tile[][] myGrid;
     GameChatController chatController;
@@ -30,7 +30,7 @@ public class GameMapImpl implements GameMap {
         this.chatController = gc;
         this.name = name;
         this.size = size;
-        this.myEntities = new TreeSet<>(Comparator.comparingInt(o -> o.getType().ordinal()));
+        this.aliveEntities = new LinkedList<>();
         this.deadEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
@@ -59,7 +59,8 @@ public class GameMapImpl implements GameMap {
     public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
         entity.setTile(Optional.of(this.getSpecificTile(position.getPosX(), position.getPosY())));
-        this.myEntities.add(entity);
+        this.aliveEntities.add(entity);
+        this.aliveEntities.sort(Comparator.comparingInt(o -> o.getType().ordinal())); // STRATEGY PATTERN HERE
     }
 
     public void addEntityToWorld(int x, int y, Entity entity){
@@ -104,8 +105,8 @@ public class GameMapImpl implements GameMap {
     }
 
     @Override
-    public TreeSet<Entity> getEntities() {
-        return myEntities;
+    public List<Entity> getEntities() {
+        return aliveEntities;
     }
 
     @Override
@@ -122,7 +123,9 @@ public class GameMapImpl implements GameMap {
                     kill(targetEntity);
                 }
             }
-            case ENEMY -> kill(targetEntity);
+            case ENEMY -> {
+                if(targetEntity.getType().equals(EntityType.CHARACTER)) kill(targetEntity);
+            }
         }
     }
 
