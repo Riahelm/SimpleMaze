@@ -6,7 +6,7 @@ import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
 import code.view.Directions;
 
-import java.util.List;
+import java.util.TreeSet;
 
 public interface GameMap {
     public static final int MAX_MAP_SIZE = 16;
@@ -25,6 +25,6 @@ public interface GameMap {
 
     public void removeEntity(Entity entity);
 
-    public List<Entity> getEntities();
+    public TreeSet<Entity> getEntities();
 
 }

@@ -12,20 +12,16 @@ import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
 import code.view.Directions;
-import code.view.listener.MessageSenderListener;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class GameMapImpl implements GameMap {
 
     String name;
     Integer size;
-    List<Entity> myEntities;
+    TreeSet<Entity> myEntities;
     Tile[][] myGrid;
     GameChatController chatController;
 
@@ -33,7 +29,7 @@ public class GameMapImpl implements GameMap {
         this.chatController = gc;
         this.name = name;
         this.size = size;
-        myEntities = new LinkedList<>();
+        myEntities = new TreeSet<>(Comparator.comparingInt(o -> o.getType().ordinal()));
         myGrid = new Tile[size][size];
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
@@ -60,7 +56,7 @@ public class GameMapImpl implements GameMap {
 
     public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException {
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
-        entity.setTile(this.getSpecificTile(position.getPosX(), position.getPosY()));
+        entity.setTile(Optional.of(this.getSpecificTile(position.getPosX(), position.getPosY())));
         this.myEntities.add(entity);
     }
 
@@ -76,39 +72,31 @@ public class GameMapImpl implements GameMap {
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
 
         if(destinationTile.getEntity().isPresent()){
-            Entity destinationEntity = destinationTile.getEntity().get();
-            switch (entity.getType()){
-                case CHARACTER -> {
-                    if ((destinationEntity.getType().equals(EntityType.NPC))) {
-                        talk(destinationEntity);
-                    } else {
-                        kill(destinationEntity);
+            this.interact(entity, destinationTile.getEntity().get());
+        }
+
+        switch (entity.getType()){
+            case CHARACTER -> {
+                switch (destinationTile.getTileType()){
+                    case EXIT -> {
+                        chatController.sendMessage(() -> "You won!");
+                        System.exit(0);
                     }
+                    case PASSABLE -> moveTo(entity, destinationTile);
+                    case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
                 }
-                case ENEMY -> kill(destinationEntity);
             }
-        } else {
-            switch (entity.getType()){
-                case CHARACTER -> {
-                    switch (destinationTile.getTileType()){
-                        case EXIT -> {
-                            chatController.sendMessage(() -> "You won!");
-                            System.exit(0);
-                        }
-                        case PASSABLE -> moveTo(entity, destinationTile);
-                        case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
-                    }
-                }
-                case ENEMY, NPC -> {
-                    if (Objects.requireNonNull(destinationTile.getTileType()) == TileType.PASSABLE) {
-                        moveTo(entity, destinationTile);
-                    }
+            case ENEMY, NPC -> {
+                if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
+                    moveTo(entity, destinationTile);
                 }
             }
         }
     }
 
-   public void move(Entity entity){
+
+
+    public void move(Entity entity){
         this.move(Directions.fromInt(new Random().nextInt(0, 4)), entity);
     }
 
@@ -118,8 +106,21 @@ public class GameMapImpl implements GameMap {
     }
 
     @Override
-    public List<Entity> getEntities() {
+    public TreeSet<Entity> getEntities() {
         return myEntities;
+    }
+
+    private void interact(Entity currentEntity, Entity targetEntity) {
+        switch(currentEntity.getType()){
+            case CHARACTER -> {
+                if (currentEntity.getType().equals(EntityType.CHARACTER) && targetEntity.getType().equals(EntityType.NPC)) {
+                    talk(targetEntity);
+                } else {
+                    kill(targetEntity);
+                }
+            }
+            case ENEMY -> kill(targetEntity);
+        }
     }
 
     private void talk(Entity npc) {
@@ -130,6 +131,7 @@ public class GameMapImpl implements GameMap {
     private void kill(Entity entityToKill) {
         if(entityToKill.canDie()){
             entityToKill.getTile().resetTile();
+            entityToKill.setTile(Optional.empty());
             this.removeEntity(entityToKill);
         }
     }
@@ -140,7 +142,7 @@ public class GameMapImpl implements GameMap {
             //helpful tip: give mapreader a fixed radius around which you want to show your stuff
             //mind you, this is all optional!
             entity.getTile().resetTile();
-            entity.setTile(destination);
+            entity.setTile(Optional.of(destination));
             destination.setEntity(entity);
         }
     }

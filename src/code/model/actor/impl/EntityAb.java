@@ -32,8 +32,8 @@ public abstract class EntityAb implements Entity {
     }
 
 
-    public void setTile(Tile tile){
-        this.eTile = Optional.of(tile);
+    public void setTile(Optional<Tile> tile){
+        this.eTile = tile;
     }
     
     public String getName() {

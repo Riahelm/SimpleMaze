@@ -5,10 +5,11 @@ import code.model.world.api.Tile;
 
 import javax.swing.*;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public interface Entity {
 
-    void setTile(Tile tile);
+    void setTile(Optional<Tile> tile);
     
     String getName();
 
