@@ -62,7 +62,6 @@ public class GameLogic {
         });
 
         gc.updateState(keyPressed -> {
-            System.out.println(myWorld.getEntities());
             for (Entity myEnt : myWorld.getEntities()) {
                 if (myEnt.isAlive()) {
                     if (myEnt instanceof Character) {

@@ -27,14 +27,10 @@ public class GamePanel extends JPanel{
         gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         chatArea = new ChatArea(gCC);
-        chatArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        chatArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Message Log"));
 
         this.add(gameArea);
         this.add(chatArea);
-
-        //TODO there should be another column of space to fit text here!!
-        //TODO create a new chatArea class that extends JPanel and has all the components when it's built!
-        //TODO create a new gameArea class that extends JPanel and has all the components when it's built!
 
     }
 
@@ -49,15 +45,19 @@ public class GamePanel extends JPanel{
         String vkLeft = "DOWN";
         String vkDown = "RIGHT";
         String vkRight = "UP";
+        String vkSpace = "SPACE";
+
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkLeft);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkDown);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), vkRight);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
 
         actionMap.put(vkUp, new KeyAction(vkUp));
         actionMap.put(vkLeft, new KeyAction(vkLeft));
         actionMap.put(vkDown, new KeyAction(vkDown));
         actionMap.put(vkRight, new KeyAction(vkRight));
+        actionMap.put(vkSpace, new KeyAction(vkSpace));
     }
     @Override
     public Dimension getPreferredSize() {
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel{
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            gc.onKeyPressed(Directions.valueOf(actionEvt.getActionCommand()));
+            gc.onKeyPressed(Direction.valueOf(actionEvt.getActionCommand()));
         }
     }
 }

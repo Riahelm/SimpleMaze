@@ -11,7 +11,7 @@ import code.model.util.Pair;
 import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
-import code.view.Directions;
+import code.view.Direction;
 
 import java.io.IOException;
 import java.net.URL;
@@ -67,14 +67,14 @@ public class GameMapImpl implements GameMap {
         this.addEntityToWorld(new Position2DImpl(x,y), entity);
     }
 
-    public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
+    public void move(Direction direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
 
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
 
-        if (destinationTile.getEntity().isPresent()) {
+        if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
             this.interact(entity, destinationTile.getEntity().get());
         }
         if (!destinationTile.getEntity().isPresent()) {
@@ -85,13 +85,13 @@ public class GameMapImpl implements GameMap {
                             chatController.sendMessage(() -> "You won!");
                             System.exit(0);
                         }
-                        case PASSABLE -> moveTo(entity, destinationTile);
+                        case PASSABLE -> moveEntityTo(entity, destinationTile);
                         case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
                     }
                 }
                 case ENEMY, NPC -> {
                     if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
-                        moveTo(entity, destinationTile);
+                        moveEntityTo(entity, destinationTile);
                     }
                 }
             }
@@ -101,7 +101,7 @@ public class GameMapImpl implements GameMap {
 
 
     public void move(Entity entity){
-        this.move(Directions.fromInt(new Random().nextInt(0, 4)), entity);
+        this.move(Direction.fromInt(new Random().nextInt(0, 4)), entity);
     }
 
     @Override
@@ -143,7 +143,7 @@ public class GameMapImpl implements GameMap {
         }
     }
 
-    private void moveTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
+    private void moveEntityTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
         if(entity.canMove() && entity.getTile().isAdjacentTo(destination)){
             //TODO change the grid to show the surrounding area, so you may call the mapReader onto a 8x8 instead of the full map
             //helpful tip: give mapreader a fixed radius around which you want to show your stuff

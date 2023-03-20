@@ -1,11 +1,9 @@
 package code.controller;
 
-import code.view.Directions;
+import code.view.Direction;
 import code.view.listener.GameStateListener;
 import code.view.listener.OnKeyPressedListener;
 import code.view.listener.OnNewStateListener;
-
-import javax.swing.*;
 
 public class GameController {
     private OnNewStateListener gamePListener;
@@ -21,7 +19,7 @@ public class GameController {
         gameLListener = l;
     }
 
-    public void onKeyPressed(Directions key){
+    public void onKeyPressed(Direction key){
         gameLListener.useKeyPressed(key);
         gamePListener.useUpdatedState(gameSListener.getNewState());
     }

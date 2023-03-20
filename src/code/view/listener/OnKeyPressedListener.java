@@ -1,7 +1,7 @@
 package code.view.listener;
 
-import code.view.Directions;
+import code.view.Direction;
 
 public interface OnKeyPressedListener {
-    void useKeyPressed(Directions keyPressed);
+    void useKeyPressed(Direction keyPressed);
 }
