@@ -2,13 +2,13 @@ package code.model.actor.impl;
 
 import code.model.world.api.Tile;
 
-public class Character extends EntityAb {
-    public Character(String name) {
-        super(name);
-    }
+import java.util.Optional;
 
-    public Character(String name, Tile startingTile) {
-        super(name, startingTile);
+public class Character extends EntityAb{
+
+
+    public Character() {
+        super(EntityType.CHARACTER);
     }
 
     @Override
@@ -16,8 +16,4 @@ public class Character extends EntityAb {
         return true;
     }
 
-    @Override
-    public boolean canDie() {
-        return true;
-    }
 }

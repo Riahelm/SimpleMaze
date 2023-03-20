@@ -5,25 +5,22 @@ import code.model.world.api.Tile;
 
 import javax.swing.*;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public interface Entity {
 
-    void setTile(Tile tile);
-    
-    String getName();
-
+    void setTile(Optional<Tile> tile);
     Tile getTile() throws NoSuchElementException;
 
     Icon getSprite();
+    EntityType getType();
 
     @Override
     boolean equals(Object anObj);
-    
+
     boolean canMove();
-   
-    boolean canDie();
 
-
-    EntityType getType();
+    boolean isAlive();
+    void setLifeTo(boolean flag);
 }
 

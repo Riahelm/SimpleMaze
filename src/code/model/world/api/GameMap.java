@@ -7,6 +7,7 @@ import code.model.actor.api.Entity;
 import code.view.Directions;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface GameMap {
     public static final int MAX_MAP_SIZE = 16;
@@ -16,16 +17,15 @@ public interface GameMap {
 
     public Tile getSpecificTile(int x, int y) throws AbsentEntityException;
 
-    public void setEntityOnPosition(Position2D position, Entity entity) throws EntityAlreadyPresentException;
+    public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException;
 
-    public void move(int direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
+    public void addEntityToWorld(int x, int y, Entity entity);
+
     public void move(Directions direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
     public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
-    public void addEntity(Entity entity);
 
-    public void removeEntity(Entity entity);
-
-    public List<Entity> getEntities();
+    public TreeSet<Entity> getEntities();
+    public List<Entity> getDeadEntities();
 
 }
