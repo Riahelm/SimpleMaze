@@ -11,11 +11,6 @@ public class Character extends EntityAb{
         super(EntityType.CHARACTER);
     }
 
-    public Character(Tile startingTile) {
-        this();
-        this.setTile(Optional.of(startingTile));
-    }
-
     @Override
     public boolean canMove() {
         return true;

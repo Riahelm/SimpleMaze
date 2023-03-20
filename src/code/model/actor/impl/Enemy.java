@@ -10,11 +10,6 @@ public class Enemy extends EntityAb{
         super(EntityType.ENEMY);
     }
 
-    public Enemy(Tile startingTile) {
-        this();
-        this.setTile(Optional.of(startingTile));
-    }
-
     @Override
     public boolean canMove() {
         return true;

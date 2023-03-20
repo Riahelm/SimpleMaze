@@ -10,11 +10,6 @@ public class NPC extends EntityAb{
         super(EntityType.NPC);
         this.personalDialogue = dialogue;
     }
-
-    public NPC(String dialogue, Tile startingTile) {
-        this(dialogue);
-        this.setTile(Optional.of(startingTile));
-    }
     private String personalDialogue;
 
 
