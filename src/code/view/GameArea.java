@@ -6,11 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameArea extends JPanel {
-
-    private GameController gc;
     private JLabel[][] screenPixels;
     public GameArea(GameController gc){
-        this.gc = gc;
         this.setBackground(Color.BLACK);
         this.setLayout(new GridLayout(16,16));
         this.setPreferredSize(new Dimension(700,700));

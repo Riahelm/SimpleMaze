@@ -1,22 +1,19 @@
 package code.model.actor.impl;
 
+import code.controller.GameChatController;
 import code.model.world.api.Tile;
-
-import java.util.Optional;
 
 public class NPC extends EntityAb{
     private String personalDialogue;
 
-    public NPC() {
-        super(EntityType.NPC);
+    NPC(GameChatController gCC) {
+        super(EntityType.NPC, gCC);
         this.personalDialogue = "My creator didn't give me any dialogue!!";
     }
-    public NPC(String dialogue) {
-        this();
+    NPC(String dialogue, GameChatController gCC) {
+        this(gCC);
         this.personalDialogue = dialogue;
     }
-
-
 
     @Override
     public boolean canMove() {
