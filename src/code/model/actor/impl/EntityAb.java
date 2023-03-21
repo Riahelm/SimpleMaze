@@ -1,5 +1,6 @@
 package code.model.actor.impl;
 
+import code.controller.GameChatController;
 import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
@@ -15,12 +16,14 @@ import java.util.Optional;
 public abstract class EntityAb implements Entity {
     final private Icon eSprite;
     private EntityType eType;
+    protected GameChatController gCC;
     private Optional<Tile> eTile;
     protected boolean isAlive;
     
-    protected EntityAb(EntityType type){
+    protected EntityAb(EntityType type, GameChatController gCC){
         this.eType = type;
         this.eSprite = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/entities/" + type.name() + ".JPG")));
+        this.gCC = gCC;
         this.isAlive = true;
     }
 

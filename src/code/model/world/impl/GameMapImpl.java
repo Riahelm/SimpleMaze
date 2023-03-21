@@ -1,6 +1,7 @@
 package code.model.world.impl;
 
 import code.controller.GameChatController;
+import code.model.actor.api.ActiveEntity;
 import code.model.actor.impl.EntityType;
 import code.model.actor.impl.NPC;
 import code.model.util.MapReader;
@@ -24,10 +25,8 @@ public class GameMapImpl implements GameMap {
     List<Entity> aliveEntities;
     List<Entity> deadEntities;
     Tile[][] myGrid;
-    GameChatController chatController;
 
-    public GameMapImpl(String name, Integer size, URL mapPath, GameChatController gc) throws IOException {
-        this.chatController = gc;
+    public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
         this.name = name;
         this.size = size;
         this.aliveEntities = new LinkedList<>();
@@ -67,6 +66,7 @@ public class GameMapImpl implements GameMap {
         this.addEntityToWorld(new Position2DImpl(x,y), entity);
     }
 
+    //TODO the move method should be renamed to better represent it actually performing a turn
     public void move(Direction direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException {
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
@@ -74,84 +74,29 @@ public class GameMapImpl implements GameMap {
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.getX()]
                 [entity.getTile().getCoords().getPosY() + dir.getY()];
 
-        if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
-            this.interact(entity, destinationTile.getEntity().get());
-        }
-        if (!destinationTile.getEntity().isPresent()) {
-            switch (entity.getType()) {
-                case CHARACTER -> {
-                    switch (destinationTile.getTileType()) {
-                        case EXIT -> {
-                            chatController.sendMessage(() -> "You won!");
-                            System.exit(0);
-                        }
-                        case PASSABLE -> moveEntityTo(entity, destinationTile);
-                        case IMPASSABLE -> chatController.sendMessage(() -> "Bonk!");
-                    }
+        if(entity instanceof ActiveEntity){
+            if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
+                ((ActiveEntity) entity).interact(destinationTile);  //Make sure this doesn't break it please
+                if(!destinationTile.getEntity().get().isAlive()){
+                    destinationTile.getEntity().get().setTile(Optional.empty());
+                    destinationTile.resetTile();
                 }
-                case ENEMY, NPC -> {
-                    if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
-                        moveEntityTo(entity, destinationTile);
-                    }
-                }
+            }
+            if (!destinationTile.getEntity().isPresent()) {
+                ((ActiveEntity) entity).move(destinationTile);
             }
         }
     }
-
-
 
     public void move(Entity entity){
         this.move(Direction.fromInt(new Random().nextInt(0, 4)), entity);
     }
-
     @Override
     public List<Entity> getEntities() {
         return aliveEntities;
     }
-
     @Override
     public List<Entity> getDeadEntities() {
         return deadEntities;
     }
-
-    private void interact(Entity currentEntity, Entity targetEntity) {
-        switch(currentEntity.getType()){
-            case CHARACTER -> {
-                if (currentEntity.getType().equals(EntityType.CHARACTER) && targetEntity.getType().equals(EntityType.NPC)) {
-                    talk(targetEntity);
-                } else {
-                    kill(targetEntity);
-                }
-            }
-            case ENEMY -> {
-                if(targetEntity.getType().equals(EntityType.CHARACTER)) kill(targetEntity);
-            }
-        }
-    }
-
-    private void talk(Entity npc) {
-        NPC myNPC = (NPC)npc;
-        chatController.sendMessage(() -> myNPC.getDialogue());
-    }
-
-    private void kill(Entity entityToKill) {
-        if(entityToKill.isAlive()){
-            entityToKill.getTile().resetTile();
-            entityToKill.setTile(Optional.empty());
-            entityToKill.setLifeTo(false);
-            this.deadEntities.add(entityToKill);
-        }
-    }
-
-    private void moveEntityTo(Entity entity, Tile destination) throws IllegalPositionException, EntityAlreadyPresentException {
-        if(entity.canMove() && entity.getTile().isAdjacentTo(destination)){
-            //TODO change the grid to show the surrounding area, so you may call the mapReader onto a 8x8 instead of the full map
-            //helpful tip: give mapreader a fixed radius around which you want to show your stuff
-            //mind you, this is all optional!
-            entity.getTile().resetTile();
-            entity.setTile(Optional.of(destination));
-            destination.setEntity(entity);
-        }
-    }
-
 }
