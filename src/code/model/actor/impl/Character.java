@@ -1,13 +1,9 @@
 package code.model.actor.impl;
 
-import code.model.world.api.Tile;
-
-import java.util.Optional;
-
 public class Character extends EntityAb{
 
 
-    public Character() {
+    Character() {
         super(EntityType.CHARACTER);
     }
 

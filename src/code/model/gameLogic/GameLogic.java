@@ -3,9 +3,10 @@ package code.model.gameLogic;
 
 import code.controller.GameChatController;
 import code.controller.GameController;
+import code.model.actor.impl.EntityFactory;
 import code.model.actor.api.Entity;
-import code.model.actor.impl.*;
 import code.model.actor.impl.Character;
+import code.model.actor.impl.EntityType;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 import code.model.world.impl.TileType;

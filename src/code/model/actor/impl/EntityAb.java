@@ -16,10 +16,9 @@ public abstract class EntityAb implements Entity {
     final private Icon eSprite;
     private EntityType eType;
     private Optional<Tile> eTile;
-    protected boolean canMove;
     protected boolean isAlive;
     
-    public EntityAb(EntityType type){
+    protected EntityAb(EntityType type){
         this.eType = type;
         this.eSprite = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/entities/" + type.name() + ".JPG")));
         this.isAlive = true;
