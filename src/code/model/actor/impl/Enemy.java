@@ -1,26 +1,28 @@
 package code.model.actor.impl;
 
-import code.controller.GameChatController;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
 import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
+import code.view.GameOverState;
 
 import java.util.Optional;
 
-public class Enemy extends EntityAb implements ActiveEntity {
+class Enemy extends EntityAb implements ActiveEntity {
 
-    Enemy(GameChatController gCC) {
-        super(EntityType.ENEMY, gCC);
+    Enemy() {
+        super(EntityType.ENEMY);
     }
 
     @Override
     public void interact(Tile interactionTile) {
         Entity interactedEntity = interactionTile.getEntity().get();
-        if (interactedEntity.isAlive() && interactedEntity instanceof Character     ) {
+        if (interactedEntity.isAlive() && interactedEntity instanceof Character) {
             interactedEntity.setLifeTo(false);
+            gCC.sendMessage("You got eaten by: " + this);
+            gc.finishGame(GameOverState.LOSE);
         }
     }
 

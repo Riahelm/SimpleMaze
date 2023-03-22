@@ -11,13 +11,13 @@ public class MainFrame extends JFrame{
     private MainPanel mainPanel;
     private GamePanel gamePanel;
     private SettingsPanel settingsPanel;
-    public MainFrame(Controller c, GameController gc, GameChatController gCC){
+    public MainFrame(){
 
-        mainPanel = new MainPanel(c);
-        gamePanel = new GamePanel(gc, gCC);
+        mainPanel = new MainPanel();
+        gamePanel = new GamePanel();
         //settingsPanel = new SettingsPanel();
 
-        c.setOnNewPage(s -> {
+        Controller.getInstance().setOnNewPage(s -> {
             switch (s) {
                 case MENU     -> this.setContentPane(mainPanel);
                 case GAME     -> this.setContentPane(gamePanel);
@@ -29,8 +29,7 @@ public class MainFrame extends JFrame{
 
         this.getContentPane().setBackground(Color.BLACK);
         this.setBounds(new Rectangle(1366,768));
-        //this.setResizable(false);
-        this.setTitle("Testing Swing for Java");
+        this.setTitle("The maze game!");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
     }

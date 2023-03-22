@@ -1,9 +1,6 @@
 package code.model.world.impl;
 
-import code.controller.GameChatController;
 import code.model.actor.api.ActiveEntity;
-import code.model.actor.impl.EntityType;
-import code.model.actor.impl.NPC;
 import code.model.util.MapReader;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;

@@ -10,28 +10,38 @@ import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel{
 
-    //TODO, GamePanel ha GameController,
-    // GameController aspetta un evento da GameLogic,
-    // quando riceve un evento allora fa il set del nuovo stato
-    // su GameLogic e poi riceve lo stato nuovo e lo da al code.view
     private GameArea gameArea;
     private ChatArea chatArea;
     private GameController gc;
-    public GamePanel(GameController gc, GameChatController gCC){
-        this.gc = gc;
+    public GamePanel(){
+        this.gc = GameController.getInstance();
         this.setBackground(Color.BLACK);
         this.setLayout(new FlowLayout());
-        setKeyBindings();
 
         gameArea = new GameArea(gc);
         gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        chatArea = new ChatArea(gCC);
+        chatArea = new ChatArea(GameChatController.getInstance());
         chatArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Message Log"));
 
         this.add(gameArea);
         this.add(chatArea);
 
+        init();
+        setKeyBindings();
+
+    }
+
+    private void init(){
+        gc.setGameOverListener(state -> {
+            JLabel gameOverLabel = new JLabel();
+            gameOverLabel.setIcon(new ImageIcon("../../resources/ui/" + state + ".JPG"));
+            gameOverLabel.setPreferredSize(new Dimension(1366, 768));
+
+            gameArea.removeAll();
+            gameArea.setLayout(new GridLayout(1,1));
+            gameArea.add(gameOverLabel);
+        });
     }
 
     private void setKeyBindings(){

@@ -19,7 +19,7 @@ public class ChatArea extends JPanel {
         chatLog = new JLabel[7];
 
         for (int i = 0; i < chatLog.length; i++) {
-            chatLog[i] = new JLabel("Text!");
+            chatLog[i] = new JLabel();
             chatLog[i].setPreferredSize(new Dimension(400, 100));
             this.add(chatLog[i]);
         }

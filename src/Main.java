@@ -19,12 +19,8 @@ public class Main {
         });
     }
     private static void StartGame() throws IOException, EntityAlreadyPresentException {
-        Controller mainController = new Controller();
-        GameController gameController = new GameController();
-        GameChatController gameChatController = new GameChatController();
-        GameLogic gameLogic = new GameLogic(gameController, gameChatController);
-        MainFrame myMainFrame = new MainFrame(mainController,
-                gameController, gameChatController);
+        GameLogic gameLogic = new GameLogic();
+        MainFrame myMainFrame = new MainFrame();
         myMainFrame.setVisible(true);
     }
 }
