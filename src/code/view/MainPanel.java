@@ -12,10 +12,10 @@ public class MainPanel extends JPanel {
 
     public MainPanel(Controller c) {
         this.setBackground(Color.BLACK);
+        this.setLayout(new GridLayout(1,2));
         mStartBtn = new JButton("Start");
         //mSettingsBtn = new JButton("Settings");
         mQuitBtn = new JButton("Quit");
-        this.setLayout(new GridLayout(1, 2));
 
         mStartBtn.addActionListener(e -> c.onStartPressed());
         //mSettingsBtn.addActionListener(e -> c.onSettingsPressed());
@@ -24,5 +24,6 @@ public class MainPanel extends JPanel {
         add(mStartBtn);
         //add(mSettingsBtn);
         add(mQuitBtn);
+
     }
 }

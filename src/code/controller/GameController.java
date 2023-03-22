@@ -28,4 +28,12 @@ public class GameController {
         gameSListener = l;
     }
 
+    public void onWinConditionMet(){
+
+    }
+
+    public void onLossConditionMet(){
+
+    }
+
 }

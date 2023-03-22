@@ -37,7 +37,7 @@ public class GamePanel extends JPanel{
     private void setKeyBindings(){
         ActionMap actionMap = getActionMap();
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
-        InputMap inputMap = getInputMap(condition );
+        InputMap inputMap = getInputMap(condition);
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
         //This is the quickest fix without having to change the model
@@ -61,7 +61,7 @@ public class GamePanel extends JPanel{
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(300, 200);
+        return new Dimension(1366, 768);
     }
 
     private class KeyAction extends AbstractAction {

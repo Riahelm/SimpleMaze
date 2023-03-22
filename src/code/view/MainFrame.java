@@ -29,7 +29,7 @@ public class MainFrame extends JFrame{
 
         this.getContentPane().setBackground(Color.BLACK);
         this.setBounds(new Rectangle(1366,768));
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setTitle("Testing Swing for Java");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
