@@ -1,6 +1,7 @@
 package code.model.actor.impl;
 
 import code.controller.GameChatController;
+import code.controller.GameController;
 import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
@@ -16,15 +17,19 @@ import java.util.Optional;
 public abstract class EntityAb implements Entity {
     final private Icon eSprite;
     private EntityType eType;
-    protected GameChatController gCC;
     private Optional<Tile> eTile;
     protected boolean isAlive;
-    
-    protected EntityAb(EntityType type, GameChatController gCC){
+
+    //I put these for the sake of not having verbose code
+    protected GameChatController gCC;
+    protected GameController gc;
+
+    protected EntityAb(EntityType type){
         this.eType = type;
         this.eSprite = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/entities/" + type.name() + ".JPG")));
-        this.gCC = gCC;
         this.isAlive = true;
+        gCC = GameChatController.getInstance();
+        gc  = GameController.getInstance();
     }
 
     public void setTile(Optional<Tile> tile){
@@ -43,13 +48,6 @@ public abstract class EntityAb implements Entity {
         return eTile.get();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EntityAb entityAb = (EntityAb) o;
-        return eType.equals(entityAb.eType) && eTile.equals(entityAb.eTile);
-    }
     public boolean isAlive(){
         return this.isAlive;
     }
@@ -61,6 +59,12 @@ public abstract class EntityAb implements Entity {
     //Logic of each subType of entity here
     public abstract boolean canMove();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EntityAb entityAb = (EntityAb) o;
+        return eType.equals(entityAb.eType) && eTile.equals(entityAb.eTile);
+    }
 
-    
 }

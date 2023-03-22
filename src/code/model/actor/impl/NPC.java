@@ -3,15 +3,15 @@ package code.model.actor.impl;
 import code.controller.GameChatController;
 import code.model.world.api.Tile;
 
-public class NPC extends EntityAb{
+class NPC extends EntityAb{
     private String personalDialogue;
 
-    NPC(GameChatController gCC) {
-        super(EntityType.NPC, gCC);
+    NPC() {
+        super(EntityType.NPC);
         this.personalDialogue = "My creator didn't give me any dialogue!!";
     }
-    NPC(String dialogue, GameChatController gCC) {
-        this(gCC);
+    NPC(String dialogue) {
+        this();
         this.personalDialogue = dialogue;
     }
 

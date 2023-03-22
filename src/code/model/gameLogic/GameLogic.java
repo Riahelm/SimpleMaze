@@ -3,10 +3,9 @@ package code.model.gameLogic;
 
 import code.controller.GameChatController;
 import code.controller.GameController;
+import code.model.actor.impl.Character;
 import code.model.actor.impl.EntityFactory;
 import code.model.actor.api.Entity;
-import code.model.actor.impl.Character;
-import code.model.actor.impl.EntityType;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 import code.model.world.impl.TileType;
@@ -18,16 +17,20 @@ import java.util.Random;
 
 public class GameLogic {
         GameMap myWorld;
+
+
         GameController gc;
         GameChatController gCC;
-    public GameLogic(GameController gc, GameChatController gCC){
+
+    public GameLogic(){
         try {
             myWorld = new GameMapImpl("World", 16, this.getClass().getResource("../../../resources/worlds/SecondMap"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.gc = gc;
-        this.gCC = gCC;
+
+        this.gc = GameController.getInstance();
+        this.gCC = GameChatController.getInstance();
 
         this.Init();
 
@@ -37,13 +40,13 @@ public class GameLogic {
 
     private void addEntities() {
 
-        myWorld.addEntityToWorld(1,1, EntityFactory.createEntity(EntityType.CHARACTER, gCC));
-        myWorld.addEntityToWorld(2,2,EntityFactory.createNPC("I heard there was an exit...", gCC));
+        myWorld.addEntityToWorld(1,1, EntityFactory.createCharacter());
+        myWorld.addEntityToWorld(2,2,EntityFactory.createNPC("I heard there was an exit..."));
         for (int i = 0; i < 20; i++) {
             int x = new Random().nextInt(1, 16);
             int y = new Random().nextInt(1,16);
             if (!(myWorld.getSpecificTile(x,y).getTileType().equals(TileType.IMPASSABLE) ||
-                myWorld.getSpecificTile(x,y).getEntity().isPresent())) myWorld.addEntityToWorld(x,y, EntityFactory.createEntity(EntityType.ENEMY, gCC));
+                myWorld.getSpecificTile(x,y).getEntity().isPresent())) myWorld.addEntityToWorld(x,y, EntityFactory.createEnemy());
         }
 
     }

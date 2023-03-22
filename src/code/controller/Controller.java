@@ -3,9 +3,19 @@ package code.controller;
 import code.view.listener.OnNewPageListener;
 
 public class Controller {
+    //Singleton design pattern
+    private static Controller instance;
     private PageToShow mPageToShow;
     private OnNewPageListener mPageListener;
-    public Controller() {
+
+    public static Controller getInstance(){
+        if(instance == null){
+            instance = new Controller();
+        }
+        return instance;
+    }
+
+    private Controller() {
         mPageToShow = PageToShow.MENU;
     }
 

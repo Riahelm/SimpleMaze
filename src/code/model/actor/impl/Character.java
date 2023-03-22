@@ -1,19 +1,19 @@
 package code.model.actor.impl;
 
 import code.controller.GameChatController;
+import code.controller.GameController;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
 import code.model.world.api.Tile;
+import code.view.GameOverState;
 
 import java.util.Optional;
 
 public class Character extends EntityAb implements ActiveEntity {
-
-
-    Character(GameChatController gcc) {
-        super(EntityType.CHARACTER, gcc);
+    Character() {
+        super(EntityType.CHARACTER);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class Character extends EntityAb implements ActiveEntity {
         Entity interactedEntity = interactionTile.getEntity().get();
         if (interactedEntity.getType().equals(EntityType.NPC)) {
             NPC myNPC = (NPC) interactionTile.getEntity().get();
-            gCC.sendMessage(() -> myNPC.getDialogue());
+            gCC.sendMessage(myNPC.getDialogue());
         } else if (interactedEntity.isAlive()) {
             interactedEntity.setLifeTo(false);
         }
@@ -31,11 +31,12 @@ public class Character extends EntityAb implements ActiveEntity {
     public void move(Tile destinationTile) {
         switch (destinationTile.getTileType()) {
             case EXIT -> {
-                gCC.sendMessage(() -> "You won!");
+                GameController.getInstance().finishGame(GameOverState.WIN);
+                gCC.sendMessage("You won!");
                 System.exit(0);
             }
             case PASSABLE -> moveTo(destinationTile);
-            case IMPASSABLE -> gCC.sendMessage(() -> "Bonk!");
+            case IMPASSABLE -> gCC.sendMessage("Bonk!");
         }
     }
 

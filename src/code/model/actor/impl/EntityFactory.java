@@ -5,14 +5,21 @@ import code.model.actor.api.Entity;
 
 public class EntityFactory {
 
-    public static Entity createEntity(EntityType type, GameChatController gcc){
+    public static Entity createEntity(EntityType type){
         return switch(type){
-            case NPC -> new NPC(gcc);
-            case CHARACTER -> new Character(gcc);
-            case ENEMY ->  new Enemy(gcc);
+            case CHARACTER -> new Character();
+            case NPC -> new NPC();
+            case ENEMY ->  new Enemy();
         };
     }
-    public static Entity createNPC(String dialogue, GameChatController gCC){
-            return new NPC(dialogue, gCC);
+    public static Entity createCharacter(){
+        return new Character();
+    }
+
+    public static Entity createEnemy(){
+        return new Enemy();
+    }
+    public static Entity createNPC(String dialogue){
+            return new NPC(dialogue);
     }
 }

@@ -1,18 +1,23 @@
 package code.controller;
 
-import code.view.listener.MessageSenderListener;
 import code.view.listener.OnMessageSentListener;
 
 public class GameChatController {
+    private static GameChatController instance;
+    private OnMessageSentListener msgListener;
+    private GameChatController(){}
 
-    OnMessageSentListener msgListener;
-
-    public GameChatController(){}
+    public static GameChatController getInstance(){
+        if(instance == null){
+            instance = new GameChatController();
+        }
+        return instance;
+    }
 
     public void receiveMessage(OnMessageSentListener l){
         msgListener = l;
     }
-    public void sendMessage(MessageSenderListener l){
-        msgListener.receiveMessage(l.sendAMessage());
+    public void sendMessage(String message){
+        msgListener.receiveMessage(message);
     }
 }

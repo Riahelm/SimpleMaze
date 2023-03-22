@@ -1,16 +1,25 @@
 package code.controller;
 
 import code.view.Direction;
-import code.view.listener.GameStateListener;
-import code.view.listener.OnKeyPressedListener;
-import code.view.listener.OnNewStateListener;
+import code.view.GameOverState;
+import code.view.listener.*;
 
 public class GameController {
+
+    private static GameController instance;
     private OnNewStateListener gamePListener;
     private OnKeyPressedListener gameLListener;
-    private GameStateListener gameSListener;
+    private GameStateListener gameSListener; //GameState, is the game screen itself
+    private GameOverListener gamePSListener; //GamePanelState, checks if it's won or lost
 
-    public GameController(){}
+    private GameController(){}
+
+    public static GameController getInstance(){
+        if(instance == null){
+            instance = new GameController();
+        }
+        return instance;
+    }
     public void refresh(OnNewStateListener l){
         gamePListener = l;
         gamePListener.useUpdatedState(gameSListener.getNewState());
@@ -28,4 +37,11 @@ public class GameController {
         gameSListener = l;
     }
 
+    public void setGameOverListener(GameOverListener l){
+        gamePSListener = l;
+    }
+
+    public void finishGame(GameOverState state){
+        gamePSListener.setToGameOver(state);
+    }
 }

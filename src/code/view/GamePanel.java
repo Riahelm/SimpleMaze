@@ -10,34 +10,44 @@ import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel{
 
-    //TODO, GamePanel ha GameController,
-    // GameController aspetta un evento da GameLogic,
-    // quando riceve un evento allora fa il set del nuovo stato
-    // su GameLogic e poi riceve lo stato nuovo e lo da al code.view
     private GameArea gameArea;
     private ChatArea chatArea;
     private GameController gc;
-    public GamePanel(GameController gc, GameChatController gCC){
-        this.gc = gc;
+    public GamePanel(){
+        this.gc = GameController.getInstance();
         this.setBackground(Color.BLACK);
         this.setLayout(new FlowLayout());
-        setKeyBindings();
 
         gameArea = new GameArea(gc);
         gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        chatArea = new ChatArea(gCC);
+        chatArea = new ChatArea(GameChatController.getInstance());
         chatArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Message Log"));
 
         this.add(gameArea);
         this.add(chatArea);
 
+        init();
+        setKeyBindings();
+
+    }
+
+    private void init(){
+        gc.setGameOverListener(state -> {
+            JLabel gameOverLabel = new JLabel();
+            gameOverLabel.setIcon(new ImageIcon("../../resources/ui/" + state + ".JPG"));
+            gameOverLabel.setPreferredSize(new Dimension(1366, 768));
+
+            gameArea.removeAll();
+            gameArea.setLayout(new GridLayout(1,1));
+            gameArea.add(gameOverLabel);
+        });
     }
 
     private void setKeyBindings(){
         ActionMap actionMap = getActionMap();
         int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
-        InputMap inputMap = getInputMap(condition );
+        InputMap inputMap = getInputMap(condition);
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
         //This is the quickest fix without having to change the model
@@ -61,7 +71,7 @@ public class GamePanel extends JPanel{
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(300, 200);
+        return new Dimension(1366, 768);
     }
 
     private class KeyAction extends AbstractAction {
