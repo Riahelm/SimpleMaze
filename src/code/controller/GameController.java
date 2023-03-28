@@ -7,10 +7,10 @@ import code.view.listener.*;
 public class GameController {
 
     private static GameController instance;
-    private OnNewStateListener gamePListener;
-    private OnKeyPressedListener gameLListener;
-    private GameStateListener gameSListener; //GameState, is the game screen itself
-    private GameOverListener gamePSListener; //GamePanelState, checks if it's won or lost
+    private OnNewStateListener gamePanelListener;
+    private OnKeyPressedListener gameKeyListener;
+    private GameStateListener gameStateListener; //GameState, is the game screen itself
+    private GameOverListener gamePanelStateListener; //GamePanelState, checks if it's won or lost
 
     private GameController(){}
 
@@ -21,27 +21,31 @@ public class GameController {
         return instance;
     }
     public void refresh(OnNewStateListener l){
-        gamePListener = l;
-        gamePListener.useUpdatedState(gameSListener.getNewState());
+        gamePanelListener = l;
+        gamePanelListener.useUpdatedState(gameStateListener.getNewState());
     }
     public void updateState(OnKeyPressedListener l){
-        gameLListener = l;
+        gameKeyListener = l;
     }
 
     public void onKeyPressed(Direction key){
-        gameLListener.useKeyPressed(key);
-        gamePListener.useUpdatedState(gameSListener.getNewState());
+        gameKeyListener.useKeyPressed(key);
+        gamePanelListener.useUpdatedState(gameStateListener.getNewState());
     }
 
     public void getNewState(GameStateListener l){
-        gameSListener = l;
+        gameStateListener = l;
     }
 
-    public void setGameOverListener(GameOverListener l){
-        gamePSListener = l;
+    public void onGameOver(GameOverListener l){
+        gamePanelStateListener = l;
     }
 
     public void finishGame(GameOverState state){
-        gamePSListener.setToGameOver(state);
+        gamePanelStateListener.setToGameOver(state);
+    }
+
+    public void changeLevel() {
+
     }
 }

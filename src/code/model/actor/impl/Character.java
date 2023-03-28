@@ -30,13 +30,15 @@ public class Character extends EntityAb implements ActiveEntity {
     @Override
     public void move(Tile destinationTile) {
         switch (destinationTile.getTileType()) {
-            case EXIT -> {
-                GameController.getInstance().finishGame(GameOverState.WIN);
-                gCC.sendMessage("You won!");
-                System.exit(0);
-            }
             case PASSABLE -> moveTo(destinationTile);
             case IMPASSABLE -> gCC.sendMessage("Bonk!");
+            case STAIRS -> {
+                gCC.sendMessage("You ascend the stairs...");
+            }
+            case EXIT -> {
+                this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
+                gc.finishGame(GameOverState.WIN);
+            }
         }
     }
 

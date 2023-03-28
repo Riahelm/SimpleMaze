@@ -16,7 +16,8 @@ public class MapReader {
                 switch(myMapScanner.next()){
                     case("0") -> tiles[i][j] = TileType.IMPASSABLE;
                     case("1") -> tiles[i][j] = TileType.PASSABLE;
-                    case("2") -> tiles[i][j] = TileType.EXIT;
+                    case("2") -> tiles[i][j] = TileType.STAIRS;
+                    case("3") -> tiles[i][j] = TileType.EXIT;
                 }
             }
         }
