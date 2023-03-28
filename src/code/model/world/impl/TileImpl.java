@@ -8,19 +8,20 @@ import code.model.world.api.Tile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 import java.util.Optional;
 
 public class TileImpl implements Tile {
     
     private final Position2D myCoords;
     private TileType myTileType;
-    private final Image myIcon;
+    private final Icon myIcon;
     private Optional<Entity> entityOnTile;
     
     public TileImpl(Position2D coords, TileType type){
         this.myCoords = coords;
         this.myTileType = type;
-        myIcon = new ImageIcon(this.getClass().getResource("../../../../resources/tiles/" + myTileType + ".JPG")).getImage();
+        myIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/tiles/" + myTileType + ".JPG")));
         this.entityOnTile = Optional.empty();
     }
 
@@ -32,12 +33,8 @@ public class TileImpl implements Tile {
         return myTileType;
     }
 
-    public void setTileType(TileType myTileType) {
-        this.myTileType = myTileType;
-    }
-
     @Override
-    public Image getImage() {
+    public Icon getImage() {
         return this.myIcon;
 
     }
@@ -56,11 +53,8 @@ public class TileImpl implements Tile {
 
     @Override
     public boolean isAdjacentTo(Tile otherTile) {
-        if(Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) -
-           Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1){
-            return true;
-        }
-        return false;
+        return Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) -
+                Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1;
     }
 
     public void resetTile(){

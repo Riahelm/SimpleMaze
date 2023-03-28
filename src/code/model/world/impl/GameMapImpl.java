@@ -16,16 +16,13 @@ import java.net.URL;
 import java.util.*;
 
 public class GameMapImpl implements GameMap {
-
-    String name;
     Integer size;
     List<Entity> aliveEntities;
     List<Entity> deadEntities;
     Tile[][] myGrid;
 
-    public GameMapImpl(String name, Integer size, URL mapPath) throws IOException {
-        this.name = name;
-        this.size = size;
+    public GameMapImpl(URL mapPath) throws IOException {
+        this.size = GameMap.MAX_MAP_SIZE;
         this.aliveEntities = new LinkedList<>();
         this.deadEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
@@ -73,7 +70,7 @@ public class GameMapImpl implements GameMap {
 
         if(entity instanceof ActiveEntity){
             if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
-                ((ActiveEntity) entity).interact(destinationTile);  //Make sure this doesn't break it please
+                ((ActiveEntity) entity).interact(destinationTile);
                 if(!destinationTile.getEntity().get().isAlive()){
                     destinationTile.getEntity().get().setTile(Optional.empty());
                     destinationTile.resetTile();

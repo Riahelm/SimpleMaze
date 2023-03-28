@@ -9,22 +9,22 @@ import code.view.Direction;
 import java.util.List;
 
 public interface GameMap {
-    public static final int MAX_MAP_SIZE = 16;
+    int  MAX_MAP_SIZE = 16;
 
-    public Tile[][] getGrid();
-    public Tile getSpecificTile(Position2D position2dImpl) throws AbsentEntityException;
+    Tile[][] getGrid();
+    Tile getSpecificTile(Position2D position2dImpl) throws AbsentEntityException;
 
-    public Tile getSpecificTile(int x, int y) throws AbsentEntityException;
+    Tile getSpecificTile(int x, int y) throws AbsentEntityException;
 
-    public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException;
+    void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException;
 
-    public void addEntityToWorld(int x, int y, Entity entity);
+    void addEntityToWorld(int x, int y, Entity entity);
 
-    public void move(Direction direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
-    public void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
+    void move(Direction direction, Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
+    void move(Entity entity) throws IllegalPositionException, EntityAlreadyPresentException;
 
 
-    public List<Entity> getEntities();
-    public List<Entity> getDeadEntities();
+    List<Entity> getEntities();
+    List<Entity> getDeadEntities();
 
 }

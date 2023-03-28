@@ -33,14 +33,17 @@ public class GamePanel extends JPanel{
     }
 
     private void init(){
-        gc.setGameOverListener(state -> {
-            JLabel gameOverLabel = new JLabel();
-            gameOverLabel.setIcon(new ImageIcon("../../resources/ui/" + state + ".JPG"));
-            gameOverLabel.setPreferredSize(new Dimension(1366, 768));
+        gc.onGameOver(state -> {
+            JLabel gameOverLabel = new JLabel("YOU " + state, new ImageIcon("../../resources/ui/" + state + ".JPG"), JLabel.CENTER);
+            gameOverLabel.setSize(gameArea.getSize());
 
-            gameArea.removeAll();
-            gameArea.setLayout(new GridLayout(1,1));
-            gameArea.add(gameOverLabel);
+            removeAll();
+            setBackground(Color.WHITE);
+            setLayout(new BorderLayout());
+            add(gameOverLabel, BorderLayout.CENTER);
+
+            revalidate();
+            repaint();
         });
     }
 
