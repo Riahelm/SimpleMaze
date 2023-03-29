@@ -28,7 +28,7 @@ class Enemy extends EntityAb implements ActiveEntity {
 
     @Override
     public void move(Tile destinationTile) {
-        if (destinationTile.getTileType().equals(TileType.PASSABLE)) {
+        if (destinationTile.getTileType().equals(TileType.ACCESSIBLE)) {
             moveTo(destinationTile);
         }
     }

@@ -1,7 +1,5 @@
 package code.model.actor.impl;
 
-import code.controller.GameChatController;
-import code.controller.GameController;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
@@ -30,8 +28,8 @@ public class Character extends EntityAb implements ActiveEntity {
     @Override
     public void move(Tile destinationTile) {
         switch (destinationTile.getTileType()) {
-            case PASSABLE -> moveTo(destinationTile);
-            case IMPASSABLE -> gCC.sendMessage("Bonk!");
+            case ACCESSIBLE -> moveTo(destinationTile);
+            case NON_ACCESSIBLE -> gCC.sendMessage("Bonk!");
             case STAIRS -> {
                 gCC.sendMessage("You ascend the stairs...");
             }

@@ -33,20 +33,6 @@ public class GameLogic {
         this.gCC = GameChatController.getInstance();
 
         this.init();
-        this.addEntities();
-
-    }
-
-    private void addEntities() {
-
-        currentWorld.addEntityToWorld(1,1, EntityFactory.createCharacter());
-        currentWorld.addEntityToWorld(2,2,EntityFactory.createNPC("I heard there was an exit..."));
-        for (int i = 0; i < 20; i++) {
-            int x = new Random().nextInt(1, 16);
-            int y = new Random().nextInt(1,16);
-            if (!(currentWorld.getSpecificTile(x,y).getTileType().equals(TileType.IMPASSABLE) ||
-                currentWorld.getSpecificTile(x,y).getEntity().isPresent())) currentWorld.addEntityToWorld(x,y, EntityFactory.createEnemy());
-        }
 
     }
 

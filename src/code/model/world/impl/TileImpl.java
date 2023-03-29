@@ -3,11 +3,11 @@ package code.model.world.impl;
 import code.exceptions.AbsentEntityException;
 import code.exceptions.EntityAlreadyPresentException;
 import code.model.actor.api.Entity;
+import code.model.actor.impl.EntityFactory;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -36,17 +36,14 @@ public class TileImpl implements Tile {
     @Override
     public Icon getImage() {
         return this.myIcon;
-
     }
 
     public Optional<Entity> getEntity() throws AbsentEntityException {
         return this.entityOnTile;
     }
 
-    public void setEntity(Entity entity) throws EntityAlreadyPresentException {
-        if(this.entityOnTile.isPresent()){
-            throw new EntityAlreadyPresentException();
-        }else{
+    public void setEntity(Entity entity){
+        if(!this.entityOnTile.isPresent()){
             this.entityOnTile = Optional.of(entity);
         }
     }

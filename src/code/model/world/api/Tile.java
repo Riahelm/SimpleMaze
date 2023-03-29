@@ -20,7 +20,7 @@ public interface Tile {
     Optional<Entity> getEntity();
 
     //Setters
-    void setEntity(Entity entity) throws EntityAlreadyPresentException;
+    void setEntity(Entity entity);
 
     //Utility
     boolean isAdjacentTo(Tile otherTile);
