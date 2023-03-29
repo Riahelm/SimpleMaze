@@ -1,6 +1,7 @@
 package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
+import code.model.actor.impl.EntityFactory;
 import code.model.util.MapReader;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
@@ -29,10 +30,21 @@ public class GameMapImpl implements GameMap {
         TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), convertedMap[i][j]);
+                switch (convertedMap[i][j]){
+                    case ACCESSIBLE_WITH_ENEMY -> {
+                        myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
+                        this.addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createEnemy());
+                    }
+                    case SPAWNPOINT -> {
+                        myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
+                        this.addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createCharacter());
+                    }
+                    default -> myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), convertedMap[i][j]);
+                }
             }
         }
     }
+
 
     public Tile[][] getGrid() {
         return myGrid;
@@ -49,7 +61,7 @@ public class GameMapImpl implements GameMap {
         return this.getSpecificTile(new Position2DImpl(x,y));
     }
 
-    public void addEntityToWorld(Position2D position, Entity entity) throws EntityAlreadyPresentException {
+    public void addEntityToWorld(Position2D position, Entity entity){
         this.myGrid[position.getPosX()][position.getPosY()].setEntity(entity);
         entity.setTile(Optional.of(this.getSpecificTile(position.getPosX(), position.getPosY())));
         this.aliveEntities.add(entity);

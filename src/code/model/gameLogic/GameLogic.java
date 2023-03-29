@@ -4,27 +4,25 @@ package code.model.gameLogic;
 import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.impl.Character;
-import code.model.actor.impl.EntityFactory;
 import code.model.actor.api.Entity;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
-import code.model.world.impl.TileType;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.Random;
 
 
 public class GameLogic {
 
-        GameMap currentWorld;
+        static GameMap currentWorld;
         GameController gc;
         GameChatController gCC;
+        private static int levelCounter;
 
     public GameLogic(){
-
+        levelCounter = 1;
         try {
-            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/FirstMap"));
+            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/Map_" + levelCounter));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -33,20 +31,6 @@ public class GameLogic {
         this.gCC = GameChatController.getInstance();
 
         this.init();
-        this.addEntities();
-
-    }
-
-    private void addEntities() {
-
-        currentWorld.addEntityToWorld(1,1, EntityFactory.createCharacter());
-        currentWorld.addEntityToWorld(2,2,EntityFactory.createNPC("I heard there was an exit..."));
-        for (int i = 0; i < 20; i++) {
-            int x = new Random().nextInt(1, 16);
-            int y = new Random().nextInt(1,16);
-            if (!(currentWorld.getSpecificTile(x,y).getTileType().equals(TileType.IMPASSABLE) ||
-                currentWorld.getSpecificTile(x,y).getEntity().isPresent())) currentWorld.addEntityToWorld(x,y, EntityFactory.createEnemy());
-        }
 
     }
 
@@ -83,6 +67,15 @@ public class GameLogic {
 
         });
 
+    }
+
+    public static void switchToNextWorld(){
+        try {
+            levelCounter += 1;
+            currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + levelCounter));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
