@@ -4,6 +4,7 @@ import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
+import code.model.gameLogic.GameLogic;
 import code.model.world.api.Tile;
 import code.view.GameOverState;
 
@@ -32,6 +33,7 @@ public class Character extends EntityAb implements ActiveEntity {
             case NON_ACCESSIBLE -> gCC.sendMessage("Bonk!");
             case STAIRS -> {
                 gCC.sendMessage("You ascend the stairs...");
+                GameLogic.switchToNextWorld();
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent

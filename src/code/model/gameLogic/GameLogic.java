@@ -4,27 +4,25 @@ package code.model.gameLogic;
 import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.impl.Character;
-import code.model.actor.impl.EntityFactory;
 import code.model.actor.api.Entity;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
-import code.model.world.impl.TileType;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.Random;
 
 
 public class GameLogic {
 
-        GameMap currentWorld;
+        static GameMap currentWorld;
         GameController gc;
         GameChatController gCC;
+        private static int levelCounter;
 
     public GameLogic(){
-
+        levelCounter = 1;
         try {
-            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/FirstMap"));
+            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/Map_" + levelCounter));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,6 +67,15 @@ public class GameLogic {
 
         });
 
+    }
+
+    public static void switchToNextWorld(){
+        try {
+            levelCounter += 1;
+            currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + levelCounter));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
