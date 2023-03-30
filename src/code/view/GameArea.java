@@ -11,6 +11,8 @@ public class GameArea extends JPanel {
     public GameArea(GameController gc){
         this.setBackground(Color.BLACK);
         this.setLayout(new GridLayout(16,16));
+        this.setMaximumSize(new Dimension(700,700));
+        this.setMinimumSize(new Dimension(700,700));
         this.setPreferredSize(new Dimension(700,700));
 
         screenPixels = new JLabel[16][16];

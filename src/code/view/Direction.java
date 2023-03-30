@@ -1,6 +1,6 @@
 package code.view;
 
-import code.model.util.Pair;
+import code.model.util.PairImpl;
 
 public enum Direction {
     UP,
@@ -19,13 +19,13 @@ public enum Direction {
         };
     }
 
-    public Pair<Integer, Integer> toPair() {
+    public PairImpl<Integer, Integer> toPair() {
         return switch (this) {
-            case UP-> new Pair<>(0, 1);
-            case DOWN -> new Pair<>(0, -1);
-            case LEFT -> new Pair<>(-1, 0);
-            case RIGHT -> new Pair<>(1, 0);
-            case SPACE -> new Pair<>(0,0);
+            case UP-> new PairImpl<>(0, 1);
+            case DOWN -> new PairImpl<>(0, -1);
+            case LEFT -> new PairImpl<>(-1, 0);
+            case RIGHT -> new PairImpl<>(1, 0);
+            case SPACE -> new PairImpl<>(0,0);
         };
     }
 }

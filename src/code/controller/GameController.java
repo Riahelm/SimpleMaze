@@ -41,11 +41,7 @@ public class GameController {
         gamePanelStateListener = l;
     }
 
-    public void finishGame(GameOverState state){
-        gamePanelStateListener.setToGameOver(state);
-    }
-
-    public void changeLevel() {
-
+    public void finishGame(GameOverState state, int score){
+        gamePanelStateListener.setToGameOver(state, score);
     }
 }

@@ -10,9 +10,9 @@ import java.awt.event.KeyEvent;
 
 public class GamePanel extends JPanel{
 
-    private GameArea gameArea;
-    private ChatArea chatArea;
-    private GameController gc;
+    private final GameArea gameArea;
+    private final ChatArea chatArea;
+    private final GameController gc;
     public GamePanel(){
         this.gc = GameController.getInstance();
         this.setBackground(Color.BLACK);
@@ -33,14 +33,15 @@ public class GamePanel extends JPanel{
     }
 
     private void init(){
-        gc.onGameOver(state -> {
-            JLabel gameOverLabel = new JLabel("YOU " + state, new ImageIcon("../../resources/ui/" + state + ".JPG"), JLabel.CENTER);
-            gameOverLabel.setSize(gameArea.getSize());
+        gc.onGameOver((state, score) -> {
+
+            JTextArea gameOverText = new JTextArea("YOU " + state + "\n" +
+                                                    "PLAYER SCORE: " + score);
 
             removeAll();
             setBackground(Color.WHITE);
-            setLayout(new BorderLayout());
-            add(gameOverLabel, BorderLayout.CENTER);
+
+            add(gameOverText, BorderLayout.CENTER);
 
             revalidate();
             repaint();
@@ -60,10 +61,10 @@ public class GamePanel extends JPanel{
         String vkRight = "UP";
         String vkSpace = "SPACE";
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), vkUp);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), vkLeft);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), vkDown);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), vkRight);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkUp);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkLeft);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkDown);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkRight);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
 
         actionMap.put(vkUp, new KeyAction(vkUp));

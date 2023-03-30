@@ -6,7 +6,8 @@ import code.model.util.MapReader;
 import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
-import code.model.util.Pair;
+import code.model.util.PairImpl;
+import code.model.util.api.Pair;
 import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
@@ -23,11 +24,11 @@ public class GameMapImpl implements GameMap {
     Tile[][] myGrid;
 
     public GameMapImpl(URL mapPath) throws IOException {
+        TileType[][] convertedMap = (MapReader.readMap(mapPath));
         this.size = GameMap.MAX_MAP_SIZE;
         this.aliveEntities = new LinkedList<>();
         this.deadEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
-        TileType[][] convertedMap = (MapReader.readMap(size, mapPath));
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 switch (convertedMap[i][j]){

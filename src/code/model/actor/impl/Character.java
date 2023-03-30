@@ -5,6 +5,8 @@ import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
 import code.model.gameLogic.GameLogic;
+import code.model.util.api.Counter;
+import code.model.util.impl.CounterImpl;
 import code.model.world.api.Tile;
 import code.view.GameOverState;
 
@@ -17,11 +19,15 @@ public class Character extends EntityAb implements ActiveEntity {
 
     @Override
     public void interact(Tile interactionTile) {
+
         Entity interactedEntity = interactionTile.getEntity().get();
+
         if (interactedEntity.getType().equals(EntityType.NPC)) {
             NPC myNPC = (NPC) interactionTile.getEntity().get();
             gCC.sendMessage(myNPC.getDialogue());
         } else if (interactedEntity.isAlive()) {
+            GameLogic.getLevelCounter().increment();
+            gCC.updateScore(GameLogic.getLevelCounter().getValue());
             interactedEntity.setLifeTo(false);
         }
     }
@@ -37,7 +43,7 @@ public class Character extends EntityAb implements ActiveEntity {
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
-                gc.finishGame(GameOverState.WIN);
+                gc.finishGame(GameOverState.WIN, GameLogic.getLevelCounter().getValue());
             }
         }
     }

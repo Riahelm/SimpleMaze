@@ -5,6 +5,8 @@ import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.impl.Character;
 import code.model.actor.api.Entity;
+import code.model.util.api.Counter;
+import code.model.util.impl.CounterImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 
@@ -18,9 +20,11 @@ public class GameLogic {
         GameController gc;
         GameChatController gCC;
         private static int levelCounter;
+        public static Counter playerScore;
 
     public GameLogic(){
         levelCounter = 1;
+        playerScore = new CounterImpl();
         try {
             currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/Map_" + levelCounter));
         } catch (IOException e) {
@@ -32,6 +36,10 @@ public class GameLogic {
 
         this.init();
 
+    }
+
+    public static Counter getLevelCounter() {
+        return playerScore;
     }
 
     private void init() {

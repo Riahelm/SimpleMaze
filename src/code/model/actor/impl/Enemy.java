@@ -4,6 +4,7 @@ import code.exceptions.EntityAlreadyPresentException;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
+import code.model.gameLogic.GameLogic;
 import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
 import code.view.GameOverState;
@@ -21,8 +22,7 @@ class Enemy extends EntityAb implements ActiveEntity {
         Entity interactedEntity = interactionTile.getEntity().get();
         if (interactedEntity.isAlive() && interactedEntity instanceof Character) {
             interactedEntity.setLifeTo(false);
-            gCC.sendMessage("You got eaten by: " + this);
-            gc.finishGame(GameOverState.LOSE);
+            gc.finishGame(GameOverState.LOSE, GameLogic.getLevelCounter().getValue());
         }
     }
 
