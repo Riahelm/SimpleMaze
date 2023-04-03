@@ -28,11 +28,6 @@ public class Controller {
         System.exit(0);
     }
 
-    public void onSettingsPressed() {
-        mPageToShow = PageToShow.SETTINGS;
-        mPageListener.onNewPage(mPageToShow);
-    }
-
     public void onStartPressed() {
         mPageToShow = PageToShow.GAME;
         mPageListener.onNewPage(mPageToShow);

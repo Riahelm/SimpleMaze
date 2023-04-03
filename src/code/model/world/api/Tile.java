@@ -3,11 +3,9 @@ package code.model.world.api;
 
 
 import code.model.world.impl.TileType;
-import code.exceptions.EntityAlreadyPresentException;
 import code.model.actor.api.Entity;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Optional;
 
 public interface Tile {
@@ -17,7 +15,7 @@ public interface Tile {
     TileType getTileType();
     Icon getImage();
 
-    Optional<Entity> getEntity();
+    Optional<? extends Entity> getEntity();
 
     //Setters
     void setEntity(Entity entity);

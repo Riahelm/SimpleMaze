@@ -1,6 +1,5 @@
 package code.model.actor.impl;
 
-import code.controller.GameChatController;
 import code.model.actor.api.Entity;
 
 public class EntityFactory {

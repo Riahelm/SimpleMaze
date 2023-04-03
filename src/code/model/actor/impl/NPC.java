@@ -1,9 +1,6 @@
 package code.model.actor.impl;
 
-import code.controller.GameChatController;
-import code.model.world.api.Tile;
-
-class NPC extends EntityAb{
+class NPC extends EntityTemplate {
     private String personalDialogue;
 
     NPC() {

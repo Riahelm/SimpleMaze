@@ -4,6 +4,7 @@ import code.controller.GameChatController;
 import code.controller.GameController;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -35,13 +36,15 @@ public class GamePanel extends JPanel{
     private void init(){
         gc.onGameOver((state, score) -> {
 
-            JTextArea gameOverText = new JTextArea("YOU " + state + "\n" +
-                                                    "PLAYER SCORE: " + score);
-
-            removeAll();
+            remove(gameArea);
+            remove(chatArea);
             setBackground(Color.WHITE);
 
-            add(gameOverText, BorderLayout.CENTER);
+            //This creates and puts the label in the middle
+            setLayout(new BorderLayout());
+            setBorder(new EmptyBorder(0, getWidth()/2,0,0));
+            //Yes, JLabels need html to allow for easy multiline input.
+            add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + score + "</html>"), BorderLayout.CENTER);
 
             revalidate();
             repaint();
@@ -50,8 +53,7 @@ public class GamePanel extends JPanel{
 
     private void setKeyBindings(){
         ActionMap actionMap = getActionMap();
-        int condition = JComponent.WHEN_IN_FOCUSED_WINDOW;
-        InputMap inputMap = getInputMap(condition);
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
         //This is the quickest fix without having to change the model

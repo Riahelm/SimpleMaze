@@ -1,6 +1,6 @@
 package code.view;
 
-import code.model.util.PairImpl;
+import code.model.util.Pair;
 
 public enum Direction {
     UP,
@@ -15,17 +15,18 @@ public enum Direction {
             case 1 -> Direction.DOWN;
             case 2 -> Direction.LEFT;
             case 3 -> Direction.RIGHT;
-            default -> Direction.SPACE;
+            case 4 -> Direction.SPACE;
+            default -> throw new IllegalStateException("Unexpected value: " + d);
         };
     }
 
-    public PairImpl<Integer, Integer> toPair() {
+    public Pair<Integer, Integer> toPair() {
         return switch (this) {
-            case UP-> new PairImpl<>(0, 1);
-            case DOWN -> new PairImpl<>(0, -1);
-            case LEFT -> new PairImpl<>(-1, 0);
-            case RIGHT -> new PairImpl<>(1, 0);
-            case SPACE -> new PairImpl<>(0,0);
+            case UP-> new Pair<>(0, 1);
+            case DOWN -> new Pair<>(0, -1);
+            case LEFT -> new Pair<>(-1, 0);
+            case RIGHT -> new Pair<>(1, 0);
+            case SPACE -> new Pair<>(0,0);
         };
     }
 }

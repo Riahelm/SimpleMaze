@@ -7,23 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChatArea extends JPanel {
-    private JLabel[] chatDisplay;
-    private GameChatController gameCController;
+    private final JLabel[] chatDisplay;
 
     public ChatArea(GameChatController gCC) {
-        this.gameCController = gCC;
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        this.setMinimumSize(new Dimension(400, 700));
-        this.setMaximumSize(new Dimension(400, 700));
-        this.setPreferredSize(new Dimension(400, 700));
+        setFixedSize(this, new Dimension(400,700));
         chatDisplay = new JLabel[7];
 
         for (int i = 0; i < chatDisplay.length; i++) {
             chatDisplay[i] = new JLabel();
-            chatDisplay[i].setMinimumSize(new Dimension(400,95));
-            chatDisplay[i].setMaximumSize(new Dimension(400, 95));
-            chatDisplay[i].setPreferredSize(new Dimension(400, 95));
+            setFixedSize(chatDisplay[i], new Dimension(400,95));
 
             this.add(chatDisplay[i]);
             if(i == chatDisplay.length - 1){
@@ -32,7 +26,7 @@ public class ChatArea extends JPanel {
             }
         }
 
-        gameCController.receiveMessage(new OnMessageSentListener() {
+        gCC.receiveMessage(new OnMessageSentListener() {
             @Override
             public void receiveMessage(String message) {
 
@@ -52,5 +46,11 @@ public class ChatArea extends JPanel {
             }
 
         });
+    }
+
+    private void setFixedSize(Component component, Dimension dimension){
+        component.setMinimumSize(dimension);
+        component.setMaximumSize(dimension);
+        component.setPreferredSize(dimension);
     }
 }

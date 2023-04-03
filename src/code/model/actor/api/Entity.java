@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface Entity {
 
-    void setTile(Optional<Tile> tile);
+    void setTile(Tile tile);
     Tile getTile() throws NoSuchElementException;
 
     Icon getSprite();
