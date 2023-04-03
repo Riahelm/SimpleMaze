@@ -7,6 +7,9 @@ import code.view.listener.*;
 public class GameController {
 
     private static GameController instance;
+    private int mapSize;
+
+    private MapChangedListener mapChangedListener;
     private OnNewStateListener gamePanelListener;
     private OnKeyPressedListener gameKeyListener;
     private GameStateListener gameStateListener; //GameState, is the game screen itself
@@ -41,11 +44,22 @@ public class GameController {
         gamePanelStateListener = l;
     }
 
-    public void finishGame(GameOverState state){
-        gamePanelStateListener.setToGameOver(state);
+    public void finishGame(GameOverState state, int score){
+        gamePanelStateListener.setToGameOver(state, score);
     }
 
-    public void changeLevel() {
+    public void onMapChanged(MapChangedListener l){
+        mapChangedListener = l;
+    }
 
+    public void setMapSize(int mapSize){
+        this.mapSize = mapSize;
+    }
+    public int getMapSize(){
+        return this.mapSize;
+    }
+
+    public void changeMap(int mapSize){
+        mapChangedListener.onMapChanged(mapSize);
     }
 }

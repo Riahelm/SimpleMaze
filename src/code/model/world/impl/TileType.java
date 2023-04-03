@@ -1,7 +1,5 @@
 package code.model.world.impl;
 
-import code.view.Direction;
-
 public enum TileType {
     NON_ACCESSIBLE,
     ACCESSIBLE,

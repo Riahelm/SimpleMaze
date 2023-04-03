@@ -1,7 +1,3 @@
-import code.controller.Controller;
-import code.controller.GameChatController;
-import code.controller.GameController;
-import code.exceptions.EntityAlreadyPresentException;
 import code.model.gameLogic.GameLogic;
 import code.view.MainFrame;
 
@@ -13,12 +9,12 @@ public class Main {
         SwingUtilities.invokeLater(() -> {
             try {
                 StartGame();
-            } catch (IOException | EntityAlreadyPresentException e) {
-                throw new RuntimeException(e);
+            } catch (IOException err) {
+                throw new RuntimeException(err);
             }
         });
     }
-    private static void StartGame() throws IOException, EntityAlreadyPresentException {
+    private static void StartGame() throws IOException{
         GameLogic gameLogic = new GameLogic();
         MainFrame myMainFrame = new MainFrame();
         myMainFrame.setVisible(true);

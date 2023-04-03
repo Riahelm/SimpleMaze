@@ -1,50 +1,26 @@
 package code.model.util;
 
-public class Pair<X, Y> {
-    
-    private X x;
-    private Y y;
-    
-    public Pair(X x, Y y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public X getX() {
-        return x;
-    }
-
-    public void setX(X x) {
-        this.x = x;
-    }
-
-    public Y getY() {
-        return y;
-    }
-
-    public void setY(Y y) {
-        this.y = y;
-    }
+public record Pair<X, Y>(X x, Y y) {
 
     @Override
     public String toString() {
         return "<" + x + ", " + y + ">";
     }
 
-    public int hashCode(){
+    public int hashCode() {
         return x.hashCode() ^ y.hashCode();
     }
-    public boolean equals(Object comPair){
-        if(comPair == null){
+
+    public boolean equals(Object comPair) { //Funny joke here
+        if (comPair == null) {
             return false;
         }
-        if(this == comPair){
+        if (this == comPair) {
             return true;
         }
-        if(comPair instanceof Pair<?, ?>){
-            Pair<?,?> toCompare = (Pair<?,?>) comPair;
-            return (this.getX().equals(toCompare.getX()) && this.getY().equals(toCompare.getY()));
-        }else{
+        if (comPair instanceof Pair<?, ?> toCompare) {
+            return (this.x().equals(toCompare.x()) && this.y().equals(toCompare.y()));
+        } else {
             return false;
         }
     }

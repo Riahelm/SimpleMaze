@@ -5,6 +5,9 @@ import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.impl.Character;
 import code.model.actor.api.Entity;
+import code.model.util.Pair;
+import code.model.util.api.Counter;
+import code.model.util.impl.CounterImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 
@@ -14,15 +17,16 @@ import java.io.IOException;
 
 public class GameLogic {
 
-        static GameMap currentWorld;
         GameController gc;
         GameChatController gCC;
-        private static int levelCounter;
+        private static GameMap currentWorld;
+        private static Pair<? extends Counter, ? extends Counter> playerInfo;
 
     public GameLogic(){
-        levelCounter = 1;
+                                //Level                       Score
+        playerInfo = new Pair<>(new CounterImpl(1), new CounterImpl());
         try {
-            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/Map_" + levelCounter));
+            currentWorld = new GameMapImpl(this.getClass().getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -34,12 +38,20 @@ public class GameLogic {
 
     }
 
+    public static Counter getLevelCounter() {
+        return playerInfo.x();
+    }
+    public static Counter getScoreCounter(){return playerInfo.y();}
+
     private void init() {
 
+        gc.setMapSize(currentWorld.getMapSize());
+
         gc.getNewState(() -> {
-            Icon[][] myRes = new Icon[16][16];
-            for (int i = 0; i < 16; i++) {
-                for (int j = 0; j < 16; j++) {
+            int mapSize = currentWorld.getMapSize();
+            Icon[][] myRes = new Icon[mapSize][mapSize];
+            for (int i = 0; i < mapSize; i++) {
+                for (int j = 0; j < mapSize; j++) {
                     if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
                         myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
                     }else{
@@ -71,8 +83,10 @@ public class GameLogic {
 
     public static void switchToNextWorld(){
         try {
-            levelCounter += 1;
-            currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + levelCounter));
+            playerInfo.x().increment();
+            System.out.println(playerInfo.x().getValue());
+            currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
+            GameController.getInstance().changeMap(currentWorld.getMapSize());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

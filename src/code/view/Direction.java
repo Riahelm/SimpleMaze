@@ -15,7 +15,8 @@ public enum Direction {
             case 1 -> Direction.DOWN;
             case 2 -> Direction.LEFT;
             case 3 -> Direction.RIGHT;
-            default -> Direction.SPACE;
+            case 4 -> Direction.SPACE;
+            default -> throw new IllegalStateException("Unexpected value: " + d);
         };
     }
 

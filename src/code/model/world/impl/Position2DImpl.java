@@ -1,13 +1,11 @@
 package code.model.world.impl;
 
-import code.exceptions.IllegalPositionException;
-import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 
 public class Position2DImpl implements Position2D {
     
-    private Integer posX;
-    private Integer posY;
+    private final Integer posX;
+    private final Integer posY;
     
     public Position2DImpl(Integer posX, Integer posY) {
         this.posX = posX;
@@ -17,26 +15,10 @@ public class Position2DImpl implements Position2D {
     public int getPosX() {
         return this.posX;
     }
-    @Override
-    public void setPosX(int position) throws IllegalPositionException {
-        if(position > GameMap.MAX_MAP_SIZE){
-            throw new IllegalPositionException();
-        }else{
-            this.posX = position;
-        }
-        
-    }
+
     @Override
     public int getPosY() {
         return this.posY;
-    }
-    @Override
-    public void setPosY(int position) throws IllegalPositionException {
-        if(position > GameMap.MAX_MAP_SIZE){
-            throw new IllegalPositionException();
-        }else{
-            this.posY = position;
-        }
     }
 
     @Override
@@ -54,11 +36,8 @@ public class Position2DImpl implements Position2D {
         } else if (!posX.equals(other.posX))
             return false;
         if (posY == null) {
-            if (other.posY != null)
-                return false;
-        } else if (!posY.equals(other.posY))
-            return false;
-        return true;
+            return other.posY == null;
+        } else return posY.equals(other.posY);
     }
 
 

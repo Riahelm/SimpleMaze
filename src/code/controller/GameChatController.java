@@ -20,4 +20,8 @@ public class GameChatController {
     public void sendMessage(String message){
         msgListener.receiveMessage(message);
     }
+
+    public void updateScore(int score){
+        msgListener.receiveScore(score);
+    }
 }

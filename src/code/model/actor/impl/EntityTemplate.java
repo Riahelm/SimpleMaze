@@ -14,9 +14,9 @@ import java.util.Optional;
  *
  * @author Nicolas
  */
-public abstract class EntityAb implements Entity {
+public abstract class EntityTemplate implements Entity {
     final private Icon eSprite;
-    private EntityType eType;
+    private final EntityType eType;
     private Optional<Tile> eTile;
     protected boolean isAlive;
 
@@ -24,7 +24,7 @@ public abstract class EntityAb implements Entity {
     protected GameChatController gCC;
     protected GameController gc;
 
-    protected EntityAb(EntityType type){
+    protected EntityTemplate(EntityType type){
         this.eType = type;
         this.eSprite = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/entities/" + type.name() + ".JPG")));
         this.isAlive = true;
@@ -32,8 +32,8 @@ public abstract class EntityAb implements Entity {
         gc  = GameController.getInstance();
     }
 
-    public void setTile(Optional<Tile> tile){
-        this.eTile = tile;
+    public void setTile(Tile tile){
+        this.eTile = Optional.of(tile);
     }
 
     public Icon getSprite(){
@@ -63,8 +63,8 @@ public abstract class EntityAb implements Entity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EntityAb entityAb = (EntityAb) o;
-        return eType.equals(entityAb.eType) && eTile.equals(entityAb.eTile);
+        EntityTemplate entityTemplate = (EntityTemplate) o;
+        return eType.equals(entityTemplate.eType) && eTile.equals(entityTemplate.eTile);
     }
 
 }
