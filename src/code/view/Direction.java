@@ -1,6 +1,6 @@
 package code.view;
 
-import code.model.util.Pair;
+import code.util.Pair;
 
 public enum Direction {
     UP,

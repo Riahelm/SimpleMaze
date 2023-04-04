@@ -5,9 +5,10 @@ import code.controller.GameChatController;
 import code.controller.GameController;
 import code.model.actor.impl.Character;
 import code.model.actor.api.Entity;
-import code.model.util.Pair;
-import code.model.util.api.Counter;
-import code.model.util.impl.CounterImpl;
+import code.util.OperateOnMatrix;
+import code.util.Pair;
+import code.util.api.Counter;
+import code.util.impl.CounterImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 
@@ -50,15 +51,13 @@ public class GameLogic {
         gc.getNewState(() -> {
             int mapSize = currentWorld.getMapSize();
             Icon[][] myRes = new Icon[mapSize][mapSize];
-            for (int i = 0; i < mapSize; i++) {
-                for (int j = 0; j < mapSize; j++) {
-                    if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
-                        myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
-                    }else{
-                        myRes[i][j] = currentWorld.getGrid()[i][j].getImage();
-                    }
+            OperateOnMatrix.operateOnEachElement(myRes, (o, i, j) -> {
+                if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
+                    myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
+                }else{
+                    myRes[i][j] = currentWorld.getGrid()[i][j].getImage();
                 }
-            }
+            });
             return myRes;
         });
 
