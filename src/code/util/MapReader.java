@@ -1,4 +1,4 @@
-package code.model.util;
+package code.util;
 
 
 import code.model.world.impl.TileType;

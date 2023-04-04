@@ -2,10 +2,11 @@ package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.impl.EntityFactory;
-import code.model.util.MapReader;
+import code.util.MapReader;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
-import code.model.util.Pair;
+import code.util.OperateOnMatrix;
+import code.util.Pair;
 import code.model.world.api.GameMap;
 import code.model.world.api.Position2D;
 import code.model.world.api.Tile;
@@ -20,7 +21,6 @@ public class GameMapImpl implements GameMap {
     List<Entity> aliveEntities;
     List<Entity> deadEntities;
     Tile[][] myGrid;
-
     Random randomMovementGenerator;
 
     public GameMapImpl(URL mapPath) throws IOException {
@@ -30,21 +30,19 @@ public class GameMapImpl implements GameMap {
         this.aliveEntities = new LinkedList<>();
         this.deadEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                switch (convertedMap[i][j]){
-                    case ACCESSIBLE_WITH_ENEMY -> {
-                        myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
-                        this.addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createEnemy());
-                    }
-                    case SPAWNPOINT -> {
-                        myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
-                        this.addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createCharacter());
-                    }
-                    default -> myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), convertedMap[i][j]);
+        OperateOnMatrix.operateOnEachElement(convertedMap, (o, i, j) -> {
+            switch ((TileType) o){
+                case ACCESSIBLE_WITH_ENEMY -> {
+                    myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
+                    addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createEnemy());
                 }
+                case SPAWNPOINT -> {
+                    myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
+                    addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createCharacter());
+                }
+                default -> myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), convertedMap[i][j]);
             }
-        }
+        });
     }
 
 

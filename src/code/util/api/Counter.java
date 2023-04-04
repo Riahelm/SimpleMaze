@@ -1,4 +1,4 @@
-package code.model.util.api;
+package code.util.api;
 
 public interface Counter {
 

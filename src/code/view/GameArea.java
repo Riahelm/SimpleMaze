@@ -1,6 +1,7 @@
 package code.view;
 
 import code.controller.GameController;
+import code.util.OperateOnMatrix;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,22 +28,18 @@ public class GameArea extends JPanel {
         this.setLayout(new GridLayout(mapSize,mapSize));
 
         screenPixels = new JLabel[mapSize][mapSize];
-        for (int i = 0; i < mapSize; i++) {
-            for (int j = 0; j < mapSize; j++) {
-                screenPixels[i][j] = new JLabel();
-                this.add(screenPixels[i][j]);
-            }
-        }
 
-        gc.refresh(e -> {
-            for (int i = 0; i < e.length; i++) {
-                for (int j = 0; j < e.length; j++) {
-                    screenPixels[i][j].setIcon(e[i][j]);
-                    this.revalidate();
-                    this.repaint();
-                }
-            }
+        //not using o because it requires a bunch of reordering that's easily skipped
+        OperateOnMatrix.operateOnEachElement(screenPixels, (o, i, j) -> {
+            screenPixels[i][j] = new JLabel();
+            add(screenPixels[i][j]);
         });
+
+        gc.refresh(e -> OperateOnMatrix.operateOnEachElement(e, (element, i, j) -> {
+            screenPixels[i][j].setIcon((Icon)element);
+            revalidate();
+            repaint();
+        }));
     }
     private void setFixedSize(Component component, Dimension dimension){
         component.setMaximumSize(dimension);

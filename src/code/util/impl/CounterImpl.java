@@ -1,6 +1,6 @@
-package code.model.util.impl;
+package code.util.impl;
 
-import code.model.util.api.Counter;
+import code.util.api.Counter;
 
 public class CounterImpl implements Counter {
 
