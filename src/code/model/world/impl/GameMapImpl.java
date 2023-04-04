@@ -30,8 +30,8 @@ public class GameMapImpl implements GameMap {
         this.aliveEntities = new LinkedList<>();
         this.deadEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
-        OperateOnMatrix.operateOnEachElement(convertedMap, (o, i, j) -> {
-            switch ((TileType) o){
+        OperateOnMatrix.operateOnEachElement(convertedMap, (i, j) -> {
+            switch (convertedMap[i][j]){
                 case ACCESSIBLE_WITH_ENEMY -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
                     addEntityToWorld(new Position2DImpl(i,j), EntityFactory.createEnemy());

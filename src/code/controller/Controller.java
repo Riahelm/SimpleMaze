@@ -32,5 +32,10 @@ public class Controller {
         mPageToShow = PageToShow.GAME;
         mPageListener.onNewPage(mPageToShow);
     }
+
+    public void onInstructionsPressed() {
+        mPageToShow = PageToShow.INSTRUCTIONS;
+        mPageListener.onNewPage(mPageToShow);
+    }
 }
 

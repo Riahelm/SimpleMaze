@@ -25,11 +25,10 @@ public class MapReader {
         size = (int)Math.sqrt(tiles.size());
 
         TileType[][] result = new TileType[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                result[i][j] = tiles.get(i * size + j);
-            }
-        }
+
+        int finalSize = size;
+        OperateOnMatrix.operateOnEachElement(result, (i, j) -> result[i][j] = tiles.get(i * finalSize + j));
+
         myMapScanner.close();
         return result;
     }

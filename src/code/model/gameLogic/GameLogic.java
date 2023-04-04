@@ -51,7 +51,7 @@ public class GameLogic {
         gc.getNewState(() -> {
             int mapSize = currentWorld.getMapSize();
             Icon[][] myRes = new Icon[mapSize][mapSize];
-            OperateOnMatrix.operateOnEachElement(myRes, (o, i, j) -> {
+            OperateOnMatrix.operateOnEachElement(myRes, (i, j) -> {
                 if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
                     myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
                 }else{

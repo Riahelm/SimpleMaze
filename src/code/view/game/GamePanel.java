@@ -1,7 +1,8 @@
-package code.view;
+package code.view.game;
 
 import code.controller.GameChatController;
 import code.controller.GameController;
+import code.view.Direction;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -55,18 +56,18 @@ public class GamePanel extends JPanel{
         ActionMap actionMap = getActionMap();
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-        //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
-        //This is the quickest fix without having to change the model
-        String vkUp = "LEFT";
-        String vkLeft = "DOWN";
-        String vkDown = "RIGHT";
-        String vkRight = "UP";
+        String vkUp = "UP";
+        String vkLeft = "LEFT";
+        String vkDown = "DOWN";
+        String vkRight = "RIGHT";
         String vkSpace = "SPACE";
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkUp);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkLeft);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkDown);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkRight);
+        //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
+        //This is the quickest fix without having to change the model
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkLeft);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkDown);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkRight);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
 
         actionMap.put(vkUp, new KeyAction(vkUp));
