@@ -16,7 +16,7 @@ class Enemy extends ActiveEntityTemplate{
     public void interact(Entity interactedEntity) {
         if (interactedEntity.isAlive() && interactedEntity instanceof Character) {
             interactedEntity.setLifeTo(false);
-            gc.finishGame(GameOverState.LOSE, GameLogic.getLevelCounter().getValue());
+            gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
         }
     }
 

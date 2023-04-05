@@ -1,22 +1,29 @@
 package code.view;
 
 import code.controller.Controller;
+import code.view.game.GamePanel;
+import code.view.instructions.InstructionsPanel;
+import code.view.menu.MenuPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame{
-    private final MainPanel mainPanel;
+    private final MenuPanel menuPanel;
+
+    private final InstructionsPanel instructionsPanel;
     private final GamePanel gamePanel;
     public MainFrame(){
 
-        mainPanel = new MainPanel();
+        menuPanel = new MenuPanel();
+        instructionsPanel = new InstructionsPanel();
         gamePanel = new GamePanel();
 
         Controller.getInstance().setOnNewPage(s -> {
             switch (s) {
-                case MENU     -> this.setContentPane(mainPanel);
-                case GAME     -> this.setContentPane(gamePanel);
+                case MENU         -> this.setContentPane(menuPanel);
+                case INSTRUCTIONS -> this.setContentPane(instructionsPanel);
+                case GAME         -> this.setContentPane(gamePanel);
             }
             this.revalidate();
             this.repaint();

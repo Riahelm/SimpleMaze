@@ -28,8 +28,18 @@ public class Controller {
         System.exit(0);
     }
 
+    public void onMenuPressed(){
+        mPageToShow = PageToShow.MENU;
+        mPageListener.onNewPage(mPageToShow);
+    }
+
     public void onStartPressed() {
         mPageToShow = PageToShow.GAME;
+        mPageListener.onNewPage(mPageToShow);
+    }
+
+    public void onInstructionsPressed() {
+        mPageToShow = PageToShow.INSTRUCTIONS;
         mPageListener.onNewPage(mPageToShow);
     }
 }

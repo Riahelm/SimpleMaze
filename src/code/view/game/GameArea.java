@@ -1,4 +1,4 @@
-package code.view;
+package code.view.game;
 
 import code.controller.GameController;
 import code.util.OperateOnMatrix;
@@ -29,14 +29,13 @@ public class GameArea extends JPanel {
 
         screenPixels = new JLabel[mapSize][mapSize];
 
-        //not using o because it requires a bunch of reordering that's easily skipped
-        OperateOnMatrix.operateOnEachElement(screenPixels, (o, i, j) -> {
+        OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {
             screenPixels[i][j] = new JLabel();
             add(screenPixels[i][j]);
         });
 
-        gc.refresh(e -> OperateOnMatrix.operateOnEachElement(e, (element, i, j) -> {
-            screenPixels[i][j].setIcon((Icon)element);
+        gc.refresh(updatedState -> OperateOnMatrix.operateOnEachElement(updatedState, (i, j) -> {
+            screenPixels[i][j].setIcon(updatedState[i][j]);
             revalidate();
             repaint();
         }));

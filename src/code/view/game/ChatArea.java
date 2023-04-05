@@ -1,4 +1,4 @@
-package code.view;
+package code.view.game;
 
 import code.controller.GameChatController;
 import code.view.listener.OnMessageSentListener;
