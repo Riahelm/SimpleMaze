@@ -40,7 +40,6 @@ public class GamePanel extends JPanel{
             remove(gameArea);
             remove(chatArea);
             setBackground(Color.WHITE);
-
             //This creates and puts the label in the middle
             setLayout(new BorderLayout());
             setBorder(new EmptyBorder(0, getWidth()/2,0,0));
