@@ -7,7 +7,7 @@ public class EntityFactory {
     public static Entity createEntity(EntityType type){
         return switch(type){
             case CHARACTER -> new Character();
-            case NPC -> new NPC();
+            case NPC -> new Npc();
             case ENEMY ->  new Enemy();
         };
     }
@@ -19,6 +19,6 @@ public class EntityFactory {
         return new Enemy();
     }
     public static Entity createNPC(String dialogue){
-            return new NPC(dialogue);
+            return new Npc(dialogue);
     }
 }

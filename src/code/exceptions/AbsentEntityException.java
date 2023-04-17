@@ -1,6 +1,8 @@
 package code.exceptions;
 
-public class AbsentEntityException extends IllegalArgumentException {
+import java.util.NoSuchElementException;
+
+public class AbsentEntityException extends NoSuchElementException {
 
     String message;
 

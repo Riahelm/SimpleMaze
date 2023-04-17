@@ -1,13 +1,13 @@
 package code.model.actor.impl;
 
-class NPC extends EntityTemplate {
+class Npc extends EntityTemplate {
     private String personalDialogue;
 
-    NPC() {
+    Npc() {
         super(EntityType.NPC);
         this.personalDialogue = "My creator didn't give me any dialogue!!";
     }
-    NPC(String dialogue) {
+    Npc(String dialogue) {
         this();
         this.personalDialogue = dialogue;
     }

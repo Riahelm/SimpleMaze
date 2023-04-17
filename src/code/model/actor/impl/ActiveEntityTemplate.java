@@ -18,7 +18,7 @@ public abstract class ActiveEntityTemplate extends EntityTemplate implements Act
             this.getTile().resetTile();
             this.setTile(destination);
             destination.setEntity(this);
-        }
+        }else throw new IllegalPositionException();
     }
     public boolean canMove(){
         return true;
