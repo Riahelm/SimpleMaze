@@ -17,11 +17,10 @@ import java.io.IOException;
 
 
 public class GameLogic {
-
-        GameController gc;
-        GameChatController gCC;
-        private static GameMap currentWorld;
-        private static Pair<? extends Counter, ? extends Counter> playerInfo;
+    GameController gc;
+    GameChatController gCC;
+    private static GameMap currentWorld;
+    private static Pair<? extends Counter, ? extends Counter> playerInfo;
 
     public GameLogic(){
                                 //Level                       Score
@@ -65,16 +64,14 @@ public class GameLogic {
             for (Entity myEnt : currentWorld.getEntities()) {
                 if (myEnt.isAlive()) {
                     if (myEnt instanceof Character) {
-                        currentWorld.move(keyPressed, myEnt);
+                        currentWorld.performTurn(keyPressed, myEnt);
                     } else {
-                        currentWorld.move(myEnt);
+                        currentWorld.performTurn(myEnt);
                     }
                 }
             }
 
-            for (Entity entityToDelete: currentWorld.getDeadEntities()) {
-                currentWorld.getEntities().remove(entityToDelete);
-            }
+            currentWorld.getEntities().removeIf(ent -> !ent.isAlive());
 
         });
 

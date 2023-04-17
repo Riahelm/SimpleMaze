@@ -15,16 +15,13 @@ public interface GameMap {
 
     Tile getSpecificTile(int x, int y) throws AbsentEntityException;
 
-    void addEntityToWorld(Position2D position, Entity entity);
+    void addEntityToWorld(Tile tile, Entity entity);
 
-    void addEntityToWorld(int x, int y, Entity entity);
-
-    void move(Direction direction, Entity entity) throws IllegalPositionException;
-    void move(Entity entity) throws IllegalPositionException;
+    void performTurn(Direction direction, Entity entity) throws IllegalPositionException;
+    void performTurn(Entity entity) throws IllegalPositionException;
 
 
 
     List<Entity> getEntities();
-    List<Entity> getDeadEntities();
 
 }

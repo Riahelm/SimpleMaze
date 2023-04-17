@@ -5,7 +5,6 @@ import code.model.gameLogic.GameLogic;
 import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
 import code.view.GameOverState;
-
 class Enemy extends ActiveEntityTemplate{
 
     Enemy() {

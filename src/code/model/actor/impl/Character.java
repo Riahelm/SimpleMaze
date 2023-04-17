@@ -14,8 +14,8 @@ public class Character extends ActiveEntityTemplate{
     public void interact(Entity interactedEntity) {
 
         if (interactedEntity.getType().equals(EntityType.NPC)) {
-            NPC myNPC = (NPC) interactedEntity;
-            gCC.sendMessage(myNPC.getDialogue());
+            Npc myNpc = (Npc) interactedEntity;
+            gCC.sendMessage(myNpc.getDialogue());
         } else if (interactedEntity.isAlive()) {
             GameLogic.getScoreCounter().increment();
             gCC.updateScore(GameLogic.getScoreCounter().getValue());
@@ -35,6 +35,7 @@ public class Character extends ActiveEntityTemplate{
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
+                GameLogic.getScoreCounter().increment();
                 gc.finishGame(GameOverState.WIN, GameLogic.getScoreCounter().getValue());
             }
         }

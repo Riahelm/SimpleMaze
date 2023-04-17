@@ -36,7 +36,7 @@ public class TileImpl implements Tile {
         return this.myIcon;
     }
 
-    public Optional<? extends Entity> getEntity() throws AbsentEntityException {
+    public Optional<? extends Entity> getEntity(){
         return this.entityOnTile;
     }
 
@@ -48,7 +48,7 @@ public class TileImpl implements Tile {
 
     @Override
     public boolean isAdjacentTo(Tile otherTile) {
-        return Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) -
+        return Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) +
                 Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1;
     }
 
@@ -61,4 +61,15 @@ public class TileImpl implements Tile {
         return "TileImpl [myCoords=" + myCoords + ", myTileType=" + myTileType + ", entityOnTile=" + entityOnTile + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TileImpl tile = (TileImpl) o;
+
+        if (!myCoords.equals(tile.myCoords)) return false;
+        if (myTileType != tile.myTileType) return false;
+        return Objects.equals(entityOnTile, tile.entityOnTile);
+    }
 }
