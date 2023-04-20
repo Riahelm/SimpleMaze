@@ -74,13 +74,11 @@ public class GameLogic {
             currentWorld.getEntities().removeIf(ent -> !ent.isAlive());
 
         });
-
     }
 
     public static void switchToNextWorld(){
         try {
             playerInfo.x().increment();
-            System.out.println(playerInfo.x().getValue());
             currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
             GameController.getInstance().changeMap(currentWorld.getMapSize());
         } catch (IOException e) {
