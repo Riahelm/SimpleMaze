@@ -69,13 +69,14 @@ public class GameMapImpl implements GameMap {
             tile.setEntity(entity);
             entity.setTile(tile);
             this.aliveEntities.add(entity);
-            this.aliveEntities.sort(Comparator.comparingInt(o -> o.getType().ordinal())); // STRATEGY PATTERN HERE
+            this.aliveEntities.sort(Comparator.comparingInt(ent -> ent.getType().ordinal())); // STRATEGY PATTERN HERE
         }
     }
 
     public void performTurn(Direction direction, Entity entity) throws IllegalPositionException{
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
+
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.x()]
                                 [entity.getTile().getCoords().getPosY() + dir.y()];
 

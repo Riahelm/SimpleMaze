@@ -8,17 +8,24 @@ public class EntityFactoryTest {
 
     @Test
     public void createEntity() {
+        assertNotNull(EntityFactory.createEntity(EntityType.CHARACTER));
+        assertNotNull(EntityFactory.createEntity(EntityType.ENEMY));
+        assertNotNull(EntityFactory.createEntity(EntityType.NPC));
     }
 
     @Test
     public void createCharacter() {
+        assertNotNull(EntityFactory.createCharacter());
     }
 
     @Test
     public void createEnemy() {
+        assertNotNull(EntityFactory.createEnemy());
     }
 
     @Test
     public void createNPC() {
+        assertNotNull(EntityFactory.createNPC("Dummy"));
+        assertEquals("Dummy", EntityFactory.createNPC("Dummy").getDialogue());
     }
 }

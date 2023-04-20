@@ -11,14 +11,14 @@ public class EntityFactory {
             case ENEMY ->  new Enemy();
         };
     }
-    public static Entity createCharacter(){
+    public static Character createCharacter(){
         return new Character();
     }
 
-    public static Entity createEnemy(){
+    public static Enemy createEnemy(){
         return new Enemy();
     }
-    public static Entity createNPC(String dialogue){
+    public static Npc createNPC(String dialogue){
             return new Npc(dialogue);
     }
 }
