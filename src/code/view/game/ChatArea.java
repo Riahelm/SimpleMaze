@@ -1,7 +1,8 @@
 package code.view.game;
 
 import code.controller.GameChatController;
-import code.view.listener.OnMessageSentListener;
+import code.controller.listeners.OnMessageSentListener;
+import code.util.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +27,7 @@ public class ChatArea extends JPanel {
             }
         }
 
-        gCC.receiveMessage(new OnMessageSentListener() {
+        gCC.setMessageListener(new OnMessageSentListener() {
             @Override
             public void receiveMessage(String message) {
 
@@ -44,7 +45,6 @@ public class ChatArea extends JPanel {
                 revalidate();
                 repaint();
             }
-
         });
     }
 

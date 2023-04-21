@@ -4,6 +4,7 @@ public enum TileType {
     NON_ACCESSIBLE,
     ACCESSIBLE,
     ACCESSIBLE_WITH_ENEMY,
+    ACCESSIBLE_WITH_NPC,
     SPAWNPOINT,
     STAIRS,
     EXIT;
@@ -13,9 +14,10 @@ public enum TileType {
             case 0 -> TileType.NON_ACCESSIBLE;
             case 1 -> TileType.ACCESSIBLE;
             case 2 -> TileType.ACCESSIBLE_WITH_ENEMY;
-            case 3 -> TileType.SPAWNPOINT;
-            case 4 -> TileType.STAIRS;
-            case 5 -> TileType.EXIT;
+            case 3 -> TileType.ACCESSIBLE_WITH_NPC;
+            case 4 -> TileType.SPAWNPOINT;
+            case 5 -> TileType.STAIRS;
+            case 6 -> TileType.EXIT;
             default -> throw new IllegalStateException("Unexpected value: " + d);
         };
     }

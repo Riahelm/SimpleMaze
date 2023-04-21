@@ -14,8 +14,8 @@ public class Character extends ActiveEntityTemplate{
     public void interact(Entity interactedEntity) {
 
         if (interactedEntity.getType().equals(EntityType.NPC)) {
-            Npc myNpc = (Npc) interactedEntity;
-            gCC.sendMessage(myNpc.getDialogue());
+            gCC.sendMessage("The stranger asks you a question...");
+            gc.askAQuestion(((Npc)interactedEntity).getQuestion());
         } else if (interactedEntity.isAlive()) {
             GameLogic.getScoreCounter().increment();
             gCC.updateScore(GameLogic.getScoreCounter().getValue());

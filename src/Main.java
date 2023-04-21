@@ -17,6 +17,5 @@ public class Main {
     private static void StartGame() throws IOException{
         GameLogic gameLogic = new GameLogic();
         MainFrame myMainFrame = new MainFrame();
-        myMainFrame.setVisible(true);
     }
 }

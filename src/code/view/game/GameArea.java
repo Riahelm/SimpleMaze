@@ -2,6 +2,7 @@ package code.view.game;
 
 import code.controller.GameController;
 import code.util.OperateOnMatrix;
+import code.view.Direction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,32 +14,32 @@ public class GameArea extends JPanel {
         this.setBackground(Color.BLACK);
         setFixedSize(this, new Dimension(700,700));
 
-        init(gc, gc.getMapSize());
+        gc.setGameAreaListener(updatedState -> {
+            if(screenPixels == null || updatedState.length != screenPixels.length){
+                int mapSize = updatedState.length;
+                removeAll();
 
-        gc.onMapChanged(size -> init(gc, size));
+                setLayout(new GridLayout(mapSize,mapSize));
+
+
+                screenPixels = new JLabel[mapSize][mapSize];
+
+                OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {
+                    screenPixels[i][j] = new JLabel();
+                    add(screenPixels[i][j]);
+                });
+            }
+            OperateOnMatrix.operateOnEachElement(updatedState, (i, j) -> {
+                screenPixels[i][j].setIcon(updatedState[i][j]);
+                revalidate();
+                repaint();
+            });
+        });
+
+        gc.forceRefresh();
 
         this.revalidate();
         this.repaint();
-    }
-
-    private void init(GameController gc, int mapSize){
-
-        removeAll();
-
-        this.setLayout(new GridLayout(mapSize,mapSize));
-
-        screenPixels = new JLabel[mapSize][mapSize];
-
-        OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {
-            screenPixels[i][j] = new JLabel();
-            add(screenPixels[i][j]);
-        });
-
-        gc.refresh(updatedState -> OperateOnMatrix.operateOnEachElement(updatedState, (i, j) -> {
-            screenPixels[i][j].setIcon(updatedState[i][j]);
-            revalidate();
-            repaint();
-        }));
     }
     private void setFixedSize(Component component, Dimension dimension){
         component.setMaximumSize(dimension);
