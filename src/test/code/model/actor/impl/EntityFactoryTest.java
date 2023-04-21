@@ -1,5 +1,6 @@
 package code.model.actor.impl;
 
+import code.util.Pair;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class EntityFactoryTest {
 
     @Test
     public void createNPC() {
-        assertNotNull(EntityFactory.createNPC("Dummy"));
-        assertEquals("Dummy", EntityFactory.createNPC("Dummy").getDialogue());
+        assertNotNull(EntityFactory.createNPC(new Pair<>("Dummy", true)));
+        assertEquals("Dummy", EntityFactory.createNPC(new Pair<>("Dummy", true)).getQuestion());
     }
 }

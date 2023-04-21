@@ -1,8 +1,7 @@
-package code.view.listener;
+package code.controller.listeners;
 
 import javax.swing.*;
 
-public interface OnNewStateListener {
+public interface GameAreaListener{
     void useUpdatedState(Icon[][] updatedState);
-
 }

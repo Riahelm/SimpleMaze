@@ -3,6 +3,7 @@ package code.model.gameLogic;
 
 import code.controller.GameChatController;
 import code.controller.GameController;
+import code.controller.listeners.GameLogicListener;
 import code.model.actor.impl.Character;
 import code.model.actor.api.Entity;
 import code.util.OperateOnMatrix;
@@ -11,6 +12,7 @@ import code.util.api.Counter;
 import code.util.impl.CounterImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
+import code.view.Direction;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -45,43 +47,52 @@ public class GameLogic {
 
     private void init() {
 
-        gc.setMapSize(currentWorld.getMapSize());
-
-        gc.getNewState(() -> {
-            int mapSize = currentWorld.getMapSize();
-            Icon[][] myRes = new Icon[mapSize][mapSize];
-            OperateOnMatrix.operateOnEachElement(myRes, (i, j) -> {
-                if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
-                    myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
-                }else{
-                    myRes[i][j] = currentWorld.getGrid()[i][j].getImage();
-                }
-            });
-            return myRes;
-        });
-
-        gc.updateState(keyPressed -> {
-            for (Entity myEnt : currentWorld.getEntities()) {
-                if (myEnt.isAlive()) {
-                    if (myEnt instanceof Character) {
-                        currentWorld.performTurn(keyPressed, myEnt);
-                    } else {
-                        currentWorld.performTurn(myEnt);
+        gc.setGameLogicListener(new GameLogicListener() {
+            @Override
+            public void computeTurn(Direction keyPressed) {
+                for (Entity myEnt : currentWorld.getEntities()) {
+                    if (myEnt.isAlive()) {
+                        if (myEnt instanceof Character) {
+                            currentWorld.performTurn(keyPressed, myEnt);
+                        } else {
+                            currentWorld.performTurn(myEnt);
+                        }
                     }
                 }
+
+                currentWorld.getEntities().removeIf(ent -> !ent.isAlive());
             }
 
-            currentWorld.getEntities().removeIf(ent -> !ent.isAlive());
-
+            @Override
+            public Icon[][] getGameState() {
+                int mapSize = currentWorld.getMapSize();
+                Icon[][] myRes = new Icon[mapSize][mapSize];
+                OperateOnMatrix.operateOnEachElement(myRes, (i, j) -> {
+                    if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
+                        myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
+                    }else{
+                        myRes[i][j] = currentWorld.getGrid()[i][j].getImage();
+                    }
+                });
+                return myRes;
+            }
         });
     }
 
     public static void switchToNextWorld(){
-        try {
+        try{
             playerInfo.x().increment();
             currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
-            GameController.getInstance().changeMap(currentWorld.getMapSize());
-        } catch (IOException e) {
+        }catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void resetToFirstWorld(){
+        try{
+            playerInfo = new Pair<>(new CounterImpl(1), new CounterImpl());
+            currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
+        }catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

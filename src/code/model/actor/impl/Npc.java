@@ -1,15 +1,18 @@
 package code.model.actor.impl;
 
+import code.util.Pair;
+
 class Npc extends EntityTemplate {
-    private String personalDialogue;
+
+
+    private Pair<String, Boolean> personalQuestion;
 
     Npc() {
         super(EntityType.NPC);
-        this.personalDialogue = "My creator didn't give me any dialogue!!";
     }
-    Npc(String dialogue) {
+    Npc(Pair<String, Boolean> question) {
         this();
-        this.personalDialogue = dialogue;
+        this.personalQuestion = question;
     }
 
     @Override
@@ -22,7 +25,8 @@ class Npc extends EntityTemplate {
         return true;
     }
 
-    public String getDialogue(){
-        return this.personalDialogue;
+    public Pair<String, Boolean> getQuestion(){
+        return this.personalQuestion;
     }
+
 }

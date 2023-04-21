@@ -2,24 +2,27 @@ package code.view.game;
 
 import code.controller.GameChatController;
 import code.controller.GameController;
+import code.controller.listeners.GamePanelListener;
+import code.util.Pair;
 import code.view.Direction;
+import code.view.GameOverState;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.util.Arrays;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JLayeredPane{
 
     private final GameArea gameArea;
     private final ChatArea chatArea;
     private final GameController gc;
     public GamePanel(){
         this.gc = GameController.getInstance();
+        this.setOpaque(true);
         this.setBackground(Color.BLACK);
         this.setLayout(new FlowLayout());
-
         gameArea = new GameArea(gc);
         gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -35,20 +38,74 @@ public class GamePanel extends JPanel{
     }
 
     private void init(){
-        gc.onGameOver((state, score) -> {
 
-            remove(gameArea);
-            remove(chatArea);
-            setBackground(Color.WHITE);
-            //This creates and puts the label in the middle
-            setLayout(new BorderLayout());
-            setBorder(new EmptyBorder(0, getWidth()/2,0,0));
-            //Yes, JLabels need html to allow for easy multiline input.
-            add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + score + "</html>"), BorderLayout.CENTER);
+        gc.setGameOverListener(new GamePanelListener() {
+            @Override
+            public void setToGameOver(GameOverState state, int score) {
+                    JPanel gameOverPanel = new JPanel();
+                    JButton resetButton = new JButton("RESET");
+                    undoKeyBindings();
+                    remove(gameArea);
+                    remove(chatArea);
+                    setBackground(Color.WHITE);
 
-            revalidate();
-            repaint();
+                    gameOverPanel.setMinimumSize(new Dimension(1366, 768));
+                    gameOverPanel.setLayout(new BorderLayout());
+                    gameOverPanel.add(resetButton, BorderLayout.NORTH);
+                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + score + "</html>"), BorderLayout.CENTER);
+                    add(gameOverPanel);
+
+                    resetButton.addActionListener(e -> {
+                        gc.restartGame();
+                        setBackground(Color.BLACK);
+                        remove(gameOverPanel);
+                        add(gameArea);
+                        add(chatArea);
+                        setKeyBindings();
+                        gc.forceRefresh();
+                        revalidate();
+                        repaint();
+                    });
+
+                    revalidate();
+                    repaint();
+            }
+            @Override
+            public void askAQuestion(Pair<String, Boolean> question) {
+                JPopupMenu popupQuestion = new JPopupMenu(question.x());
+                JButton truthButton = new JButton("True");
+                JButton falseButton = new JButton("False");
+                popupQuestion.setOpaque(true);
+                popupQuestion.add(truthButton);
+                popupQuestion.add(falseButton);
+                moveToFront(popupQuestion);
+                undoKeyBindings();
+                add(popupQuestion);
+                truthButton.addActionListener(e -> {
+                    if(Boolean.valueOf(truthButton.getText()).equals(question.y())){
+                        GameChatController.getInstance().sendMessage("You chose correctly!");
+                        setKeyBindings();
+                        remove(popupQuestion);
+                    }else gc.finishGame(GameOverState.LOSE, -1000);
+                });
+
+                falseButton.addActionListener(e -> {
+                    if(Boolean.valueOf(falseButton.getText()).equals(question.y())){
+                        GameChatController.getInstance().sendMessage("You chose correctly!");
+                        setKeyBindings();
+                    }else gc.finishGame(GameOverState.LOSE, -1000);
+                });
+
+            }
         });
+    }
+
+    private void undoKeyBindings() {
+        ActionMap actionMap = getActionMap();
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+        Arrays.stream(inputMap.allKeys()).forEach(inputMap::remove);
+        Arrays.stream(actionMap.allKeys()).forEach(actionMap::remove);
     }
 
     private void setKeyBindings(){
@@ -87,7 +144,7 @@ public class GamePanel extends JPanel{
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            gc.onKeyPressed(Direction.valueOf(actionEvt.getActionCommand()));
+            gc.computeTurn(Direction.valueOf(actionEvt.getActionCommand()));
         }
     }
 }

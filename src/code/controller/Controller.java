@@ -1,6 +1,6 @@
 package code.controller;
 
-import code.view.listener.OnNewPageListener;
+import code.controller.listeners.OnNewPageListener;
 
 public class Controller {
     //Singleton design pattern

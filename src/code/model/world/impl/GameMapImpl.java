@@ -2,6 +2,7 @@ package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.impl.EntityFactory;
+import code.model.actor.impl.NPCQuestions;
 import code.util.MapReader;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.Entity;
@@ -33,6 +34,10 @@ public class GameMapImpl implements GameMap {
                 case ACCESSIBLE_WITH_ENEMY -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
                     addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
+                }
+                case ACCESSIBLE_WITH_NPC -> {
+                    myGrid[i][j] = new TileImpl(new Position2DImpl(i,j), TileType.ACCESSIBLE);
+                    addEntityToWorld(myGrid[i][j], EntityFactory.createNPC(NPCQuestions.getAQuestion()));
                 }
                 case SPAWNPOINT -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);

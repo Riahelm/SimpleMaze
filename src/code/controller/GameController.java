@@ -1,19 +1,19 @@
 package code.controller;
 
+import code.controller.listeners.GameAreaListener;
+import code.controller.listeners.GameLogicListener;
+import code.controller.listeners.GamePanelListener;
+import code.model.gameLogic.GameLogic;
+import code.util.Pair;
 import code.view.Direction;
 import code.view.GameOverState;
-import code.view.listener.*;
 
 public class GameController {
 
     private static GameController instance;
-    private int mapSize;
-
-    private MapChangedListener mapChangedListener;
-    private OnNewStateListener gamePanelListener;
-    private OnKeyPressedListener gameKeyListener;
-    private GameStateListener gameStateListener; //GameState, is the game screen itself
-    private GameOverListener gamePanelStateListener; //GamePanelState, checks if it's won or lost
+    private GameAreaListener myGameAreaInstructions;
+    private GameLogicListener myGameLogicInstructions;
+    private GamePanelListener gamePanelStateListener; //GamePanelState, checks if it's won or lost
 
     private GameController(){}
 
@@ -23,43 +23,33 @@ public class GameController {
         }
         return instance;
     }
-    public void refresh(OnNewStateListener l){
-        gamePanelListener = l;
-        gamePanelListener.useUpdatedState(gameStateListener.getNewState());
-    }
-    public void updateState(OnKeyPressedListener l){
-        gameKeyListener = l;
-    }
 
-    public void onKeyPressed(Direction key){
-        gameKeyListener.useKeyPressed(key);
-        gamePanelListener.useUpdatedState(gameStateListener.getNewState());
+    public void setGameAreaListener(GameAreaListener l){
+        myGameAreaInstructions = l;
     }
-
-    public void getNewState(GameStateListener l){
-        gameStateListener = l;
+    public void setGameLogicListener(GameLogicListener l){
+        myGameLogicInstructions = l;
     }
-
-    public void onGameOver(GameOverListener l){
+    public void setGameOverListener(GamePanelListener l){
         gamePanelStateListener = l;
+    }
+    public void computeTurn(Direction key){
+        myGameLogicInstructions.computeTurn(key);
+        myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
+    }
+
+    public void askAQuestion(Pair<String, Boolean> question){
+        gamePanelStateListener.askAQuestion(question);
+    }
+    public void forceRefresh(){
+        myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
     public void finishGame(GameOverState state, int score){
         gamePanelStateListener.setToGameOver(state, score);
     }
 
-    public void onMapChanged(MapChangedListener l){
-        mapChangedListener = l;
-    }
-
-    public void setMapSize(int mapSize){
-        this.mapSize = mapSize;
-    }
-    public int getMapSize(){
-        return this.mapSize;
-    }
-
-    public void changeMap(int mapSize){
-        mapChangedListener.onMapChanged(mapSize);
+    public void restartGame() {
+        GameLogic.resetToFirstWorld();
     }
 }
