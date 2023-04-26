@@ -36,6 +36,7 @@ class Npc extends EntityTemplate implements InteractableEntity {
             gCC.sendMessage("The NPC asks you a question...");
             gc.askAQuestion(this.personalQuestion);
             gc.increaseScore();
+            this.getTile().resetTile();
             this.setLifeTo(false); //This says a lot about society
         }
     }

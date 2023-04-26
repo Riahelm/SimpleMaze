@@ -4,6 +4,7 @@ package code.model.gameLogic;
 import code.controller.GameChatController;
 import code.controller.GameController;
 import code.controller.listeners.GameLogicListener;
+import code.model.actor.api.ActiveEntity;
 import code.model.actor.impl.Character;
 import code.model.actor.api.Entity;
 import code.util.OperateOnMatrix;
@@ -40,9 +41,6 @@ public class GameLogic {
 
     }
 
-    public static Counter getLevelCounter() {
-        return playerInfo.x();
-    }
     public static Counter getScoreCounter(){return playerInfo.y();}
 
     private void init() {
@@ -50,12 +48,13 @@ public class GameLogic {
         gc.setGameLogicListener(new GameLogicListener() {
             @Override
             public void computeTurn(Direction keyPressed) {
+
                 for (Entity myEnt : currentWorld.getEntities()) {
-                    if (myEnt.isAlive()) {
-                        if (myEnt instanceof Character) {
-                            currentWorld.performTurn(keyPressed, myEnt);
+                    if (myEnt.isAlive() && myEnt instanceof ActiveEntity activeEntity) {
+                        if (myEnt instanceof Character character) {
+                            currentWorld.performTurn(keyPressed, character);
                         } else {
-                            currentWorld.performTurn(myEnt);
+                            currentWorld.performTurn(activeEntity);
                         }
                     }
                 }
@@ -78,9 +77,9 @@ public class GameLogic {
             }
         });
     }
-
     public static void switchToNextWorld(){
         try{
+            currentWorld.getEntities().forEach(e -> e.setLifeTo(false));
             playerInfo.x().increment();
             currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
         }catch (IOException e) {

@@ -3,10 +3,22 @@ package code.model.actor.impl;
 import code.model.actor.api.InteractableEntity;
 import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
+import code.view.Direction;
+import java.util.Random;
+
 class Enemy extends ActiveEntityTemplate implements InteractableEntity{
 
     Enemy() {
         super(EntityType.ENEMY);
+    }
+    Enemy(EntityType type){
+        super(type);
+    }
+
+
+    @Override
+    public Direction findADirection() {
+        return Direction.fromInt(new Random().nextInt(0,100)% 4);
     }
 
     @Override
@@ -25,6 +37,7 @@ class Enemy extends ActiveEntityTemplate implements InteractableEntity{
     public void onInteract(EntityType type) {
         if(type.equals(EntityType.CHARACTER)){
             gc.increaseScore();
+            this.getTile().resetTile();
             this.setLifeTo(false);
         }
     }

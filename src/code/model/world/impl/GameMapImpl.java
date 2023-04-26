@@ -34,7 +34,9 @@ public class GameMapImpl implements GameMap {
             switch (convertedMap[i][j]){
                 case ACCESSIBLE_WITH_ENEMY -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
-                    addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
+                    if(new Random().nextInt(100) < 80){
+                        addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
+                    }else addEntityToWorld(myGrid[i][j], EntityFactory.createSmartEnemy(myGrid));
                 }
                 case ACCESSIBLE_WITH_NPC -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i,j), TileType.ACCESSIBLE);
@@ -74,36 +76,34 @@ public class GameMapImpl implements GameMap {
         if(tile.getEntity().isEmpty()) {
             tile.setEntity(entity);
             entity.setTile(tile);
+
             this.aliveEntities.add(entity);
             this.aliveEntities.sort(Comparator.comparingInt(ent -> ent.getType().ordinal())); // STRATEGY PATTERN HERE
         }
     }
 
-    public void performTurn(Direction direction, Entity entity) throws IllegalPositionException{
+    public void performTurn(Direction direction, ActiveEntity entity) throws IllegalPositionException{
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
 
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.x()]
                                 [entity.getTile().getCoords().getPosY() + dir.y()];
 
-        if(entity instanceof ActiveEntity && !destinationTile.equals(entity.getTile())){
+        if(!destinationTile.equals(entity.getTile())){
             if (destinationTile.getEntity().isPresent() && destinationTile.getEntity().get() instanceof InteractableEntity destinationEntity){
                 destinationEntity.onInteract(entity.getType());
-                if(!destinationEntity.isAlive()){
-                    destinationTile.resetTile();
-                }
             }
             if (destinationTile.getEntity().isEmpty()) {
-                ((ActiveEntity) entity).move(destinationTile);
+                entity.move(destinationTile);
             }
         }
     }
 
-    public void performTurn(Entity entity){
-        this.performTurn(Direction.fromInt(randomMovementGenerator.nextInt(0, 100)% 4), entity);
+    public void performTurn(ActiveEntity entity){
+        this.performTurn(entity.findADirection(), entity);
     }
     @Override
     public List<Entity> getEntities() {
-        return aliveEntities;
+        return this.aliveEntities;
     }
 }

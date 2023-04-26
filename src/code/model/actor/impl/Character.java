@@ -3,11 +3,17 @@ package code.model.actor.impl;
 import code.model.actor.api.InteractableEntity;
 import code.model.gameLogic.GameLogic;
 import code.model.world.api.Tile;
+import code.view.Direction;
 import code.view.GameOverState;
 
 public class Character extends ActiveEntityTemplate implements InteractableEntity {
     Character() {
         super(EntityType.CHARACTER);
+    }
+
+    @Override
+    public Direction findADirection() {
+        throw new RuntimeException("You must give a direction for this entity to move!");
     }
 
     @Override
@@ -17,8 +23,7 @@ public class Character extends ActiveEntityTemplate implements InteractableEntit
             case NON_ACCESSIBLE -> gCC.sendMessage("Bonk!");
             case STAIRS -> {
                 gCC.sendMessage("You go to the next level...");
-                gc.increaseScore();
-                GameLogic.switchToNextWorld();
+                gc.goToNextWorld();
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
@@ -35,7 +40,7 @@ public class Character extends ActiveEntityTemplate implements InteractableEntit
 
     @Override
     public void onInteract(EntityType type) {
-        if(type.equals(EntityType.ENEMY)){
+        if(type.equals(EntityType.ENEMY) || type.equals(EntityType.SMART_ENEMY)){
             this.setLifeTo(false);
             gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
         }

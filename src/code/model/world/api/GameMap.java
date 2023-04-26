@@ -2,6 +2,7 @@ package code.model.world.api;
 
 import code.exceptions.AbsentEntityException;
 import code.exceptions.IllegalPositionException;
+import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
 import code.view.Direction;
 
@@ -17,11 +18,8 @@ public interface GameMap {
 
     void addEntityToWorld(Tile tile, Entity entity);
 
-    void performTurn(Direction direction, Entity entity) throws IllegalPositionException;
-    void performTurn(Entity entity) throws IllegalPositionException;
-
-
-
+    void performTurn(Direction direction, ActiveEntity entity) throws IllegalPositionException;
+    void performTurn(ActiveEntity entity) throws IllegalPositionException;
     List<Entity> getEntities();
 
 }

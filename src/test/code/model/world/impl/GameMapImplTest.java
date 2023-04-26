@@ -1,11 +1,10 @@
 package code.model.world.impl;
 
-import code.model.actor.api.Entity;
+import code.model.actor.api.ActiveEntity;
 import code.model.actor.impl.EntityFactory;
 import code.model.actor.impl.EntityType;
 import code.view.Direction;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class GameMapImplTest {
         assertEquals(0, testMap.getEntities().size());
 
         testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createCharacter());
-        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createEntity(EntityType.ENEMY));
+        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createEnemy());
 
         assertEquals(1, testMap.getEntities().size());
 
@@ -59,13 +58,13 @@ public class GameMapImplTest {
 
         testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createCharacter());
 
-        testMap.performTurn(Direction.RIGHT, testMap.aliveEntities.get(0));
+        testMap.performTurn(Direction.RIGHT, (ActiveEntity) testMap.aliveEntities.get(0));
         assertEquals(testMap.myGrid[2][1], testMap.aliveEntities.get(0).getTile());
         if(testMap.myGrid[2][1].getEntity().isPresent()){
             assertEquals(testMap.aliveEntities.get(0), testMap.myGrid[2][1].getEntity().get());
         }else fail("Entity was not moved properly");
 
-        testMap.performTurn(Direction.DOWN, testMap.aliveEntities.get(0));
+        testMap.performTurn(Direction.DOWN, (ActiveEntity) testMap.aliveEntities.get(0));
         assertEquals(testMap.myGrid[2][1], testMap.aliveEntities.get(0).getTile());
         if(testMap.myGrid[2][1].getEntity().isPresent()){
             assertEquals(testMap.aliveEntities.get(0), testMap.myGrid[2][1].getEntity().get());
@@ -85,7 +84,7 @@ public class GameMapImplTest {
 
         assertEquals(2, testMap.getEntities().size());
 
-        testMap.performTurn(Direction.RIGHT, testMap.aliveEntities.get(0));
+        testMap.performTurn(Direction.RIGHT, (ActiveEntity) testMap.aliveEntities.get(0));
 
         assertEquals(1, testMap.aliveEntities.size());
     }

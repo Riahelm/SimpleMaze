@@ -51,6 +51,10 @@ public class GameController {
         GameChatController.getInstance().updateScore(GameLogic.getScoreCounter().getValue());
     }
 
+    public void goToNextWorld(){
+        this.increaseScore();
+        GameLogic.switchToNextWorld();
+    }
     public void finishGame(GameOverState state, int score){
         gamePanelStateListener.setToGameOver(state, score);
     }
