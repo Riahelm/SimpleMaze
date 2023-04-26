@@ -3,6 +3,7 @@ package code.controller;
 import code.controller.listeners.GameAreaListener;
 import code.controller.listeners.GameLogicListener;
 import code.controller.listeners.GamePanelListener;
+import code.model.actor.impl.NPCQuestions;
 import code.model.gameLogic.GameLogic;
 import code.util.Pair;
 import code.view.Direction;
@@ -45,11 +46,17 @@ public class GameController {
         myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
+    public void increaseScore(){
+        GameLogic.getScoreCounter().increment();
+        GameChatController.getInstance().updateScore(GameLogic.getScoreCounter().getValue());
+    }
+
     public void finishGame(GameOverState state, int score){
         gamePanelStateListener.setToGameOver(state, score);
     }
 
     public void restartGame() {
-        GameLogic.resetToFirstWorld();
+        NPCQuestions.resetQuestions();
+        GameLogic.resetPlayerStatus();
     }
 }

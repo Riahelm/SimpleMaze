@@ -2,8 +2,7 @@ package code.model.actor.api;
 
 import code.model.world.api.Tile;
 
-public interface ActiveEntity {
+public interface ActiveEntity extends Entity{
 
-    void interact(Entity interactionTile);
     void move(Tile movementTile);
 }

@@ -1,6 +1,7 @@
 package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
+import code.model.actor.api.InteractableEntity;
 import code.model.actor.impl.EntityFactory;
 import code.model.actor.impl.NPCQuestions;
 import code.util.MapReader;
@@ -85,10 +86,10 @@ public class GameMapImpl implements GameMap {
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.x()]
                                 [entity.getTile().getCoords().getPosY() + dir.y()];
 
-        if(entity instanceof ActiveEntity){
-            if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
-                ((ActiveEntity) entity).interact(destinationTile.getEntity().get());
-                if(!destinationTile.getEntity().get().isAlive()){
+        if(entity instanceof ActiveEntity && !destinationTile.equals(entity.getTile())){
+            if (destinationTile.getEntity().isPresent() && destinationTile.getEntity().get() instanceof InteractableEntity destinationEntity){
+                destinationEntity.onInteract(entity.getType());
+                if(!destinationEntity.isAlive()){
                     destinationTile.resetTile();
                 }
             }

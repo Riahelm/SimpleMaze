@@ -88,7 +88,7 @@ public class GameLogic {
         }
     }
 
-    public static void resetToFirstWorld(){
+    public static void resetPlayerStatus(){
         try{
             playerInfo = new Pair<>(new CounterImpl(1), new CounterImpl());
             currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));

@@ -26,14 +26,6 @@ public class EnemyTest {
         frame = new MainFrame();
         frame.setVisible(false);
     }
-    @Test
-    public void interact() {
-        Entity interactedEntity = EntityFactory.createCharacter();
-
-        ((ActiveEntity) testEnemy).interact(interactedEntity);
-
-        assertFalse(interactedEntity.isAlive());
-    }
 
     @Test
     public void move() {

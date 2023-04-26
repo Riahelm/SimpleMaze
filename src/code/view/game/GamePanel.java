@@ -70,32 +70,15 @@ public class GamePanel extends JLayeredPane{
                     revalidate();
                     repaint();
             }
+
             @Override
-            public void askAQuestion(Pair<String, Boolean> question) {
-                JPopupMenu popupQuestion = new JPopupMenu(question.x());
-                JButton truthButton = new JButton("True");
-                JButton falseButton = new JButton("False");
-                popupQuestion.setOpaque(true);
-                popupQuestion.add(truthButton);
-                popupQuestion.add(falseButton);
-                moveToFront(popupQuestion);
-                undoKeyBindings();
-                add(popupQuestion);
-                truthButton.addActionListener(e -> {
-                    if(Boolean.valueOf(truthButton.getText()).equals(question.y())){
-                        GameChatController.getInstance().sendMessage("You chose correctly!");
-                        setKeyBindings();
-                        remove(popupQuestion);
-                    }else gc.finishGame(GameOverState.LOSE, -1000);
-                });
-
-                falseButton.addActionListener(e -> {
-                    if(Boolean.valueOf(falseButton.getText()).equals(question.y())){
-                        GameChatController.getInstance().sendMessage("You chose correctly!");
-                        setKeyBindings();
-                    }else gc.finishGame(GameOverState.LOSE, -1000);
-                });
-
+            public void askAQuestion(Pair<String, Boolean> question){
+                boolean answer = JOptionPane.showConfirmDialog(gameArea, question.x(), "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+                if(answer == question.y()) {
+                    GameChatController.getInstance().sendMessage("You chose the correct answer!");
+                }else {
+                       gc.finishGame(GameOverState.LOSE, -1000);
+                }
             }
         });
     }
