@@ -9,8 +9,14 @@ class Npc extends EntityTemplate implements InteractableEntity {
     private Pair<String, Boolean> personalQuestion;
 
     Npc() {
-        super(EntityType.NPC);
+        super();
     }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.NPC;
+    }
+
     Npc(Pair<String, Boolean> question) {
         this();
         this.personalQuestion = question;

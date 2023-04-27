@@ -1,5 +1,6 @@
 package code.model.actor.impl;
 
+import code.model.actor.api.Entity;
 import code.model.world.api.Tile;
 import code.util.Pair;
 
@@ -16,5 +17,7 @@ public class EntityFactory {
     public static SmartEnemy createSmartEnemy(Tile[][] grid){
         return new SmartEnemy(grid);
     }
-
+    public static Entity createPhantom(Tile[][] grid) {
+        return new Phantom(grid);
+    }
 }

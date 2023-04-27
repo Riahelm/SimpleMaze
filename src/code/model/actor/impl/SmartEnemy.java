@@ -13,9 +13,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SmartEnemy extends Enemy{
     Tile[][] worldMap;
 
-
+    @Override
+    public EntityType getType(){
+        return EntityType.SMART_ENEMY;
+    }
     public SmartEnemy(Tile[][] grid){
-        super(EntityType.SMART_ENEMY);
+        super();
         worldMap = grid;
     }
     @Override

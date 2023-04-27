@@ -34,15 +34,18 @@ public class GameMapImpl implements GameMap {
             switch (convertedMap[i][j]){
                 case ACCESSIBLE_WITH_ENEMY -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
-                    if(new Random().nextInt(100) < 80){
+                    var rnd = new Random().nextInt(100);
+                    if(rnd < 60){
                         addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
-                    }else addEntityToWorld(myGrid[i][j], EntityFactory.createSmartEnemy(myGrid));
+                    }else if (rnd < 80){
+                        addEntityToWorld(myGrid[i][j], EntityFactory.createSmartEnemy(myGrid));
+                    }else addEntityToWorld(myGrid[i][j], EntityFactory.createPhantom(myGrid));
                 }
                 case ACCESSIBLE_WITH_NPC -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i,j), TileType.ACCESSIBLE);
                     addEntityToWorld(myGrid[i][j], EntityFactory.createNPC(NPCQuestions.getAQuestion()));
                 }
-                case SPAWNPOINT -> {
+                case SPAWN_POINT -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
                     addEntityToWorld(myGrid[i][j], EntityFactory.createCharacter());
                 }

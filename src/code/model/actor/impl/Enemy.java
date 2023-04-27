@@ -7,12 +7,13 @@ import code.view.Direction;
 import java.util.Random;
 
 class Enemy extends ActiveEntityTemplate implements InteractableEntity{
-
-    Enemy() {
-        super(EntityType.ENEMY);
+    Enemy(){
+        super();
     }
-    Enemy(EntityType type){
-        super(type);
+
+    @Override
+    public EntityType getType() {
+        return EntityType.ENEMY;
     }
 
 
@@ -26,11 +27,6 @@ class Enemy extends ActiveEntityTemplate implements InteractableEntity{
         if (destinationTile.getTileType().equals(TileType.ACCESSIBLE)) {
             moveTo(destinationTile);
         }
-    }
-
-    @Override
-    public boolean canMove() {
-        return true;
     }
 
     @Override

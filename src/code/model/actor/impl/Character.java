@@ -8,7 +8,12 @@ import code.view.GameOverState;
 
 public class Character extends ActiveEntityTemplate implements InteractableEntity {
     Character() {
-        super(EntityType.CHARACTER);
+        super();
+    }
+
+    @Override
+    public EntityType getType() {
+        return EntityType.CHARACTER;
     }
 
     @Override

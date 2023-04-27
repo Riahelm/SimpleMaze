@@ -5,5 +5,5 @@ public enum EntityType {
     NPC,
     ENEMY,
     SMART_ENEMY,
-
+    PHANTOM,
 }
