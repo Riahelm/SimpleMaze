@@ -9,9 +9,9 @@ import org.junit.Test;
 
 public class NpcTest {
 
-    Npc dummy;
+    static Npc dummy;
     @BeforeClass
-    public void setUp(){
+    public static void setUp(){
         dummy = EntityFactory.createNPC(new Pair<>("Dummy", true));
     }
     @Test
@@ -26,6 +26,6 @@ public class NpcTest {
 
     @Test
     public void getDialogue() {
-        assertEquals("Dummy", dummy.getQuestion());
+        assertEquals("Dummy", dummy.getQuestion().x());
     }
 }
