@@ -6,8 +6,8 @@ import code.model.world.api.Tile;
 
 public abstract class ActiveEntityTemplate extends EntityTemplate implements ActiveEntity {
 
-    protected ActiveEntityTemplate(EntityType type) {
-        super(type);
+    protected ActiveEntityTemplate() {
+        super();
     }
 
     protected void moveTo(Tile destination) throws IllegalPositionException {

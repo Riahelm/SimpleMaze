@@ -1,6 +1,7 @@
 package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
+import code.model.actor.api.InteractableEntity;
 import code.model.actor.impl.EntityFactory;
 import code.model.actor.impl.NPCQuestions;
 import code.util.MapReader;
@@ -21,11 +22,9 @@ public class GameMapImpl implements GameMap {
     Integer size;
     List<Entity> aliveEntities;
     Tile[][] myGrid;
-    Random randomMovementGenerator;
 
     public GameMapImpl(URL mapPath) throws IOException {
         TileType[][] convertedMap = (MapReader.readMap(mapPath));
-        randomMovementGenerator = new Random();
         this.size = convertedMap.length;
         this.aliveEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
@@ -33,13 +32,18 @@ public class GameMapImpl implements GameMap {
             switch (convertedMap[i][j]){
                 case ACCESSIBLE_WITH_ENEMY -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
-                    addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
+                    var rnd = new Random().nextInt(100);
+                    if(rnd < 60){
+                        addEntityToWorld(myGrid[i][j], EntityFactory.createEnemy());
+                    }else if (rnd < 80){
+                        addEntityToWorld(myGrid[i][j], EntityFactory.createSmartEnemy(myGrid));
+                    }else addEntityToWorld(myGrid[i][j], EntityFactory.createPhantom(myGrid));
                 }
                 case ACCESSIBLE_WITH_NPC -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i,j), TileType.ACCESSIBLE);
                     addEntityToWorld(myGrid[i][j], EntityFactory.createNPC(NPCQuestions.getAQuestion()));
                 }
-                case SPAWNPOINT -> {
+                case SPAWN_POINT -> {
                     myGrid[i][j] = new TileImpl(new Position2DImpl(i, j), TileType.ACCESSIBLE);
                     addEntityToWorld(myGrid[i][j], EntityFactory.createCharacter());
                 }
@@ -73,36 +77,34 @@ public class GameMapImpl implements GameMap {
         if(tile.getEntity().isEmpty()) {
             tile.setEntity(entity);
             entity.setTile(tile);
+
             this.aliveEntities.add(entity);
             this.aliveEntities.sort(Comparator.comparingInt(ent -> ent.getType().ordinal())); // STRATEGY PATTERN HERE
         }
     }
 
-    public void performTurn(Direction direction, Entity entity) throws IllegalPositionException{
+    public void performTurn(Direction direction, ActiveEntity entity) throws IllegalPositionException{
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
 
         destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.x()]
                                 [entity.getTile().getCoords().getPosY() + dir.y()];
 
-        if(entity instanceof ActiveEntity){
-            if (destinationTile.getEntity().isPresent() && !destinationTile.equals(entity.getTile())) {
-                ((ActiveEntity) entity).interact(destinationTile.getEntity().get());
-                if(!destinationTile.getEntity().get().isAlive()){
-                    destinationTile.resetTile();
-                }
+        if(!destinationTile.equals(entity.getTile())){
+            if (destinationTile.getEntity().isPresent() && destinationTile.getEntity().get() instanceof InteractableEntity destinationEntity){
+                destinationEntity.onInteract(entity.getType());
             }
             if (destinationTile.getEntity().isEmpty()) {
-                ((ActiveEntity) entity).move(destinationTile);
+                entity.move(destinationTile);
             }
         }
     }
 
-    public void performTurn(Entity entity){
-        this.performTurn(Direction.fromInt(randomMovementGenerator.nextInt(0, 100)% 4), entity);
+    public void performTurn(ActiveEntity entity){
+        this.performTurn(entity.findADirection(), entity);
     }
     @Override
     public List<Entity> getEntities() {
-        return aliveEntities;
+        return this.aliveEntities;
     }
 }

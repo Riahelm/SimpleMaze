@@ -1,26 +1,24 @@
 package code.model.actor.impl;
 
-import code.model.actor.api.Entity;
+import code.model.actor.api.InteractableEntity;
 import code.model.gameLogic.GameLogic;
 import code.model.world.api.Tile;
+import code.view.Direction;
 import code.view.GameOverState;
 
-public class Character extends ActiveEntityTemplate{
+public class Character extends ActiveEntityTemplate implements InteractableEntity {
     Character() {
-        super(EntityType.CHARACTER);
+        super();
     }
 
     @Override
-    public void interact(Entity interactedEntity) {
+    public EntityType getType() {
+        return EntityType.CHARACTER;
+    }
 
-        if (interactedEntity.getType().equals(EntityType.NPC)) {
-            gCC.sendMessage("The stranger asks you a question...");
-            gc.askAQuestion(((Npc)interactedEntity).getQuestion());
-        } else if (interactedEntity.isAlive()) {
-            GameLogic.getScoreCounter().increment();
-            gCC.updateScore(GameLogic.getScoreCounter().getValue());
-            interactedEntity.setLifeTo(false);
-        }
+    @Override
+    public Direction findADirection() {
+        throw new RuntimeException("You must give a direction for this entity to move!");
     }
 
     @Override
@@ -30,12 +28,11 @@ public class Character extends ActiveEntityTemplate{
             case NON_ACCESSIBLE -> gCC.sendMessage("Bonk!");
             case STAIRS -> {
                 gCC.sendMessage("You go to the next level...");
-                GameLogic.getScoreCounter().increment();
-                GameLogic.switchToNextWorld();
+                gc.goToNextWorld();
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
-                GameLogic.getScoreCounter().increment();
+                gc.increaseScore();
                 gc.finishGame(GameOverState.WIN, GameLogic.getScoreCounter().getValue());
             }
         }
@@ -46,4 +43,11 @@ public class Character extends ActiveEntityTemplate{
         return true;
     }
 
+    @Override
+    public void onInteract(EntityType type) {
+        if(type.equals(EntityType.ENEMY) || type.equals(EntityType.SMART_ENEMY) || type.equals(EntityType.PHANTOM)){
+            this.setLifeTo(false);
+            gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
+        }
+    }
 }

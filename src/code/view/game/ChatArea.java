@@ -1,8 +1,7 @@
 package code.view.game;
 
 import code.controller.GameChatController;
-import code.controller.listeners.OnMessageSentListener;
-import code.util.Pair;
+import code.controller.listeners.ChatAreaListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,10 +23,11 @@ public class ChatArea extends JPanel {
             if(i == chatDisplay.length - 1){
                 chatDisplay[i].setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 4, true),
                                                                                                     "Player score"));
+                chatDisplay[i].setText("0");
             }
         }
 
-        gCC.setMessageListener(new OnMessageSentListener() {
+        gCC.setChatAreaListener(new ChatAreaListener() {
             @Override
             public void receiveMessage(String message) {
 

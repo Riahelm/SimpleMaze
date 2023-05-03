@@ -52,14 +52,4 @@ public class CharacterTest {
         assertFalse(testCharacter.isAlive());
         assertEquals(2, GameLogic.getScoreCounter().getValue());
     }
-    @Test
-    public void interact() {
-        Entity interactedEntity = EntityFactory.createEnemy();
-
-        assertEquals(2, GameLogic.getScoreCounter().getValue());
-        ((ActiveEntity) testCharacter).interact(interactedEntity);
-        assertEquals(3, GameLogic.getScoreCounter().getValue());
-
-        assertFalse(interactedEntity.isAlive());
-    }
 }

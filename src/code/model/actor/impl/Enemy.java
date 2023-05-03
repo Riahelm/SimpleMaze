@@ -1,22 +1,25 @@
 package code.model.actor.impl;
 
-import code.model.actor.api.Entity;
-import code.model.gameLogic.GameLogic;
+import code.model.actor.api.InteractableEntity;
 import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
-import code.view.GameOverState;
-class Enemy extends ActiveEntityTemplate{
+import code.view.Direction;
+import java.util.Random;
 
-    Enemy() {
-        super(EntityType.ENEMY);
+class Enemy extends ActiveEntityTemplate implements InteractableEntity{
+    Enemy(){
+        super();
     }
 
     @Override
-    public void interact(Entity interactedEntity) {
-        if (interactedEntity.isAlive() && interactedEntity instanceof Character) {
-            interactedEntity.setLifeTo(false);
-            gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
-        }
+    public EntityType getType() {
+        return EntityType.ENEMY;
+    }
+
+
+    @Override
+    public Direction findADirection() {
+        return Direction.fromInt(new Random().nextInt(0,100)% 4);
     }
 
     @Override
@@ -27,8 +30,11 @@ class Enemy extends ActiveEntityTemplate{
     }
 
     @Override
-    public boolean canMove() {
-        return true;
+    public void onInteract(EntityType type) {
+        if(type.equals(EntityType.CHARACTER)){
+            gc.increaseScore();
+            this.getTile().resetTile();
+            this.setLifeTo(false);
+        }
     }
-
 }

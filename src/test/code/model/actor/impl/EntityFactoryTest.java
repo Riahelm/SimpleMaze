@@ -8,13 +8,6 @@ import static org.junit.Assert.*;
 public class EntityFactoryTest {
 
     @Test
-    public void createEntity() {
-        assertNotNull(EntityFactory.createEntity(EntityType.CHARACTER));
-        assertNotNull(EntityFactory.createEntity(EntityType.ENEMY));
-        assertNotNull(EntityFactory.createEntity(EntityType.NPC));
-    }
-
-    @Test
     public void createCharacter() {
         assertNotNull(EntityFactory.createCharacter());
     }
@@ -27,6 +20,6 @@ public class EntityFactoryTest {
     @Test
     public void createNPC() {
         assertNotNull(EntityFactory.createNPC(new Pair<>("Dummy", true)));
-        assertEquals("Dummy", EntityFactory.createNPC(new Pair<>("Dummy", true)).getQuestion());
+        assertEquals("Dummy", EntityFactory.createNPC(new Pair<>("Dummy", true)).getQuestion().x());
     }
 }

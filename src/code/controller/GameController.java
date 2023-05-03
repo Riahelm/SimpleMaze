@@ -3,6 +3,7 @@ package code.controller;
 import code.controller.listeners.GameAreaListener;
 import code.controller.listeners.GameLogicListener;
 import code.controller.listeners.GamePanelListener;
+import code.model.actor.impl.NPCQuestions;
 import code.model.gameLogic.GameLogic;
 import code.util.Pair;
 import code.view.Direction;
@@ -13,7 +14,7 @@ public class GameController {
     private static GameController instance;
     private GameAreaListener myGameAreaInstructions;
     private GameLogicListener myGameLogicInstructions;
-    private GamePanelListener gamePanelStateListener; //GamePanelState, checks if it's won or lost
+    private GamePanelListener myGamePanelInstructions;
 
     private GameController(){}
 
@@ -30,8 +31,8 @@ public class GameController {
     public void setGameLogicListener(GameLogicListener l){
         myGameLogicInstructions = l;
     }
-    public void setGameOverListener(GamePanelListener l){
-        gamePanelStateListener = l;
+    public void setGamePanelListener(GamePanelListener l){
+        myGamePanelInstructions = l;
     }
     public void computeTurn(Direction key){
         myGameLogicInstructions.computeTurn(key);
@@ -39,17 +40,28 @@ public class GameController {
     }
 
     public void askAQuestion(Pair<String, Boolean> question){
-        gamePanelStateListener.askAQuestion(question);
+        myGamePanelInstructions.askAQuestion(question);
     }
     public void forceRefresh(){
         myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
+    public void increaseScore(){
+        myGameLogicInstructions.incrementScore();
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
+    }
+
+    public void goToNextWorld(){
+        this.increaseScore();
+        myGameLogicInstructions.switchToNextWorld();
+    }
     public void finishGame(GameOverState state, int score){
-        gamePanelStateListener.setToGameOver(state, score);
+        myGamePanelInstructions.setToGameOver(state, score);
     }
 
     public void restartGame() {
-        GameLogic.resetToFirstWorld();
+        NPCQuestions.resetQuestions();
+        myGameLogicInstructions.resetPlayerStatus();
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
     }
 }
