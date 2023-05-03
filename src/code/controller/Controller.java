@@ -1,12 +1,12 @@
 package code.controller;
 
-import code.controller.listeners.OnNewPageListener;
+import code.controller.listeners.MainFrameListener;
 
 public class Controller {
     //Singleton design pattern
     private static Controller instance;
     private PageToShow mPageToShow;
-    private OnNewPageListener mPageListener;
+    private MainFrameListener mPageListener;
 
     public static Controller getInstance(){
         if(instance == null){
@@ -19,7 +19,7 @@ public class Controller {
         mPageToShow = PageToShow.MENU;
     }
 
-    public void setOnNewPage(OnNewPageListener l) {
+    public void setOnNewPage(MainFrameListener l) {
         mPageListener = l;
         mPageListener.onNewPage(mPageToShow);
     }

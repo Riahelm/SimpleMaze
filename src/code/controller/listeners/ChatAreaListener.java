@@ -1,8 +1,6 @@
 package code.controller.listeners;
 
-import code.util.Pair;
-
-public interface OnMessageSentListener {
+public interface ChatAreaListener {
     void receiveMessage(String message);
 
     void receiveScore(int score);

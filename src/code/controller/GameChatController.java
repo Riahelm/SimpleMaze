@@ -1,11 +1,10 @@
 package code.controller;
 
-import code.controller.listeners.OnMessageSentListener;
-import code.util.Pair;
+import code.controller.listeners.ChatAreaListener;
 
 public class GameChatController {
     private static GameChatController instance;
-    private OnMessageSentListener msgListener;
+    private ChatAreaListener msgListener;
 
     public static GameChatController getInstance(){
         if(instance == null){
@@ -14,7 +13,7 @@ public class GameChatController {
         return instance;
     }
 
-    public void setMessageListener(OnMessageSentListener l){
+    public void setChatAreaListener(ChatAreaListener l){
         msgListener = l;
     }
 

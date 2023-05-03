@@ -22,11 +22,9 @@ public class GameMapImpl implements GameMap {
     Integer size;
     List<Entity> aliveEntities;
     Tile[][] myGrid;
-    Random randomMovementGenerator;
 
     public GameMapImpl(URL mapPath) throws IOException {
         TileType[][] convertedMap = (MapReader.readMap(mapPath));
-        randomMovementGenerator = new Random();
         this.size = convertedMap.length;
         this.aliveEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];

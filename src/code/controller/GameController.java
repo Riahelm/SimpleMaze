@@ -14,7 +14,7 @@ public class GameController {
     private static GameController instance;
     private GameAreaListener myGameAreaInstructions;
     private GameLogicListener myGameLogicInstructions;
-    private GamePanelListener gamePanelStateListener; //GamePanelState, checks if it's won or lost
+    private GamePanelListener myGamePanelInstructions;
 
     private GameController(){}
 
@@ -31,8 +31,8 @@ public class GameController {
     public void setGameLogicListener(GameLogicListener l){
         myGameLogicInstructions = l;
     }
-    public void setGameOverListener(GamePanelListener l){
-        gamePanelStateListener = l;
+    public void setGamePanelListener(GamePanelListener l){
+        myGamePanelInstructions = l;
     }
     public void computeTurn(Direction key){
         myGameLogicInstructions.computeTurn(key);
@@ -40,27 +40,28 @@ public class GameController {
     }
 
     public void askAQuestion(Pair<String, Boolean> question){
-        gamePanelStateListener.askAQuestion(question);
+        myGamePanelInstructions.askAQuestion(question);
     }
     public void forceRefresh(){
         myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
     public void increaseScore(){
-        GameLogic.getScoreCounter().increment();
-        GameChatController.getInstance().updateScore(GameLogic.getScoreCounter().getValue());
+        myGameLogicInstructions.incrementScore();
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
     }
 
     public void goToNextWorld(){
         this.increaseScore();
-        GameLogic.switchToNextWorld();
+        myGameLogicInstructions.switchToNextWorld();
     }
     public void finishGame(GameOverState state, int score){
-        gamePanelStateListener.setToGameOver(state, score);
+        myGamePanelInstructions.setToGameOver(state, score);
     }
 
     public void restartGame() {
         NPCQuestions.resetQuestions();
-        GameLogic.resetPlayerStatus();
+        myGameLogicInstructions.resetPlayerStatus();
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
     }
 }

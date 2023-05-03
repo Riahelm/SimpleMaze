@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class NPCQuestions {
     private static final List<Pair<String, Boolean>> questions = List.of(
-            new Pair<>("Is PMO fun?", true),
+        new Pair<>("Is PMO fun?", true),
         new Pair<>("Is SO fun?", true),
         new Pair<>("Is LAG fun?", true),
         new Pair<>("Is PP fun?", true),

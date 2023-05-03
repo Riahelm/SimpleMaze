@@ -21,7 +21,6 @@ public class GameArea extends JPanel {
 
                 setLayout(new GridLayout(mapSize,mapSize));
 
-
                 screenPixels = new JLabel[mapSize][mapSize];
 
                 OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {

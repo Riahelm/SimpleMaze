@@ -20,7 +20,7 @@ public class TileImpl implements Tile {
         this.myCoords = coords;
         this.myTileType = type;
         this.entityOnTile = Optional.empty();
-        myIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/tiles/" + myTileType + ".JPG")));
+        this.myIcon = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/tiles/" + myTileType + ".JPG")));
     }
 
     public Position2D getCoords() {

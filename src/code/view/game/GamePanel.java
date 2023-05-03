@@ -8,7 +8,6 @@ import code.view.Direction;
 import code.view.GameOverState;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -39,7 +38,7 @@ public class GamePanel extends JLayeredPane{
 
     private void init(){
 
-        gc.setGameOverListener(new GamePanelListener() {
+        gc.setGamePanelListener(new GamePanelListener() {
             @Override
             public void setToGameOver(GameOverState state, int score) {
                     JPanel gameOverPanel = new JPanel();

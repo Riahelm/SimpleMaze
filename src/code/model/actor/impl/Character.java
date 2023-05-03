@@ -45,7 +45,7 @@ public class Character extends ActiveEntityTemplate implements InteractableEntit
 
     @Override
     public void onInteract(EntityType type) {
-        if(type.equals(EntityType.ENEMY) || type.equals(EntityType.SMART_ENEMY)){
+        if(type.equals(EntityType.ENEMY) || type.equals(EntityType.SMART_ENEMY) || type.equals(EntityType.PHANTOM)){
             this.setLifeTo(false);
             gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
         }
