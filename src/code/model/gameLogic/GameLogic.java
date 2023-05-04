@@ -18,9 +18,9 @@ import java.io.IOException;
 
 
 public class GameLogic {
-    private static GameController gc;
-    private static GameMap currentWorld;
-    private static Pair<? extends Counter, ? extends Counter> playerInfo;
+    private final GameController gc;
+    private GameMap currentWorld;
+    private Pair<? extends Counter, ? extends Counter> playerInfo;
 
     public GameLogic(){
                                 //Level                       Score
@@ -36,8 +36,6 @@ public class GameLogic {
         this.init();
 
     }
-
-    public static Counter getScoreCounter(){return playerInfo.y();}
 
     private void init() {
 
@@ -99,8 +97,8 @@ public class GameLogic {
             }
 
             @Override
-            public int getScore() {
-                return playerInfo.y().getValue();
+            public Pair<? extends Counter,? extends Counter> getPlayerInfo() {
+                return playerInfo;
             }
         });
     }

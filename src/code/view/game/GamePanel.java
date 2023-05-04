@@ -40,7 +40,7 @@ public class GamePanel extends JLayeredPane{
 
         gc.setGamePanelListener(new GamePanelListener() {
             @Override
-            public void setToGameOver(GameOverState state, int score) {
+            public void setToGameOver(GameOverState state) {
                     JPanel gameOverPanel = new JPanel();
                     JButton resetButton = new JButton("RESET");
                     undoKeyBindings();
@@ -51,7 +51,7 @@ public class GamePanel extends JLayeredPane{
                     gameOverPanel.setMinimumSize(new Dimension(1366, 768));
                     gameOverPanel.setLayout(new BorderLayout());
                     gameOverPanel.add(resetButton, BorderLayout.NORTH);
-                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + score + "</html>"), BorderLayout.CENTER);
+                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + gc.getPlayerInfo().y().getValue() + "</html>"), BorderLayout.CENTER);
                     add(gameOverPanel);
 
                     resetButton.addActionListener(e -> {
@@ -76,7 +76,7 @@ public class GamePanel extends JLayeredPane{
                 if(answer == question.y()) {
                     GameChatController.getInstance().sendMessage("You chose the correct answer!");
                 }else {
-                       gc.finishGame(GameOverState.LOSE, -1000);
+                       gc.finishGame(GameOverState.LOSE);
                 }
             }
         });

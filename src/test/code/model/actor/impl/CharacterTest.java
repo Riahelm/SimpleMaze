@@ -1,5 +1,6 @@
 package code.model.actor.impl;
 
+import code.controller.GameController;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
@@ -43,13 +44,13 @@ public class CharacterTest {
         accessTile = new TileImpl(new Position2DImpl(1,2), TileType.STAIRS);
         ((ActiveEntity)testCharacter).move(accessTile);
 
-        assertEquals(1, GameLogic.getScoreCounter().getValue());
+        assertEquals(1, GameController.getInstance().getPlayerInfo().y().getValue());
         assertEquals(Optional.empty(), accessTile.getEntity());
 
         accessTile = new TileImpl(new Position2DImpl(1,2), TileType.EXIT);
         ((ActiveEntity)testCharacter).move(accessTile);
 
         assertFalse(testCharacter.isAlive());
-        assertEquals(2, GameLogic.getScoreCounter().getValue());
+        assertEquals(2, GameController.getInstance().getPlayerInfo().y().getValue());
     }
 }

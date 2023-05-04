@@ -1,5 +1,6 @@
 package code.controller.listeners;
 
+import code.util.Pair;
 import code.util.api.Counter;
 import code.view.Direction;
 
@@ -16,5 +17,5 @@ public interface GameLogicListener {
 
     void incrementScore();
 
-    int getScore();
+    Pair<? extends Counter,? extends Counter> getPlayerInfo();
 }
