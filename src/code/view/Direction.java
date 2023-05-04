@@ -7,7 +7,8 @@ public enum Direction {
     DOWN,
     LEFT,
     RIGHT,
-    SPACE;
+    SPACE,
+    SKIP;
 
     public static Direction fromInt(int d) {
         return switch (d) {
@@ -16,6 +17,7 @@ public enum Direction {
             case 2 -> Direction.LEFT;
             case 3 -> Direction.RIGHT;
             case 4 -> Direction.SPACE;
+            case 5 -> Direction.SKIP;
             default -> throw new IllegalStateException("Unexpected value: " + d);
         };
     }
@@ -26,7 +28,7 @@ public enum Direction {
             case DOWN -> new Pair<>(0, -1);
             case LEFT -> new Pair<>(-1, 0);
             case RIGHT -> new Pair<>(1, 0);
-            case SPACE -> new Pair<>(0,0);
+            case SPACE, SKIP -> new Pair<>(0,0);
         };
     }
 }

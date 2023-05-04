@@ -47,12 +47,13 @@ public class InstructionsPanel extends JPanel {
                                     Types of entities
                                 </h2>
                                 <p>
-                                    As of now, there are only four entities: <br>
+                                    As of now, there are only five entities: <br>
                                     First, a blue entity. This is you, and they move as soon as you give a command. <br>
                                     Beware, for you can have multiple blue entities at the same time! As soon as one is defeated, the game is over! <br>
                                     Second, a red entity. This is your sworn enemy, and they will move randomly, if they touch you, you're finished!<br>
-                                    Third, a purple entity. These are smart enemies, and will move towards you, if they spot you!
-                                    Fourth, a yellow entity. These are NPCs, and they will ask you a question: <br>
+                                    Third, a purple entity. These are smart enemies, and will always move towards you! <br>
+                                    Fourth, a grey entity. These also follow you, but they go through walls! <br>
+                                    Fifth, a yellow entity. These are NPCs, and they will ask you a question: <br>
                                     Answer correctly and you'll be granted passage, but beware, if you answer incorrectly you will lose!
                                 </p>
                             </body>

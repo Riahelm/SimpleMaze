@@ -4,8 +4,8 @@ import code.controller.listeners.GameAreaListener;
 import code.controller.listeners.GameLogicListener;
 import code.controller.listeners.GamePanelListener;
 import code.model.actor.impl.NPCQuestions;
-import code.model.gameLogic.GameLogic;
 import code.util.Pair;
+import code.util.api.Counter;
 import code.view.Direction;
 import code.view.GameOverState;
 
@@ -35,7 +35,11 @@ public class GameController {
         myGamePanelInstructions = l;
     }
     public void computeTurn(Direction key){
-        myGameLogicInstructions.computeTurn(key);
+        if(key.equals(Direction.SKIP)){
+            this.goToNextWorld();
+        }else{
+            myGameLogicInstructions.computeTurn(key);
+        }
         myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
@@ -48,20 +52,25 @@ public class GameController {
 
     public void increaseScore(){
         myGameLogicInstructions.incrementScore();
-        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getPlayerInfo().y().getValue());
     }
 
     public void goToNextWorld(){
         this.increaseScore();
         myGameLogicInstructions.switchToNextWorld();
     }
-    public void finishGame(GameOverState state, int score){
-        myGamePanelInstructions.setToGameOver(state, score);
+    public void finishGame(GameOverState state){
+        myGamePanelInstructions.setToGameOver(state);
+    }
+
+    public Pair<? extends Counter,? extends Counter> getPlayerInfo(){
+        return myGameLogicInstructions.getPlayerInfo();
     }
 
     public void restartGame() {
         NPCQuestions.resetQuestions();
         myGameLogicInstructions.resetPlayerStatus();
-        GameChatController.getInstance().updateScore(myGameLogicInstructions.getScore());
+        GameChatController.getInstance().updateScore(myGameLogicInstructions.getPlayerInfo().y().getValue());
+        GameChatController.getInstance().resetChat();
     }
 }

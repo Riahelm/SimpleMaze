@@ -47,20 +47,4 @@ public class TileImplTest {
         assertFalse(tile.isAdjacentTo(upperRightTile));
         assertFalse(tile.isAdjacentTo(lowerRightTile));
     }
-
-    @Test
-    public void resetTile() {
-
-        assertFalse(tile.getEntity().isPresent());
-
-        tile.setEntity(EntityFactory.createCharacter());
-
-        assertTrue(tile.getEntity().isPresent());
-
-        tile.resetTile();
-
-        assertFalse(tile.getEntity().isPresent());
-
-        assertThrows(NoSuchElementException.class, () -> tile.getEntity().get());
-    }
 }

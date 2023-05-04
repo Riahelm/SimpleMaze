@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class NPCQuestions {
+public final class NPCQuestions {
     private static final List<Pair<String, Boolean>> questions = List.of(
         new Pair<>("Is PMO fun?", true),
         new Pair<>("Is SO fun?", true),

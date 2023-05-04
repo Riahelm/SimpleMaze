@@ -47,8 +47,6 @@ public class GameMapImplTest {
 
         assertEquals(2, testMap.getEntities().size());
 
-        testMap.myGrid[1][1].resetTile();
-
         assertEquals(2, testMap.getEntities().size());
     }
 

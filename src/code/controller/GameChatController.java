@@ -4,7 +4,7 @@ import code.controller.listeners.ChatAreaListener;
 
 public class GameChatController {
     private static GameChatController instance;
-    private ChatAreaListener msgListener;
+    private ChatAreaListener chatAreaInstructions;
 
     public static GameChatController getInstance(){
         if(instance == null){
@@ -13,14 +13,16 @@ public class GameChatController {
         return instance;
     }
 
-    public void setChatAreaListener(ChatAreaListener l){
-        msgListener = l;
+    public void setChatAreaInstructions(ChatAreaListener l){
+        chatAreaInstructions = l;
     }
 
     public void sendMessage(String message){
-        msgListener.receiveMessage(message);
+        chatAreaInstructions.receiveMessage(message);
     }
     public void updateScore(int score){
-        msgListener.receiveScore(score);
+        chatAreaInstructions.receiveScore(score);
     }
+
+    public void resetChat(){ chatAreaInstructions.resetChat();}
 }

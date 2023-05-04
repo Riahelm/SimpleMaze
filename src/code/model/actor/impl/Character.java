@@ -32,8 +32,7 @@ public class Character extends ActiveEntityTemplate implements InteractableEntit
             }
             case EXIT -> {
                 this.isAlive = false; // This is so that no more movement is made, and no more messages are sent
-                gc.increaseScore();
-                gc.finishGame(GameOverState.WIN, GameLogic.getScoreCounter().getValue());
+                gc.finishGame(GameOverState.WIN);
             }
         }
     }
@@ -47,7 +46,7 @@ public class Character extends ActiveEntityTemplate implements InteractableEntit
     public void onInteract(EntityType type) {
         if(type.equals(EntityType.ENEMY) || type.equals(EntityType.SMART_ENEMY) || type.equals(EntityType.PHANTOM)){
             this.setLifeTo(false);
-            gc.finishGame(GameOverState.LOSE, GameLogic.getScoreCounter().getValue());
+            gc.finishGame(GameOverState.LOSE);
         }
     }
 }

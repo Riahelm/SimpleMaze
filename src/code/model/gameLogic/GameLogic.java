@@ -12,15 +12,16 @@ import code.util.impl.CounterImpl;
 import code.model.world.api.GameMap;
 import code.model.world.impl.GameMapImpl;
 import code.view.Direction;
+import code.view.GameOverState;
 
 import javax.swing.*;
 import java.io.IOException;
 
 
 public class GameLogic {
-    private static GameController gc;
-    private static GameMap currentWorld;
-    private static Pair<? extends Counter, ? extends Counter> playerInfo;
+    private final GameController gc;
+    private GameMap currentWorld;
+    private Pair<? extends Counter, ? extends Counter> playerInfo;
 
     public GameLogic(){
                                 //Level                       Score
@@ -36,8 +37,6 @@ public class GameLogic {
         this.init();
 
     }
-
-    public static Counter getScoreCounter(){return playerInfo.y();}
 
     private void init() {
 
@@ -62,13 +61,8 @@ public class GameLogic {
             public Icon[][] getGameState() {
                 int mapSize = currentWorld.getMapSize();
                 Icon[][] myRes = new Icon[mapSize][mapSize];
-                OperateOnMatrix.operateOnEachElement(myRes, (i, j) -> {
-                    if(currentWorld.getSpecificTile(i, j).getEntity().isPresent()){
-                        myRes[i][j] = currentWorld.getSpecificTile(i, j).getEntity().get().getSprite();
-                    }else{
-                        myRes[i][j] = currentWorld.getGrid()[i][j].getImage();
-                    }
-                });
+                OperateOnMatrix.operateOnEachElement(myRes, (i, j) -> myRes[i][j] = currentWorld.getGrid()[i][j].getImage());
+                currentWorld.getEntities().forEach(e -> myRes[e.getTile().getCoords().getPosX()][e.getTile().getCoords().getPosY()] = e.getSprite());
                 return myRes;
             }
 
@@ -80,6 +74,9 @@ public class GameLogic {
                     currentWorld = new GameMapImpl(GameLogic.class.getResource("../../../resources/worlds/Map_" + playerInfo.x().getValue()));
                 }catch (IOException e) {
                     throw new RuntimeException(e);
+                }catch (NullPointerException e){
+                    gc.finishGame(GameOverState.WIN);
+                    throw new RuntimeException("You either cheat or put stairs where an exit is meant to be");
                 }
             }
 
@@ -99,8 +96,8 @@ public class GameLogic {
             }
 
             @Override
-            public int getScore() {
-                return playerInfo.y().getValue();
+            public Pair<? extends Counter,? extends Counter> getPlayerInfo() {
+                return playerInfo;
             }
         });
     }

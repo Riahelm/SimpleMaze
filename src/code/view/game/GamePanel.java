@@ -40,7 +40,7 @@ public class GamePanel extends JLayeredPane{
 
         gc.setGamePanelListener(new GamePanelListener() {
             @Override
-            public void setToGameOver(GameOverState state, int score) {
+            public void setToGameOver(GameOverState state) {
                     JPanel gameOverPanel = new JPanel();
                     JButton resetButton = new JButton("RESET");
                     undoKeyBindings();
@@ -51,7 +51,7 @@ public class GamePanel extends JLayeredPane{
                     gameOverPanel.setMinimumSize(new Dimension(1366, 768));
                     gameOverPanel.setLayout(new BorderLayout());
                     gameOverPanel.add(resetButton, BorderLayout.NORTH);
-                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + score + "</html>"), BorderLayout.CENTER);
+                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + gc.getPlayerInfo().y().getValue() + "</html>"), BorderLayout.CENTER);
                     add(gameOverPanel);
 
                     resetButton.addActionListener(e -> {
@@ -76,7 +76,7 @@ public class GamePanel extends JLayeredPane{
                 if(answer == question.y()) {
                     GameChatController.getInstance().sendMessage("You chose the correct answer!");
                 }else {
-                       gc.finishGame(GameOverState.LOSE, -1000);
+                       gc.finishGame(GameOverState.LOSE);
                 }
             }
         });
@@ -99,20 +99,22 @@ public class GamePanel extends JLayeredPane{
         String vkDown = "DOWN";
         String vkRight = "RIGHT";
         String vkSpace = "SPACE";
+        String vkSkip = "SKIP";
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
-        //This is the quickest fix without having to change the model
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkLeft);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkDown);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkRight);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0 ), vkSkip);
 
         actionMap.put(vkUp, new KeyAction(vkUp));
         actionMap.put(vkLeft, new KeyAction(vkLeft));
         actionMap.put(vkDown, new KeyAction(vkDown));
         actionMap.put(vkRight, new KeyAction(vkRight));
         actionMap.put(vkSpace, new KeyAction(vkSpace));
+        actionMap.put(vkSkip, new KeyAction(vkSkip));
     }
     @Override
     public Dimension getPreferredSize() {
