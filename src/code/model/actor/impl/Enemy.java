@@ -33,7 +33,6 @@ class Enemy extends ActiveEntityTemplate implements InteractableEntity{
     public void onInteract(EntityType type) {
         if(type.equals(EntityType.CHARACTER)){
             gc.increaseScore();
-            this.getTile().resetTile();
             this.setLifeTo(false);
         }
     }

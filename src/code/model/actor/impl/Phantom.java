@@ -4,8 +4,8 @@ import code.model.world.api.Tile;
 import code.model.world.impl.TileType;
 
 public class Phantom extends SmartEnemy{
-    Phantom(Tile[][] grid) {
-        super(grid);
+    Phantom() {
+        super();
     }
 
     @Override

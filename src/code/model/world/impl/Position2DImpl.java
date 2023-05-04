@@ -2,7 +2,7 @@ package code.model.world.impl;
 
 import code.model.world.api.Position2D;
 
-public class Position2DImpl implements Position2D {
+public final class Position2DImpl implements Position2D {
     
     private final Integer posX;
     private final Integer posY;

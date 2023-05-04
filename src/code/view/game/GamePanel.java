@@ -99,20 +99,22 @@ public class GamePanel extends JLayeredPane{
         String vkDown = "DOWN";
         String vkRight = "RIGHT";
         String vkSpace = "SPACE";
+        String vkSkip = "SKIP";
 
         //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
-        //This is the quickest fix without having to change the model
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkLeft);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkDown);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkRight);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkUp);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0 ), vkSkip);
 
         actionMap.put(vkUp, new KeyAction(vkUp));
         actionMap.put(vkLeft, new KeyAction(vkLeft));
         actionMap.put(vkDown, new KeyAction(vkDown));
         actionMap.put(vkRight, new KeyAction(vkRight));
         actionMap.put(vkSpace, new KeyAction(vkSpace));
+        actionMap.put(vkSkip, new KeyAction(vkSkip));
     }
     @Override
     public Dimension getPreferredSize() {

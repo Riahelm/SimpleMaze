@@ -27,7 +27,7 @@ public class ChatArea extends JPanel {
             }
         }
 
-        gCC.setChatAreaListener(new ChatAreaListener() {
+        gCC.setChatAreaInstructions(new ChatAreaListener() {
             @Override
             public void receiveMessage(String message) {
 
@@ -44,6 +44,13 @@ public class ChatArea extends JPanel {
                 chatDisplay[chatDisplay.length - 1].setText(String.valueOf(score));
                 revalidate();
                 repaint();
+            }
+
+            @Override
+            public void resetChat() {
+                for (JLabel chatLabel: chatDisplay) {
+                    chatLabel.setText("");
+                }
             }
         });
     }

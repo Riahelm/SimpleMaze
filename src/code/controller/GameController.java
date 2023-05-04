@@ -35,7 +35,11 @@ public class GameController {
         myGamePanelInstructions = l;
     }
     public void computeTurn(Direction key){
-        myGameLogicInstructions.computeTurn(key);
+        if(key.equals(Direction.SKIP)){
+            this.goToNextWorld();
+        }else{
+            myGameLogicInstructions.computeTurn(key);
+        }
         myGameAreaInstructions.useUpdatedState(myGameLogicInstructions.getGameState());
     }
 
@@ -67,5 +71,6 @@ public class GameController {
         NPCQuestions.resetQuestions();
         myGameLogicInstructions.resetPlayerStatus();
         GameChatController.getInstance().updateScore(myGameLogicInstructions.getPlayerInfo().y().getValue());
+        GameChatController.getInstance().resetChat();
     }
 }
