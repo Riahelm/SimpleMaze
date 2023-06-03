@@ -13,6 +13,7 @@ public class MapReader {
 
 
     public static TileType[][] readMap(URL mapFile) throws IOException {
+        //Converts Integers in the txt file to TileType values
         int size = 0;
         Scanner myMapScanner = new Scanner(mapFile.openStream());
         List<TileType> tiles = new ArrayList<>();
@@ -27,7 +28,7 @@ public class MapReader {
         TileType[][] result = new TileType[size][size];
 
         int finalSize = size;
-        OperateOnMatrix.operateOnEachElement(result, (i, j) -> result[i][j] = tiles.get(i * finalSize + j));
+        OperateOnMatrix.operateOnEachElement(result, (i, j) -> result[j][finalSize - 1 - i] = tiles.get(i * finalSize + j));
 
         myMapScanner.close();
         return result;

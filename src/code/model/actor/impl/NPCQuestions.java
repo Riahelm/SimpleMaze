@@ -14,7 +14,6 @@ public final class NPCQuestions {
         new Pair<>("Is PP fun?", true),
         new Pair<>("Is ENS fun?", true),
         new Pair<>("Is SN fun?", true),
-        new Pair<>("Is Euler method's error equal to o(dt)^2?", false),
         new Pair<>("Is the Runge-Kutta method scalable for each power of 2?", true),
         new Pair<>("Is the Leapfrog method self-starting?", false),
         new Pair<>("Is 'instanceof' a standard java operator?", true),

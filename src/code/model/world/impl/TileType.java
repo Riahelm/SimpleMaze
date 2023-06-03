@@ -2,6 +2,7 @@ package code.model.world.impl;
 
 public enum TileType {
     NON_ACCESSIBLE,
+
     ACCESSIBLE,
     ACCESSIBLE_WITH_ENEMY,
     ACCESSIBLE_WITH_NPC,

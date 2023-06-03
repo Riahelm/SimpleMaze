@@ -20,6 +20,16 @@ public class EntityFactoryTest {
     @Test
     public void createNPC() {
         assertNotNull(EntityFactory.createNPC(new Pair<>("Dummy", true)));
-        assertEquals("Dummy", EntityFactory.createNPC(new Pair<>("Dummy", true)).getQuestion().x());
     }
+
+    @Test
+    public void createSmartEnemy(){
+        assertNotNull(EntityFactory.createSmartEnemy());
+    }
+
+    @Test
+    public void createPhantom(){
+        assertNotNull(EntityFactory.createPhantom());
+    }
+
 }

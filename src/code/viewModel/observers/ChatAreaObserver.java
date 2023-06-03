@@ -1,8 +1,7 @@
-package code.controller.listeners;
+package code.viewModel.observers;
 
-public interface ChatAreaListener {
+public interface ChatAreaObserver {
     void receiveMessage(String message);
     void receiveScore(int score);
-
     void resetChat();
 }

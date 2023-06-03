@@ -20,15 +20,20 @@ import java.net.URL;
 import java.util.*;
 
 public class GameMapImpl implements GameMap {
-    final Integer size;
-    List<Entity> aliveEntities;
-    Tile[][] myGrid;
+    private final Integer size;
+    private final List<Entity> aliveEntities;
+    private final Tile[][] myGrid;
 
     public GameMapImpl(URL mapPath) throws IOException {
         TileType[][] convertedMap = (MapReader.readMap(mapPath));
         this.size = convertedMap.length;
         this.aliveEntities = new LinkedList<>();
         this.myGrid = new Tile[size][size];
+
+        /*The code under might take a while to understand, basically it reads the level to go to, converts it from the txt to an array,
+          then for each slot it is given the required properties. In this implementation's case the Enemy tiles have a 60% chance to spawn
+          as a basic Enemy, 20% as a smart Enemy, and 20% as a Phantom
+         */
         OperateOnMatrix.operateOnEachElement(convertedMap, (i, j) -> {
             switch (convertedMap[i][j]){
                 case ACCESSIBLE_WITH_ENEMY -> {
@@ -70,24 +75,26 @@ public class GameMapImpl implements GameMap {
     }
 
     private void addEntityToWorld(Tile tile, Entity entity){
-
             entity.setTile(tile);
             this.aliveEntities.add(entity);
             this.aliveEntities.sort(Comparator.comparingInt(ent -> ent.getType().ordinal())); // STRATEGY PATTERN HERE
-
     }
 
     public void performTurn(Direction direction, ActiveEntity entity) throws IllegalPositionException{
         Tile destinationTile;
         Pair<Integer, Integer> dir = direction.toPair();
 
-        destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.x()]
-                                [entity.getTile().getCoords().getPosY() + dir.y()];
-
-        if(destinationTile.equals(entity.getTile())) {
-            return;
+        //Finds the destination tile
+        try{
+        destinationTile = myGrid[entity.getTile().getCoords().getPosX() + dir.first()]
+                                [entity.getTile().getCoords().getPosY() + dir.second()];
+        }catch (IndexOutOfBoundsException e){
+            throw new IllegalPositionException("Position doesn't exist");
         }
+        //If it's the same one the entity is in, it doesn't need to do anything
+        if(destinationTile.equals(entity.getTile())) {return;}
 
+        //Finds the entity in the destination tile and interacts with it, then moves towards it if possible
         Optional<Entity> destinationEntity = aliveEntities.stream().filter(e -> e.getTile().equals(destinationTile)).findAny();
 
         if(destinationEntity.isPresent() && destinationEntity.get() instanceof  InteractableEntity interactableEntity){

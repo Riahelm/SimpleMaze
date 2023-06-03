@@ -23,8 +23,6 @@ public class EnemyTest {
     public static void setUp(){
         testEnemy = EntityFactory.createEnemy();
         logic = new GameLogic();
-        frame = new MainFrame();
-        frame.setVisible(false);
     }
 
     @Test

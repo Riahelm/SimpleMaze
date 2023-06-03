@@ -1,7 +1,7 @@
 package code.view.game;
 
-import code.controller.GameChatController;
-import code.controller.listeners.ChatAreaListener;
+import code.viewModel.GameViewModel;
+import code.viewModel.observers.ChatAreaObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.*;
 public class ChatArea extends JPanel {
     private final JLabel[] chatDisplay;
 
-    public ChatArea(GameChatController gCC) {
+    public ChatArea(GameViewModel.ChatViewModel gc) {
         this.setBackground(Color.WHITE);
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setFixedSize(this, new Dimension(400,700));
@@ -27,7 +27,7 @@ public class ChatArea extends JPanel {
             }
         }
 
-        gCC.setChatAreaInstructions(new ChatAreaListener() {
+        gc.setChatAreaInstructions(new ChatAreaObserver() {
             @Override
             public void receiveMessage(String message) {
 

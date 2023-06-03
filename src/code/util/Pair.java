@@ -1,14 +1,14 @@
 package code.util;
 
-public record Pair<X, Y>(X x, Y y) {
+public record Pair<X, Y>(X first, Y second) {
 
     @Override
     public String toString() {
-        return "<" + x + ", " + y + ">";
+        return "<" + first + ", " + second + ">";
     }
 
     public int hashCode() {
-        return x.hashCode() ^ y.hashCode();
+        return first.hashCode() ^ second.hashCode();
     }
 
     public boolean equals(Object comPair) { //Funny joke here
@@ -19,7 +19,7 @@ public record Pair<X, Y>(X x, Y y) {
             return true;
         }
         if (comPair instanceof Pair<?, ?> toCompare) {
-            return (this.x().equals(toCompare.x()) && this.y().equals(toCompare.y()));
+            return (this.first().equals(toCompare.first()) && this.second().equals(toCompare.second()));
         } else {
             return false;
         }

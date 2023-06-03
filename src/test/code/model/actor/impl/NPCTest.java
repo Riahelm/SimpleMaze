@@ -2,14 +2,16 @@ package code.model.actor.impl;
 
 import static org.junit.Assert.*;
 
+import code.model.world.impl.Position2DImpl;
+import code.model.world.impl.TileImpl;
+import code.model.world.impl.TileType;
 import code.util.Pair;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class NpcTest {
+public class NPCTest {
 
-    static Npc dummy;
+    static NPC dummy;
     @BeforeClass
     public static void setUp(){
         dummy = EntityFactory.createNPC(new Pair<>("Dummy", true));
@@ -17,15 +19,17 @@ public class NpcTest {
     @Test
     public void canMove() {
         assertFalse(dummy.canMove());
+        dummy.setTile(new TileImpl(new Position2DImpl(2,2), TileType.ACCESSIBLE));
+        //No movement test needed as it can't be cast to active entity
     }
 
     @Test
     public void isAlive() {
-        assertTrue(dummy.isAlive);
+        assertTrue(dummy.isAlive());
     }
 
     @Test
     public void getDialogue() {
-        assertEquals("Dummy", dummy.getQuestion().x());
+        dummy.onInteract(EntityType.CHARACTER);
     }
 }

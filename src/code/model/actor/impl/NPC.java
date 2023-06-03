@@ -3,12 +3,12 @@ package code.model.actor.impl;
 import code.model.actor.api.InteractableEntity;
 import code.util.Pair;
 
-class Npc extends EntityTemplate implements InteractableEntity {
+class NPC extends EntityTemplate implements InteractableEntity {
 
 
     private Pair<String, Boolean> personalQuestion;
 
-    Npc() {
+    NPC() {
         super();
     }
 
@@ -17,26 +17,17 @@ class Npc extends EntityTemplate implements InteractableEntity {
         return EntityType.NPC;
     }
 
-    Npc(Pair<String, Boolean> question) {
+    NPC(Pair<String, Boolean> question) {
         this();
         this.personalQuestion = question;
     }
-
-    @Override
-    public boolean canMove() {
-        return false;
-    }
-
-    @Override
-    public boolean isAlive() {
-        return this.isAlive;
-    }
     @Override
     public void onInteract(EntityType type) {
+        //They can't be touched by anything that isn't a Character, otherwise Enemies would kill NPCs
         if(type.equals(EntityType.CHARACTER)){
-            gCC.sendMessage("The NPC asks you a question...");
-            gc.askAQuestion(this.personalQuestion);
-            gc.increaseScore();
+            gVMCC.sendMessage("The NPC asks you a question...");
+            gVM.askAQuestion(this.personalQuestion);
+            gVM.increaseScore();
             this.setLifeTo(false); //This says a lot about society
         }
     }

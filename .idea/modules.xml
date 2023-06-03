@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JPanelsImplemented.iml" filepath="$PROJECT_DIR$/JPanelsImplemented.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SimpleMaze.iml" filepath="$PROJECT_DIR$/SimpleMaze.iml" />
     </modules>
   </component>
 </project>

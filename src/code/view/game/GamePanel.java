@@ -1,8 +1,8 @@
 package code.view.game;
 
-import code.controller.GameChatController;
-import code.controller.GameController;
-import code.controller.listeners.GamePanelListener;
+import code.viewModel.GameViewModel;
+import code.viewModel.ViewType;
+import code.viewModel.observers.GamePanelObserver;
 import code.util.Pair;
 import code.view.Direction;
 import code.view.GameOverState;
@@ -12,22 +12,22 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
-public class GamePanel extends JLayeredPane{
+public class GamePanel extends JPanel{
 
     private final GameArea gameArea;
     private final ChatArea chatArea;
-    private final GameController gc;
+    private final GameViewModel gVM;
     public GamePanel(){
-        this.gc = GameController.getInstance();
+        this.gVM = GameViewModel.getInstance();
         this.setOpaque(true);
         this.setBackground(Color.BLACK);
         this.setLayout(new FlowLayout());
-        gameArea = new GameArea(gc);
+        gVM.setViewType(ViewType.SWING);
+        gameArea = new GameArea(gVM);
         gameArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        chatArea = new ChatArea(GameChatController.getInstance());
+        chatArea = new ChatArea(GameViewModel.ChatViewModel.getInstance());
         chatArea.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Message Log"));
-
         this.add(gameArea);
         this.add(chatArea);
 
@@ -38,7 +38,7 @@ public class GamePanel extends JLayeredPane{
 
     private void init(){
 
-        gc.setGamePanelListener(new GamePanelListener() {
+        gVM.setGamePanelObserver(new GamePanelObserver() {
             @Override
             public void setToGameOver(GameOverState state) {
                     JPanel gameOverPanel = new JPanel();
@@ -51,17 +51,17 @@ public class GamePanel extends JLayeredPane{
                     gameOverPanel.setMinimumSize(new Dimension(1366, 768));
                     gameOverPanel.setLayout(new BorderLayout());
                     gameOverPanel.add(resetButton, BorderLayout.NORTH);
-                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + gc.getPlayerInfo().y().getValue() + "</html>"), BorderLayout.CENTER);
+                    gameOverPanel.add(new JLabel("<html>YOU " + state +"<br> PLAYER SCORE: " + gVM.getPlayerInfo().second().getValue() + "</html>"), BorderLayout.CENTER);
                     add(gameOverPanel);
 
                     resetButton.addActionListener(e -> {
-                        gc.restartGame();
+                        gVM.restartGame();
                         setBackground(Color.BLACK);
                         remove(gameOverPanel);
                         add(gameArea);
                         add(chatArea);
                         setKeyBindings();
-                        gc.forceRefresh();
+                        gVM.updateScreen();
                         revalidate();
                         repaint();
                     });
@@ -72,11 +72,11 @@ public class GamePanel extends JLayeredPane{
 
             @Override
             public void askAQuestion(Pair<String, Boolean> question){
-                boolean answer = JOptionPane.showConfirmDialog(gameArea, question.x(), "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
-                if(answer == question.y()) {
-                    GameChatController.getInstance().sendMessage("You chose the correct answer!");
+                boolean answer = JOptionPane.showConfirmDialog(gameArea, question.first(), "Question", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0;
+                if(answer == question.second()) {
+                    GameViewModel.ChatViewModel.getInstance().sendMessage("You chose the correct answer!");
                 }else {
-                       gc.finishGame(GameOverState.LOSE);
+                       gVM.finishGame(GameOverState.LOSE);
                 }
             }
         });
@@ -88,6 +88,7 @@ public class GamePanel extends JLayeredPane{
 
         Arrays.stream(inputMap.allKeys()).forEach(inputMap::remove);
         Arrays.stream(actionMap.allKeys()).forEach(actionMap::remove);
+
     }
 
     private void setKeyBindings(){
@@ -101,11 +102,10 @@ public class GamePanel extends JLayeredPane{
         String vkSpace = "SPACE";
         String vkSkip = "SKIP";
 
-        //Mind you, these are rotated by 90 degrees to compensate for the generation of the map
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkLeft);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkDown);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkRight);
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkUp);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), vkUp);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), vkLeft);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), vkDown);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), vkRight);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0), vkSpace);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0 ), vkSkip);
 
@@ -128,7 +128,7 @@ public class GamePanel extends JLayeredPane{
 
         @Override
         public void actionPerformed(ActionEvent actionEvt) {
-            gc.computeTurn(Direction.valueOf(actionEvt.getActionCommand()));
+            gVM.computeTurn(Direction.valueOf(actionEvt.getActionCommand()));
         }
     }
 }

@@ -1,8 +1,8 @@
 package code.view.game;
 
-import code.controller.GameController;
+import code.viewModel.GameViewModel;
 import code.util.OperateOnMatrix;
-import code.view.Direction;
+import code.viewModel.observers.GameAreaObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,32 +10,40 @@ import java.awt.*;
 public class GameArea extends JPanel {
     private JLabel[][] screenPixels;
 
-    public GameArea(GameController gc){
+    public GameArea(GameViewModel gc){
         this.setBackground(Color.BLACK);
         setFixedSize(this, new Dimension(700,700));
 
-        gc.setGameAreaListener(updatedState -> {
-            if(screenPixels == null || updatedState.length != screenPixels.length){
-                int mapSize = updatedState.length;
-                removeAll();
+        gc.setGameAreaObserver(new GameAreaObserver() {
+            @Override
+            public <X> void useUpdatedState(X[][] updatedState) {
 
-                setLayout(new GridLayout(mapSize,mapSize));
+                //Skips if the given state is incompatible
+                if(!(updatedState instanceof Icon[][] iconState)) return;
 
-                screenPixels = new JLabel[mapSize][mapSize];
+                if(screenPixels == null || updatedState.length != screenPixels.length){
+                    int mapSize = updatedState.length;
+                    removeAll();
 
-                OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {
-                    screenPixels[i][j] = new JLabel();
-                    add(screenPixels[i][j]);
+                    setLayout(new GridLayout(mapSize,mapSize));
+
+                    screenPixels = new JLabel[mapSize][mapSize];
+
+                    OperateOnMatrix.operateOnEachElement(screenPixels, (i, j) -> {
+                        screenPixels[i][j] = new JLabel();
+                        add(screenPixels[i][j]);
+                    });
+                }
+                OperateOnMatrix.operateOnEachElement(updatedState, (i, j) -> {
+                    screenPixels[i][j].setIcon(iconState[j][updatedState.length - 1 -i]);
+                    revalidate();
+                    repaint();
                 });
+
             }
-            OperateOnMatrix.operateOnEachElement(updatedState, (i, j) -> {
-                screenPixels[i][j].setIcon(updatedState[i][j]);
-                revalidate();
-                repaint();
-            });
         });
 
-        gc.forceRefresh();
+        gc.updateScreen();
 
         this.revalidate();
         this.repaint();

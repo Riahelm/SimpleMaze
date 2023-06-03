@@ -33,6 +33,7 @@ public class TileImpl implements Tile {
 
     @Override
     public boolean isAdjacentTo(Tile otherTile) {
+        //Fun maths ahead, it checks if the tile is in the first next cardinal direction
         return Math.abs(otherTile.getCoords().getPosX() - this.getCoords().getPosX()) +
                Math.abs(otherTile.getCoords().getPosY() - this.getCoords().getPosY()) <= 1;
     }

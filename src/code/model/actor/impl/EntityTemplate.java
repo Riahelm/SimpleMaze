@@ -1,30 +1,27 @@
 package code.model.actor.impl;
 
-import code.controller.GameChatController;
-import code.controller.GameController;
+import code.viewModel.GameViewModel;
 import code.model.world.api.Tile;
 import code.model.actor.api.Entity;
 
 import javax.swing.*;
-import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 
 public abstract class EntityTemplate implements Entity {
     final private Icon eSprite;
     private Tile eTile;
-    protected boolean isAlive;
+    private boolean isAlive;
 
     //These are here for the sake of not having verbose code
-    protected GameChatController gCC;
-    protected GameController gc;
+    protected GameViewModel gVM;
+    protected GameViewModel.ChatViewModel gVMCC;
 
     protected EntityTemplate(){
         this.eSprite = new ImageIcon(Objects.requireNonNull(this.getClass().getResource("../../../../resources/entities/" + this.getType().toString() + ".JPG")));
         this.isAlive = true;
-        gCC = GameChatController.getInstance();
-        gc  = GameController.getInstance();
+        gVMCC = GameViewModel.ChatViewModel.getInstance();
+        gVM = GameViewModel.getInstance();
     }
 
     public void setTile(Tile tile){
@@ -37,8 +34,8 @@ public abstract class EntityTemplate implements Entity {
 
     public abstract EntityType getType();
 
-    public Tile getTile() throws NoSuchElementException{
-        return Optional.of(this.eTile).get();
+    public Tile getTile(){
+        return this.eTile;
     }
 
     public boolean isAlive(){

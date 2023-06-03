@@ -17,6 +17,7 @@ class Enemy extends ActiveEntityTemplate implements InteractableEntity{
     }
 
 
+    //Moves randomly
     @Override
     public Direction findADirection() {
         return Direction.fromInt(new Random().nextInt(0,100)% 4);
@@ -32,7 +33,7 @@ class Enemy extends ActiveEntityTemplate implements InteractableEntity{
     @Override
     public void onInteract(EntityType type) {
         if(type.equals(EntityType.CHARACTER)){
-            gc.increaseScore();
+            gVM.increaseScore();
             this.setLifeTo(false);
         }
     }

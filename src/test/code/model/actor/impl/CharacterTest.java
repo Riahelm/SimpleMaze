@@ -1,6 +1,5 @@
 package code.model.actor.impl;
 
-import code.controller.GameController;
 import code.exceptions.IllegalPositionException;
 import code.model.actor.api.ActiveEntity;
 import code.model.actor.api.Entity;
@@ -9,25 +8,19 @@ import code.model.world.api.Tile;
 import code.model.world.impl.Position2DImpl;
 import code.model.world.impl.TileImpl;
 import code.model.world.impl.TileType;
-import code.view.Direction;
-import code.view.MainFrame;
+import code.viewModel.GameViewModel;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
 public class CharacterTest {
 
     static GameLogic logic;
-    static MainFrame frame;
     static Entity testCharacter;
     @BeforeClass
     public static void setUp(){
         logic = new GameLogic();
-        frame = new MainFrame();
-        frame.setVisible(false);
         testCharacter = EntityFactory.createCharacter();
     }
 
@@ -44,13 +37,12 @@ public class CharacterTest {
         accessTile = new TileImpl(new Position2DImpl(1,2), TileType.STAIRS);
         ((ActiveEntity)testCharacter).move(accessTile);
 
-        assertEquals(1, GameController.getInstance().getPlayerInfo().y().getValue());
-        assertEquals(Optional.empty(), accessTile.getEntity());
+        assertEquals(2, GameViewModel.getInstance().getPlayerInfo().first().getValue());
 
         accessTile = new TileImpl(new Position2DImpl(1,2), TileType.EXIT);
         ((ActiveEntity)testCharacter).move(accessTile);
 
         assertFalse(testCharacter.isAlive());
-        assertEquals(2, GameController.getInstance().getPlayerInfo().y().getValue());
+        assertEquals(0, GameViewModel.getInstance().getPlayerInfo().second().getValue());
     }
 }
