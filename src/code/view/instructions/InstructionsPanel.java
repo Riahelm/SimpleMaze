@@ -1,6 +1,6 @@
 package code.view.instructions;
 
-import code.controller.Controller;
+import code.viewModel.MainFrameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +13,7 @@ public class InstructionsPanel extends JPanel {
         this.setLayout(new BorderLayout());
 
         backButton = new JButton("GO BACK");
-        backButton.addActionListener(e -> Controller.getInstance().onMenuPressed());
+        backButton.addActionListener(e -> MainFrameViewModel.getInstance().onMenuPressed());
 
         instructions = new JLabel(
                     """
@@ -38,8 +38,8 @@ public class InstructionsPanel extends JPanel {
                                 </h2>
                                 <p>
                                     You will be able to see four different types of tiles: <br>
-                                    First, a black tile. You can't walk on these, and neither can anyone else. <br>
-                                    Second, a white tile. You can walk on these, and so can everyone else. <br>
+                                    First, a black tile. You can't walk on these. <br>
+                                    Second, a white tile. You can walk on these. <br>
                                     Third, a brown tile. These are stairs, you can walk into these to go to the next level! <br>
                                     Fourth, a green tile. Walk into this tile to get out of the maze and win the game!
                                 </p>

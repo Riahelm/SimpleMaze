@@ -19,7 +19,8 @@ public class SmartEnemy extends Enemy{
     }
     @Override
     public Direction findADirection(){
-
+    //This is a simple method to have the enemy move towards the Character, not checking for walls.
+    //In case there's no Character it'll move randomly.
         if(character != null) {
             Position2D myPosition = getTile().getCoords();
             Position2D characterPosition = character.getTile().getCoords();

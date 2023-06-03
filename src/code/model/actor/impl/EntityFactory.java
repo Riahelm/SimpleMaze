@@ -8,8 +8,8 @@ public class EntityFactory {
     public static Character createCharacter(){
         return new Character();
     }
-    public static Npc createNPC(Pair<String, Boolean> dialogue){
-        return new Npc(dialogue);
+    public static NPC createNPC(Pair<String, Boolean> dialogue){
+        return new NPC(dialogue);
     }
     public static Enemy createEnemy(){
         return new Enemy();

@@ -1,11 +1,8 @@
 package code.model.world.impl;
 
-import code.model.actor.impl.EntityFactory;
 import code.model.world.api.Tile;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 

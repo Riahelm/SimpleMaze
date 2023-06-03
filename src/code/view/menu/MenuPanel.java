@@ -1,6 +1,6 @@
 package code.view.menu;
 
-import code.controller.Controller;
+import code.viewModel.MainFrameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +14,9 @@ public class MenuPanel extends JPanel {
         JButton mInstructionsBtn = new JButton("Instructions");
         JButton mQuitBtn = new JButton("Quit");
 
-        mStartBtn.addActionListener(e -> Controller.getInstance().onStartPressed());
-        mInstructionsBtn.addActionListener(e -> Controller.getInstance().onInstructionsPressed());
-        mQuitBtn.addActionListener(e -> Controller.getInstance().onQuitPressed());
+        mStartBtn.addActionListener(e -> MainFrameViewModel.getInstance().onStartPressed());
+        mInstructionsBtn.addActionListener(e -> MainFrameViewModel.getInstance().onInstructionsPressed());
+        mQuitBtn.addActionListener(e -> MainFrameViewModel.getInstance().onQuitPressed());
 
         add(mStartBtn);
         add(mInstructionsBtn);

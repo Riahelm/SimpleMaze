@@ -1,8 +1,6 @@
 package code.model.world.impl;
 
 import code.model.actor.api.ActiveEntity;
-import code.model.actor.impl.EntityFactory;
-import code.model.actor.impl.EntityType;
 import code.view.Direction;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,66 +22,32 @@ public class GameMapImplTest {
     @Test
     public void getMapSize() {
         assertEquals(5, testMap.getMapSize());
+        try {
+            testMap = new GameMapImpl(GameMapImplTest.class.getResource("../../../../resources/worlds/Map_4"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        assertEquals(8, testMap.getEntities().size());
     }
 
     @Test
-    public void getSpecificTile() {
-        assertEquals(testMap.getGrid()[2][2], testMap.getSpecificTile(2,2));
-        assertSame(testMap.getGrid()[4][4], testMap.getSpecificTile(new Position2DImpl(4,4)));
-    }
-
-    @Test
-    public void addEntityToWorld() {
-        assertEquals(0, testMap.getEntities().size());
-
-        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createCharacter());
-        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createEnemy());
-
-        assertEquals(1, testMap.getEntities().size());
-
-        assertEquals(EntityType.CHARACTER, testMap.getEntities().get(0).getType());
-
-        testMap.addEntityToWorld(testMap.myGrid[1][2], EntityFactory.createEnemy());
-
-        assertEquals(2, testMap.getEntities().size());
-
-        assertEquals(2, testMap.getEntities().size());
-    }
-
-    //Null pointer expected because the gameChat has not been initialized
-    @Test(expected = NullPointerException.class)
     public void performTurn() {
 
-        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createCharacter());
+        ActiveEntity testEntity = (ActiveEntity) testMap.getEntities().get(0);
+        assertEquals(testMap.getGrid()[0][2], testEntity.getTile());
+        testMap.performTurn(Direction.UP, testEntity);
+        assertEquals(testMap.getGrid()[0][3], testEntity.getTile());
+        testMap.performTurn(Direction.DOWN, testEntity);
 
-        testMap.performTurn(Direction.RIGHT, (ActiveEntity) testMap.aliveEntities.get(0));
-        assertEquals(testMap.myGrid[2][1], testMap.aliveEntities.get(0).getTile());
-        if(testMap.myGrid[2][1].getEntity().isPresent()){
-            assertEquals(testMap.aliveEntities.get(0), testMap.myGrid[2][1].getEntity().get());
-        }else fail("Entity was not moved properly");
+        assertEquals(testMap.getGrid()[0][2], testEntity.getTile());
 
-        testMap.performTurn(Direction.DOWN, (ActiveEntity) testMap.aliveEntities.get(0));
-        assertEquals(testMap.myGrid[2][1], testMap.aliveEntities.get(0).getTile());
-        if(testMap.myGrid[2][1].getEntity().isPresent()){
-            assertEquals(testMap.aliveEntities.get(0), testMap.myGrid[2][1].getEntity().get());
-        }else fail("Entity was not moved properly");
+        testMap.performTurn(Direction.RIGHT, testEntity);
+
+        assertEquals(testMap.getGrid()[1][2], testEntity.getTile());
 
     }
-    //Null pointer expected because the player's score has not been initialized
-    @Test(expected = NullPointerException.class)
+    @Test
     public void getEntities() {
-        assertEquals(0, testMap.getEntities().size());
-
-        testMap.addEntityToWorld(testMap.myGrid[1][1], EntityFactory.createCharacter());
-
         assertEquals(1, testMap.getEntities().size());
-
-        testMap.addEntityToWorld(testMap.myGrid[2][1], EntityFactory.createEnemy());
-
-        assertEquals(2, testMap.getEntities().size());
-
-        testMap.performTurn(Direction.RIGHT, (ActiveEntity) testMap.aliveEntities.get(0));
-
-        assertEquals(1, testMap.aliveEntities.size());
     }
 }

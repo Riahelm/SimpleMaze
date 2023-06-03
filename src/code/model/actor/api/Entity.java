@@ -4,13 +4,11 @@ import code.model.actor.impl.EntityType;
 import code.model.world.api.Tile;
 
 import javax.swing.*;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 public interface Entity {
 
     void setTile(Tile tile);
-    Tile getTile() throws NoSuchElementException;
+    Tile getTile();
 
     Icon getSprite();
     EntityType getType();

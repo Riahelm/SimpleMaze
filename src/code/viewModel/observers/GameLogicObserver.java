@@ -1,4 +1,4 @@
-package code.controller.listeners;
+package code.viewModel.observers;
 
 import code.util.Pair;
 import code.util.api.Counter;
@@ -6,16 +6,12 @@ import code.view.Direction;
 
 import javax.swing.*;
 
-public interface GameLogicListener {
+public interface GameLogicObserver {
     void computeTurn(Direction keyPressed);
-
-    Icon[][] getGameState();
-
     void switchToNextWorld();
-
     void resetPlayerStatus();
-
-    void incrementScore();
-
+    Icon[][] getGameState();
     Pair<? extends Counter,? extends Counter> getPlayerInfo();
+
+    Integer[][] getTerminalGameState();
 }

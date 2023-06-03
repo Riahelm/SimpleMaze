@@ -12,9 +12,6 @@ public abstract class ActiveEntityTemplate extends EntityTemplate implements Act
 
     protected void moveTo(Tile destination) throws IllegalPositionException {
         if(this.canMove() && this.getTile().isAdjacentTo(destination)){
-            //TODO change the grid to show the surrounding area, so you may call the mapReader onto a 8x8 instead of the full map
-            //helpful tip: give MapReader a fixed radius around which you want to show your stuff
-            //mind you, this is all optional!
             this.setTile(destination);
         }else throw new IllegalPositionException();
     }

@@ -1,4 +1,4 @@
-package code.controller;
+package code.viewModel;
 
 public enum PageToShow {
     MENU,
